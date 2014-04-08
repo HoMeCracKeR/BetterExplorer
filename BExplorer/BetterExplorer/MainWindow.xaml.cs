@@ -51,77 +51,77 @@ using System.Threading.Tasks;
 
 namespace BetterExplorer
 {
-	/// <summary>
-	/// Interaction logic for MainWindow.xaml
-	/// </summary>
-	public partial class MainWindow : RibbonWindow
-	{
-		#region Variables and Constants
-		ExplorerBrowser Explorer = new ExplorerBrowser();
-		ClipboardMonitor cbm = new ClipboardMonitor();
-		ContextMenu cmHistory = new ContextMenu();
-		private int LastTabIndex = -1;
-		private int BeforeLastTabIndex = -1;
-		string StartUpLocation = KnownFolders.Libraries.ParsingName;
-		bool IsHFlyoutEnabled;
-		bool IsPreviewPaneEnabled;
-		bool IsInfoPaneEnabled;
-		bool IsNavigationPaneEnabled;
-		bool isCheckModeEnabled;
-		bool IsExtendedFileOpEnabled;
+    /// <summary>
+    /// Interaction logic for MainWindow.xaml
+    /// </summary>
+    public partial class MainWindow : RibbonWindow
+    {
+        #region Variables and Constants
+        ExplorerBrowser Explorer = new ExplorerBrowser();
+        ClipboardMonitor cbm = new ClipboardMonitor();
+        ContextMenu cmHistory = new ContextMenu();
+        private int LastTabIndex = -1;
+        private int BeforeLastTabIndex = -1;
+        string StartUpLocation = KnownFolders.Libraries.ParsingName;
+        bool IsHFlyoutEnabled;
+        bool IsPreviewPaneEnabled;
+        bool IsInfoPaneEnabled;
+        bool IsNavigationPaneEnabled;
+        bool isCheckModeEnabled;
+        bool IsExtendedFileOpEnabled;
         bool IsCloseLastTabCloseApp;
-		public bool IsrestoreTabs;
-		bool IsUpdateCheck;
-	    bool IsUpdateCheckStartup;
+        public bool IsrestoreTabs;
+        bool IsUpdateCheck;
+        bool IsUpdateCheckStartup;
         bool IsConsoleShown;
-	    int UpdateCheckType;
-		public bool isOnLoad;
-		System.Windows.Shell.JumpList AppJL = new System.Windows.Shell.JumpList();
-		public bool IsCalledFromLoading;
-		public bool IsCalledFromViewEnum;
-		bool ReadyToChangeLanguage;
-		System.Windows.Forms.Timer FocusTimer = new System.Windows.Forms.Timer();
-		IntPtr Handle;
-		string EditComm = "";
-		List<string> Archives = new List<string>(new string[] { ".rar", ".zip", ".7z", ".tar", ".gz", ".xz", ".bz2" });
-		List<string> Images = new List<string>(new string[] { ".jpg", ".jpeg", ".png", ".bmp", ".gif", ".wmf" });
+        int UpdateCheckType;
+        public bool isOnLoad;
+        System.Windows.Shell.JumpList AppJL = new System.Windows.Shell.JumpList();
+        public bool IsCalledFromLoading;
+        public bool IsCalledFromViewEnum;
+        bool ReadyToChangeLanguage;
+        System.Windows.Forms.Timer FocusTimer = new System.Windows.Forms.Timer();
+        IntPtr Handle;
+        string EditComm = "";
+        List<string> Archives = new List<string>(new string[] { ".rar", ".zip", ".7z", ".tar", ".gz", ".xz", ".bz2" });
+        List<string> Images = new List<string>(new string[] { ".jpg", ".jpeg", ".png", ".bmp", ".gif", ".wmf" });
         List<string> VirDisks = new List<string>(new string[] { ".iso", ".bin", ".vhd" });
-		MenuItem misa;
-		MenuItem misd;
-		MenuItem misag;
-		MenuItem misdg;
-		MenuItem misng;
-		public static UpdateManager Updater;
-		bool inLibrary = false;
-		bool inDrive = false;
-		//string LastItemSelected = "";
-		string SelectedArchive = "";
-		//bool KeepFocusOnExplorer = false;
-		bool KeepBackstageOpen = false;
-		IProgressDialog pd;
-		private string ICON_DLLPATH = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.System), "shell32.dll");
-		bool IsAfterFolderCreate = false;
-		bool isGoingBackOrForward;
-		bool asFolder = false;
-		bool asImage = false;
-		bool asArchive = false;
-		bool asDrive = false;
-		bool asApplication = false;
-		bool asLibrary = false;
+        MenuItem misa;
+        MenuItem misd;
+        MenuItem misag;
+        MenuItem misdg;
+        MenuItem misng;
+        public static UpdateManager Updater;
+        bool inLibrary = false;
+        bool inDrive = false;
+        //string LastItemSelected = "";
+        string SelectedArchive = "";
+        //bool KeepFocusOnExplorer = false;
+        bool KeepBackstageOpen = false;
+        IProgressDialog pd;
+        private string ICON_DLLPATH = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.System), "shell32.dll");
+        bool IsAfterFolderCreate = false;
+        bool isGoingBackOrForward;
+        bool asFolder = false;
+        bool asImage = false;
+        bool asArchive = false;
+        bool asDrive = false;
+        bool asApplication = false;
+        bool asLibrary = false;
         bool asVirtualDrive = false;
-		bool canlogactions = false;
-		string sessionid = DateTime.UtcNow.ToFileTimeUtc().ToString();
-		string logdir = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\BExplorer\\ActionLog\\";
-		string satdir = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\BExplorer_SavedTabs\\";
+        bool canlogactions = false;
+        string sessionid = DateTime.UtcNow.ToFileTimeUtc().ToString();
+        string logdir = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\BExplorer\\ActionLog\\";
+        string satdir = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\BExplorer_SavedTabs\\";
         string naddir = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\BExplorer\\NetworkAccounts\\";
-		string sstdir;
-		List<NavigationLog> reopenabletabs = new List<NavigationLog>();
-		bool OverwriteOnRotate = false;
-		NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
-		BackgroundWorker UpdaterWorker;
-		System.Windows.Forms.Timer updateCheckTimer = new System.Windows.Forms.Timer();
-		DateTime LastUpdateCheck;
-		Int32 UpdateCheckInterval;
+        string sstdir;
+        List<NavigationLog> reopenabletabs = new List<NavigationLog>();
+        bool OverwriteOnRotate = false;
+        NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+        BackgroundWorker UpdaterWorker;
+        System.Windows.Forms.Timer updateCheckTimer = new System.Windows.Forms.Timer();
+        DateTime LastUpdateCheck;
+        Int32 UpdateCheckInterval;
         Double CommandPromptWinHeight;
         bool IsViewSelection = false;
         private ShellNotifications.ShellNotifications Notifications = new ShellNotifications.ShellNotifications();
@@ -132,45 +132,45 @@ namespace BetterExplorer
         List<LVItemColor> LVItemsColor { get; set; }
         uint SelectedDriveID = 0;
         string[] InitialTabs;
-		#endregion
+        #endregion
 
-		#region Properties
-		/// <summary>
-		/// Gets Previouse Window State
-		/// </summary>
-		public WindowState PreviouseWindowState { get; private set; }
+        #region Properties
+        /// <summary>
+        /// Gets Previouse Window State
+        /// </summary>
+        public WindowState PreviouseWindowState { get; private set; }
 
-		/// <summary>
-		/// Gets the New context menu
-		/// </summary>
-		/// <returns>The list of the nwe context menu items</returns>
-		private List<string> GetNewContextMenu()
-		{
-			List<string> TheList = new List<string>();
-			RegistryKey reg = Registry.CurrentUser;
-			RegistryKey classesrk = reg.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Explorer\Discardable\PostSetup\ShellNew");
-			string[] classes = (string[])classesrk.GetValue("Classes");
+        /// <summary>
+        /// Gets the New context menu
+        /// </summary>
+        /// <returns>The list of the nwe context menu items</returns>
+        private List<string> GetNewContextMenu()
+        {
+            List<string> TheList = new List<string>();
+            RegistryKey reg = Registry.CurrentUser;
+            RegistryKey classesrk = reg.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Explorer\Discardable\PostSetup\ShellNew");
+            string[] classes = (string[])classesrk.GetValue("Classes");
 
-			foreach (string item in classes)
-			{
-				RegistryKey regext = Registry.ClassesRoot;
-				RegistryKey extrk = regext.OpenSubKey(item + @"\ShellNew");
-				if (extrk != null)
-				{
-					string FileName = (string)extrk.GetValue("FileName");
-					TheList.Add(FileName);
-				}
+            foreach (string item in classes)
+            {
+                RegistryKey regext = Registry.ClassesRoot;
+                RegistryKey extrk = regext.OpenSubKey(item + @"\ShellNew");
+                if (extrk != null)
+                {
+                    string FileName = (string)extrk.GetValue("FileName");
+                    TheList.Add(FileName);
+                }
 
 
-			}
-			classesrk.Close();
-			reg.Close();
-			return TheList;
-		}
+            }
+            classesrk.Close();
+            reg.Close();
+            return TheList;
+        }
 
-		#endregion
+        #endregion
 
-		#region Events
+        #region Events
 
     void InternalRichTextBox_TextChanged(object sender, EventArgs e) {
       ctrlConsole.ScrollToBottom();
@@ -207,77 +207,77 @@ namespace BetterExplorer
 
     }
 
-		private void btnAbout_Click(object sender, RoutedEventArgs e)
-		{
-			fmAbout fAbout = new fmAbout(this);
-			fAbout.Closed += new EventHandler(fAbout_Closed);
-			fAbout.ShowDialog();
-		}
+        private void btnAbout_Click(object sender, RoutedEventArgs e)
+        {
+            fmAbout fAbout = new fmAbout(this);
+            fAbout.Closed += new EventHandler(fAbout_Closed);
+            fAbout.ShowDialog();
+        }
 
-		void Explorer_DragDrop(object sender, System.Windows.Forms.DragEventArgs e)
-		{
-			switch (e.Effect)
-			{
-				case System.Windows.Forms.DragDropEffects.All:
-				AddToLog(String.Format("The following data was dragged into {0}: {1}", Explorer.NavigationLog.CurrentLocation, e.Data.GetData(DataFormats.FileDrop)));
-					break;
-				case System.Windows.Forms.DragDropEffects.Copy:
-					AddToLog(String.Format("The following data was copied into {0}: {1}", Explorer.NavigationLog.CurrentLocation, e.Data.GetData(DataFormats.FileDrop)));
-					break;
-				case System.Windows.Forms.DragDropEffects.Link:
-					AddToLog(String.Format("The following data was linked into {0}: {1}", Explorer.NavigationLog.CurrentLocation, e.Data.GetData(DataFormats.FileDrop)));
-					break;
-				case System.Windows.Forms.DragDropEffects.Move:
-					AddToLog(String.Format("The following data was moved into {0}: {1}", Explorer.NavigationLog.CurrentLocation, e.Data.GetData(DataFormats.FileDrop)));
-					break;
-				case System.Windows.Forms.DragDropEffects.None:
-					AddToLog(String.Format("The following data was dragged into {0}: {1}", Explorer.NavigationLog.CurrentLocation, e.Data.GetData(DataFormats.FileDrop)));
-					break;
-				case System.Windows.Forms.DragDropEffects.Scroll:
-					AddToLog(String.Format("The following data was dragged into {0}: {1}", Explorer.NavigationLog.CurrentLocation, e.Data.GetData(DataFormats.FileDrop)));
-					break;
-				default:
-					AddToLog(String.Format("The following data was dragged into {0}: {1}", Explorer.NavigationLog.CurrentLocation, e.Data.GetData(DataFormats.FileDrop)));
-					break;
-			}
-		}
-
-
-
-		private void RibbonWindow_MouseUp(object sender, MouseButtonEventArgs e)
-		{
-			if (breadcrumbBarControl1.IsInEditMode)
-			{
-				breadcrumbBarControl1.ExitEditMode();
-			}
-		}
+        void Explorer_DragDrop(object sender, System.Windows.Forms.DragEventArgs e)
+        {
+            switch (e.Effect)
+            {
+                case System.Windows.Forms.DragDropEffects.All:
+                AddToLog(String.Format("The following data was dragged into {0}: {1}", Explorer.NavigationLog.CurrentLocation, e.Data.GetData(DataFormats.FileDrop)));
+                    break;
+                case System.Windows.Forms.DragDropEffects.Copy:
+                    AddToLog(String.Format("The following data was copied into {0}: {1}", Explorer.NavigationLog.CurrentLocation, e.Data.GetData(DataFormats.FileDrop)));
+                    break;
+                case System.Windows.Forms.DragDropEffects.Link:
+                    AddToLog(String.Format("The following data was linked into {0}: {1}", Explorer.NavigationLog.CurrentLocation, e.Data.GetData(DataFormats.FileDrop)));
+                    break;
+                case System.Windows.Forms.DragDropEffects.Move:
+                    AddToLog(String.Format("The following data was moved into {0}: {1}", Explorer.NavigationLog.CurrentLocation, e.Data.GetData(DataFormats.FileDrop)));
+                    break;
+                case System.Windows.Forms.DragDropEffects.None:
+                    AddToLog(String.Format("The following data was dragged into {0}: {1}", Explorer.NavigationLog.CurrentLocation, e.Data.GetData(DataFormats.FileDrop)));
+                    break;
+                case System.Windows.Forms.DragDropEffects.Scroll:
+                    AddToLog(String.Format("The following data was dragged into {0}: {1}", Explorer.NavigationLog.CurrentLocation, e.Data.GetData(DataFormats.FileDrop)));
+                    break;
+                default:
+                    AddToLog(String.Format("The following data was dragged into {0}: {1}", Explorer.NavigationLog.CurrentLocation, e.Data.GetData(DataFormats.FileDrop)));
+                    break;
+            }
+        }
 
 
-		private void ScrollViewer_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
-		{
-			ScrollViewer scviewer = (sender as ScrollViewer);
-			scviewer.ScrollToHorizontalOffset(scviewer.HorizontalOffset - e.Delta);
-		}
 
-		private void btnBugtracker_Click(object sender, RoutedEventArgs e) {
-			Process.Start("http://bugtracker.better-explorer.com");
-		}
+        private void RibbonWindow_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            if (breadcrumbBarControl1.IsInEditMode)
+            {
+                breadcrumbBarControl1.ExitEditMode();
+            }
+        }
 
-		private void btnCondSel_DropDownOpened(object sender, EventArgs e)
-		{
 
-		}
+        private void ScrollViewer_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            ScrollViewer scviewer = (sender as ScrollViewer);
+            scviewer.ScrollToHorizontalOffset(scviewer.HorizontalOffset - e.Delta);
+        }
 
-		private void RibbonWindow_GotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
-		{
-			//Explorer.Focus();
+        private void btnBugtracker_Click(object sender, RoutedEventArgs e) {
+            Process.Start("http://bugtracker.better-explorer.com");
+        }
+
+        private void btnCondSel_DropDownOpened(object sender, EventArgs e)
+        {
+
+        }
+
+        private void RibbonWindow_GotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+        {
+            //Explorer.Focus();
        //     if (!backstage.IsOpen)
-			    //Explorer.SetExplorerFocus();
-			//  if (breadcrumbBarControl1.IsInEditMode)
-			//  {
-			//      breadcrumbBarControl1.ExitEditMode();
-			//  }
-		}
+                //Explorer.SetExplorerFocus();
+            //  if (breadcrumbBarControl1.IsInEditMode)
+            //  {
+            //      breadcrumbBarControl1.ExitEditMode();
+            //  }
+        }
 
     private void SaveSettings(String openedTabs)
     {
@@ -361,7 +361,7 @@ namespace BetterExplorer
       rks.Close();
     }
     private void RibbonWindow_Closing(object sender, CancelEventArgs e)
-		{
+        {
 
       if (App.isStartNewWindows)
       {
@@ -379,25 +379,25 @@ namespace BetterExplorer
           return;
         }
       }
-			//Explorer.automan.Dispose();
-			//if (PicturePreview != null)
-			//{
-			//    PicturePreview.Close(); 
-			//}
+            //Explorer.automan.Dispose();
+            //if (PicturePreview != null)
+            //{
+            //    PicturePreview.Close(); 
+            //}
       //if (ctrlConsole.IsProcessRunning)
       //  ctrlConsole.StopProcess();
 
-			string OpenedTabs = "";
-			foreach (ClosableTabItem item in tabControl1.Items)
-			{
-				OpenedTabs += ";" + item.Path.ParsingName;
-			}
+            string OpenedTabs = "";
+            foreach (ClosableTabItem item in tabControl1.Items)
+            {
+                OpenedTabs += ";" + item.Path.ParsingName;
+            }
 
       if (this.WindowState != System.Windows.WindowState.Minimized)
         SaveSettings(OpenedTabs);
 
-			SaveHistoryToFile(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\history.txt", breadcrumbBarControl1.HistoryItems.Select(s => s.DisplayName).ToList());
-			AddToLog("Session Ended");
+            SaveHistoryToFile(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\history.txt", breadcrumbBarControl1.HistoryItems.Select(s => s.DisplayName).ToList());
+            AddToLog("Session Ended");
       if (!App.isStartNewWindows)
       {
         e.Cancel = true;
@@ -405,83 +405,83 @@ namespace BetterExplorer
         this.WindowState = System.Windows.WindowState.Minimized;
         this.Visibility = System.Windows.Visibility.Hidden; 
       }
-		}
+        }
 
-		private void backstage_IsOpenChanged(object sender, DependencyPropertyChangedEventArgs e)
-		{
+        private void backstage_IsOpenChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
             autoUpdater.Visibility = System.Windows.Visibility.Visible;
             autoUpdater.UpdateLayout();
 
-			if (KeepBackstageOpen == true)
-			{
-				backstage.IsOpen = true;
+            if (KeepBackstageOpen == true)
+            {
+                backstage.IsOpen = true;
                 KeepBackstageOpen = false;
-			}
-		}
+            }
+        }
 
-		private void RibbonWindow_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
-		{
-			IsAfterRename = true;
-			if (breadcrumbBarControl1.IsInEditMode)
-				breadcrumbBarControl1.ExitEditMode();
-		}
+        private void RibbonWindow_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            IsAfterRename = true;
+            if (breadcrumbBarControl1.IsInEditMode)
+                breadcrumbBarControl1.ExitEditMode();
+        }
 
-		private void TheRibbon_SizeChanged(object sender, SizeChangedEventArgs e)
-		{
-			if (TheRibbon.IsMinimized)
-			{
+        private void TheRibbon_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            if (TheRibbon.IsMinimized)
+            {
         if (this.IsGlassOnRibonMinimized)
         {
           System.Windows.Point p =
           ShellVView.TransformToAncestor(this).Transform(new System.Windows.Point(0, 0));
           this.GlassBorderThickness = new Thickness(8, this.WindowState == System.Windows.WindowState.Maximized ? p.Y : p.Y - 2, 8, 8); ;
         }
-				try
-				{
-					this.SetBlur(false);
-				}
-				catch (Exception)
-				{
+                try
+                {
+                    this.SetBlur(false);
+                }
+                catch (Exception)
+                {
 
 
-				}
-			}
-			else
-			{
+                }
+            }
+            else
+            {
         if (this.IsGlassOnRibonMinimized)
         {
           System.Windows.Point p = backstage.TransformToAncestor(this).Transform(new System.Windows.Point(0, 0));
           this.GlassBorderThickness = new Thickness(8, p.Y + backstage.ActualHeight + 2, 8, 8);
         }
-				try
-				{
-					this.SetBlur(true);
-				}
-				catch (Exception)
-				{
+                try
+                {
+                    this.SetBlur(true);
+                }
+                catch (Exception)
+                {
 
 
-				}
-			}
+                }
+            }
 
-		}
+        }
 
-		private void TheRibbon_CustomizeQuickAccessToolbar(object sender, EventArgs e)
-		{
+        private void TheRibbon_CustomizeQuickAccessToolbar(object sender, EventArgs e)
+        {
       OpenCustomizeQAT();
-		}
+        }
 
-		private static int GetIntegerFromBoolean(bool value)
-		{
-			if (value == true)
-			{
-				return 1;
-			}
-			else
-			{
-				return 0;
-			}
-		}
+        private static int GetIntegerFromBoolean(bool value)
+        {
+            if (value == true)
+            {
+                return 1;
+            }
+            else
+            {
+                return 0;
+            }
+        }
 
     private void LoadInitialWindowPositionAndState()
     {
@@ -581,26 +581,26 @@ namespace BetterExplorer
     }
 
     private void RibbonWindow_Initialized(object sender, EventArgs e)
-		{
-			AppCommands.RoutedNewTab.InputGestures.Add(new KeyGesture(Key.T, ModifierKeys.Control));
-			AppCommands.RoutedEnterInBreadCrumbCombo.InputGestures.Add(new KeyGesture(Key.E, ModifierKeys.Alt));
-			AppCommands.RoutedChangeTab.InputGestures.Add(new KeyGesture(Key.Tab, ModifierKeys.Control));
-			AppCommands.RoutedCloseTab.InputGestures.Add(new KeyGesture(Key.W, ModifierKeys.Control));
+        {
+            AppCommands.RoutedNewTab.InputGestures.Add(new KeyGesture(Key.T, ModifierKeys.Control));
+            AppCommands.RoutedEnterInBreadCrumbCombo.InputGestures.Add(new KeyGesture(Key.E, ModifierKeys.Alt));
+            AppCommands.RoutedChangeTab.InputGestures.Add(new KeyGesture(Key.Tab, ModifierKeys.Control));
+            AppCommands.RoutedCloseTab.InputGestures.Add(new KeyGesture(Key.W, ModifierKeys.Control));
 
       LoadInitialWindowPositionAndState();
 
       LoadColorCodesFromFile();
-		}
+        }
 
-		/// <summary>
-		/// Occures on layout change
-		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="e"></param>
-		private void Window_LayoutUpdated(object sender, EventArgs e)
-		{
-			PreviouseWindowState = WindowState;
-		}
+        /// <summary>
+        /// Occures on layout change
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Window_LayoutUpdated(object sender, EventArgs e)
+        {
+            PreviouseWindowState = WindowState;
+        }
 
     private void SetSortingAndGroupingButtons()
     {
@@ -842,10 +842,10 @@ namespace BetterExplorer
     }
 
     private void Explorer_ViewEnumerationComplete(object sender, EventArgs e)
-		{
-			IsCalledFromViewEnum = true;
-			zoomSlider.Value = Explorer.ContentOptions.ThumbnailSize;
-			IsCalledFromViewEnum = false;
+        {
+            IsCalledFromViewEnum = true;
+            zoomSlider.Value = Explorer.ContentOptions.ThumbnailSize;
+            IsCalledFromViewEnum = false;
 
       Dispatcher.BeginInvoke(DispatcherPriority.Background, (ThreadStart)(() =>
       {
@@ -863,66 +863,66 @@ namespace BetterExplorer
         {
 
         }
-						
+                        
           
-			}));
+            }));
 
       IsViewSelection = false;
       SetUpViewGallery();
       IsViewSelection = true;
       Explorer.ContentOptions.CheckSelect = this.isCheckModeEnabled;
-		}
+        }
 
-		void misd_Click(object sender, RoutedEventArgs e)
-		{
-			foreach (object item in btnSort.Items)
-			{
-				if (item is MenuItem)
-					if (((MenuItem)item).IsChecked && ((MenuItem)item != (sender as MenuItem)))
-					{
+        void misd_Click(object sender, RoutedEventArgs e)
+        {
+            foreach (object item in btnSort.Items)
+            {
+                if (item is MenuItem)
+                    if (((MenuItem)item).IsChecked && ((MenuItem)item != (sender as MenuItem)))
+                    {
             Explorer.SetSortCollumn(((Collumns)((MenuItem)item).Tag).pkey, WindowsAPI.SORT.DESCENDING);
-					}
-			}
-		}
+                    }
+            }
+        }
 
-		void misa_Click(object sender, RoutedEventArgs e)
-		{
-			foreach (object item in btnSort.Items)
-			{
-				if (item is MenuItem)
-					if (((MenuItem)item).IsChecked && ((MenuItem)item != (sender as MenuItem)))
-					{
+        void misa_Click(object sender, RoutedEventArgs e)
+        {
+            foreach (object item in btnSort.Items)
+            {
+                if (item is MenuItem)
+                    if (((MenuItem)item).IsChecked && ((MenuItem)item != (sender as MenuItem)))
+                    {
             Explorer.SetSortCollumn(((Collumns)((MenuItem)item).Tag).pkey, WindowsAPI.SORT.ASCENDING);
-					}
-			}
-		}
+                    }
+            }
+        }
 
-		void timerv_Tick(object sender, EventArgs e)
-		{
-			DoubleAnimation da = new DoubleAnimation(CurrentProgressValue, CurrentProgressValue + 1, new Duration(new TimeSpan(0, 0, 2)));
-			da.FillBehavior = FillBehavior.Stop;
-			CurrentProgressValue = CurrentProgressValue + 1;
-			(sender as DispatcherTimer).Stop();
-		}
+        void timerv_Tick(object sender, EventArgs e)
+        {
+            DoubleAnimation da = new DoubleAnimation(CurrentProgressValue, CurrentProgressValue + 1, new Duration(new TimeSpan(0, 0, 2)));
+            da.FillBehavior = FillBehavior.Stop;
+            CurrentProgressValue = CurrentProgressValue + 1;
+            (sender as DispatcherTimer).Stop();
+        }
 
-		void micm_Click(object sender, RoutedEventArgs e)
-		{
+        void micm_Click(object sender, RoutedEventArgs e)
+        {
 
       using (MoreColumns fMoreCollumns = new MoreColumns())
       {
         fMoreCollumns.PopulateAvailableColumns((Collumns[])(sender as MenuItem).Tag, Explorer, this.PointToScreen(Mouse.GetPosition(this)));
       }
-		}
+        }
 
-		void mic_Click(object sender, RoutedEventArgs e)
-		{
-			MenuItem mi = (sender as MenuItem);
+        void mic_Click(object sender, RoutedEventArgs e)
+        {
+            MenuItem mi = (sender as MenuItem);
       WindowsAPI.PROPERTYKEY pkey = (WindowsAPI.PROPERTYKEY)mi.Tag;
-			Explorer.SetColInView(pkey, !mi.IsChecked);
-		}
+            Explorer.SetColInView(pkey, !mi.IsChecked);
+        }
 
-		[DllImport("shell32.dll")]
-		public static extern void SHParseDisplayName([MarshalAs(UnmanagedType.LPWStr)] string name, IntPtr bindingContext, [Out()] out IntPtr pidl, uint sfgaoIn, [Out()] out uint psfgaoOut);
+        [DllImport("shell32.dll")]
+        public static extern void SHParseDisplayName([MarshalAs(UnmanagedType.LPWStr)] string name, IntPtr bindingContext, [Out()] out IntPtr pidl, uint sfgaoIn, [Out()] out uint psfgaoOut);
 
     private void PreselectItemsIntoExplorerControl()
     {
@@ -1226,8 +1226,8 @@ namespace BetterExplorer
       }
     }
     async void Explorer_NavigationComplete(object sender, NavigationCompleteEventArgs e)
-		{
-			try
+        {
+            try
       {
         int explorerSelectedItemsCount = 0;
         Task.Run(() =>
@@ -1271,12 +1271,12 @@ namespace BetterExplorer
 
         SetUpStatusBarOnSelectOrNavigate(explorerSelectedItemsCount);
         #endregion
-			}
-			catch (Exception exe)
-			{
-			  ShellObject ne = e.NewLocation;
-			  bool isinLibraries = false;
-			  bool itisLibraries = false;
+            }
+            catch (Exception exe)
+            {
+              ShellObject ne = e.NewLocation;
+              bool isinLibraries = false;
+              bool itisLibraries = false;
         if (ne != null)
         {
 
@@ -1299,126 +1299,126 @@ namespace BetterExplorer
             }
         }
 
-			    //if (MessageBox.Show("An error occurred while loading a folder. Please report this issue at http://bugtracker.better-explorer.com/. \r\n\r\nHere is some information about the folder being loaded:\r\n\r\nName: " + ne.GetDisplayName(DisplayNameType.Default) + "\r\nLocation: " + ne.ParsingName +
-			    //    "\r\n\r\nFolder, Drive, or Library: " + GetYesNoFromBoolean(ne.IsFolder) + "\r\nDrive: " + GetYesNoFromBoolean(ne.IsDrive) + "\r\nNetwork Drive: " + GetYesNoFromBoolean(ne.IsNetDrive) + "\r\nRemovable: " + GetYesNoFromBoolean(ne.IsRemovable) +
-			    //    "\r\nSearch Folder: " + GetYesNoFromBoolean(ne.IsSearchFolder) + "\r\nShared: " + GetYesNoFromBoolean(ne.IsShared) + "\r\nShortcut: " + GetYesNoFromBoolean(ne.IsLink) + "\r\nLibrary: " + GetYesNoFromBoolean(isinLibraries) + "\r\nLibraries Folder: " + GetYesNoFromBoolean(itisLibraries) +
-			    //    "\r\n\r\n Would you like to see additional information? Click No to try continuing the program.", "Error Occurred on Completing Navigation", MessageBoxButton.YesNo, MessageBoxImage.Error) == MessageBoxResult.Yes)
-			    //{
-			        // MessageBox.Show("An error occurred while loading a folder. Please report this issue at http://bugtracker.better-explorer.com/. \r\n\r\nHere is additional information about the error: \r\n\r\n" + exe.Message + "\r\n\r\n" + exe.ToString(), "Additional Error Data", MessageBoxButton.OK, MessageBoxImage.Error);
-			    //}
-			}
+                //if (MessageBox.Show("An error occurred while loading a folder. Please report this issue at http://bugtracker.better-explorer.com/. \r\n\r\nHere is some information about the folder being loaded:\r\n\r\nName: " + ne.GetDisplayName(DisplayNameType.Default) + "\r\nLocation: " + ne.ParsingName +
+                //    "\r\n\r\nFolder, Drive, or Library: " + GetYesNoFromBoolean(ne.IsFolder) + "\r\nDrive: " + GetYesNoFromBoolean(ne.IsDrive) + "\r\nNetwork Drive: " + GetYesNoFromBoolean(ne.IsNetDrive) + "\r\nRemovable: " + GetYesNoFromBoolean(ne.IsRemovable) +
+                //    "\r\nSearch Folder: " + GetYesNoFromBoolean(ne.IsSearchFolder) + "\r\nShared: " + GetYesNoFromBoolean(ne.IsShared) + "\r\nShortcut: " + GetYesNoFromBoolean(ne.IsLink) + "\r\nLibrary: " + GetYesNoFromBoolean(isinLibraries) + "\r\nLibraries Folder: " + GetYesNoFromBoolean(itisLibraries) +
+                //    "\r\n\r\n Would you like to see additional information? Click No to try continuing the program.", "Error Occurred on Completing Navigation", MessageBoxButton.YesNo, MessageBoxImage.Error) == MessageBoxResult.Yes)
+                //{
+                    // MessageBox.Show("An error occurred while loading a folder. Please report this issue at http://bugtracker.better-explorer.com/. \r\n\r\nHere is additional information about the error: \r\n\r\n" + exe.Message + "\r\n\r\n" + exe.ToString(), "Additional Error Data", MessageBoxButton.OK, MessageBoxImage.Error);
+                //}
+            }
 
-		}
+        }
 
-		public static string GetYesNoFromBoolean(bool value)
-		{
+        public static string GetYesNoFromBoolean(bool value)
+        {
       return value ? "Yes" : "No";
-		}
+        }
 
-		void miItem_Click(object sender, RoutedEventArgs e)
-		{
-			MenuItem mi = sender as MenuItem;
-			ShellObject SaveLoc = mi.Tag as ShellObject;
+        void miItem_Click(object sender, RoutedEventArgs e)
+        {
+            MenuItem mi = sender as MenuItem;
+            ShellObject SaveLoc = mi.Tag as ShellObject;
 
-			if (Explorer.NavigationLog.CurrentLocation.ParsingName.Contains(KnownFolders.Libraries.ParsingName) &&
-				Explorer.NavigationLog.CurrentLocation.ParsingName.EndsWith("library-ms"))
-			{
-				ShellLibrary lib =
-					ShellLibrary.Load(Explorer.NavigationLog.CurrentLocation.GetDisplayName(DisplayNameType.Default), false);
-				lib.DefaultSaveFolder = SaveLoc.ParsingName;
-				lib.Close();
+            if (Explorer.NavigationLog.CurrentLocation.ParsingName.Contains(KnownFolders.Libraries.ParsingName) &&
+                Explorer.NavigationLog.CurrentLocation.ParsingName.EndsWith("library-ms"))
+            {
+                ShellLibrary lib =
+                    ShellLibrary.Load(Explorer.NavigationLog.CurrentLocation.GetDisplayName(DisplayNameType.Default), false);
+                lib.DefaultSaveFolder = SaveLoc.ParsingName;
+                lib.Close();
 
-			}
-			else if (Explorer.SelectedItems[0].ParsingName.Contains(KnownFolders.Libraries.ParsingName))
-			{
-				ShellLibrary lib =
-					ShellLibrary.Load(Explorer.SelectedItems[0].GetDisplayName(DisplayNameType.Default), false);
-				lib.DefaultSaveFolder = SaveLoc.ParsingName;
-				lib.Close();
+            }
+            else if (Explorer.SelectedItems[0].ParsingName.Contains(KnownFolders.Libraries.ParsingName))
+            {
+                ShellLibrary lib =
+                    ShellLibrary.Load(Explorer.SelectedItems[0].GetDisplayName(DisplayNameType.Default), false);
+                lib.DefaultSaveFolder = SaveLoc.ParsingName;
+                lib.Close();
 
-			}
-		}
+            }
+        }
 
-		void Explorer_ExplorerGotFocus(object sender, EventArgs e)
-		{
-			if (breadcrumbBarControl1.IsInEditMode)
-			{
-				breadcrumbBarControl1.ExitEditMode();
-			}
+        void Explorer_ExplorerGotFocus(object sender, EventArgs e)
+        {
+            if (breadcrumbBarControl1.IsInEditMode)
+            {
+                breadcrumbBarControl1.ExitEditMode();
+            }
       IsAfterRename = false;
       Explorer.IsRenameStarted = false;
-			
-		}
+            
+        }
 
-		void Explorer_LostFocus(object sender, EventArgs e)
-		{
+        void Explorer_LostFocus(object sender, EventArgs e)
+        {
             if (!backstage.IsOpen)
                 Explorer.SetExplorerFocus();
-			IsAfterRename = false;
-		}
+            IsAfterRename = false;
+        }
 
-		void Explorer_KeyUP(object sender, ExplorerKeyUPEventArgs e)
-		{
+        void Explorer_KeyUP(object sender, ExplorerKeyUPEventArgs e)
+        {
 
-			if (e.Key == 27 || e.Key == 13 || e.Key == 17 || e.Key == 777 || e.Key == 778)
-			{
-				IsAfterRename = true;
+            if (e.Key == 27 || e.Key == 13 || e.Key == 17 || e.Key == 777 || e.Key == 778)
+            {
+                IsAfterRename = true;
                 IsAfterFolderCreate = false;
-			} 
-		}
+            } 
+        }
 
-		void Explorer_RenameFinished(object sender, EventArgs e)
-		{
-			IsAfterRename = true;
+        void Explorer_RenameFinished(object sender, EventArgs e)
+        {
+            IsAfterRename = true;
       IsAfterFolderCreate = false;
       Explorer.IsRenameStarted = false;
-			breadcrumbBarControl1.ExitEditMode();
-		}
+            breadcrumbBarControl1.ExitEditMode();
+        }
 
-		void Explorer_GotFocus(object sender, EventArgs e)
-		{
-			
-		}
+        void Explorer_GotFocus(object sender, EventArgs e)
+        {
+            
+        }
 
-		private bool IsLibW = false;
-		void Explorer_ItemsChanged(object sender, EventArgs e)
-		{
-			int ItemsCount = Explorer.GetItemsCount();
-			sbiItemsCount.Content = ItemsCount == 1 ? ItemsCount.ToString() + " item" : ItemsCount.ToString() +
-											" items";
-
-
-			if (IsAfterFolderCreate)
-			{
-				Explorer.DoRename(LastPath.Replace(@"\\", @"\"), IsLibW);
-			}
+        private bool IsLibW = false;
+        void Explorer_ItemsChanged(object sender, EventArgs e)
+        {
+            int ItemsCount = Explorer.GetItemsCount();
+            sbiItemsCount.Content = ItemsCount == 1 ? ItemsCount.ToString() + " item" : ItemsCount.ToString() +
+                                            " items";
 
 
-		}
+            if (IsAfterFolderCreate)
+            {
+                Explorer.DoRename(LastPath.Replace(@"\\", @"\"), IsLibW);
+            }
 
-		void Explorer_ExplorerBrowserMouseLeave(object sender, EventArgs e)
-		{
-			//if (Itmpop != null)
-			//{
-			//    Itmpop.Visibility = System.Windows.Visibility.Hidden;
-			//}
-		}
 
-		public static bool IsFocusedItemHost()
-		{
-			UIElement elementWithFocus = Keyboard.FocusedElement as UIElement;
+        }
 
-			return elementWithFocus.IsKeyboardFocused;
-		}
+        void Explorer_ExplorerBrowserMouseLeave(object sender, EventArgs e)
+        {
+            //if (Itmpop != null)
+            //{
+            //    Itmpop.Visibility = System.Windows.Visibility.Hidden;
+            //}
+        }
 
-		bool IsCancel = false;
-		void Explorer_NavigationPending(object sender, NavigationPendingEventArgs e)
-		{
-			e.Cancel = Explorer.IsCancelNavigation;
-		}
+        public static bool IsFocusedItemHost()
+        {
+            UIElement elementWithFocus = Keyboard.FocusedElement as UIElement;
 
-		void Explorer_ViewChanged(object sender, ViewChangedEventArgs e)
-		{
+            return elementWithFocus.IsKeyboardFocused;
+        }
+
+        bool IsCancel = false;
+        void Explorer_NavigationPending(object sender, NavigationPendingEventArgs e)
+        {
+            e.Cancel = Explorer.IsCancelNavigation;
+        }
+
+        void Explorer_ViewChanged(object sender, ViewChangedEventArgs e)
+        {
       IsViewSelection = false;
 
       if (e.ThumbnailSize == 256)
@@ -1478,86 +1478,86 @@ namespace BetterExplorer
       btnAutosizeColls.IsEnabled = e.View == ExplorerBrowserViewMode.Details ? true : false;
 
       IsViewSelection = true;
-		}
+        }
 
-		void fsw_Renamed(object sender, RenamedEventArgs e)
-		{
+        void fsw_Renamed(object sender, RenamedEventArgs e)
+        {
 
-			Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Normal,
-						 (Action)(() =>
-						 {
-							 foreach (MenuItem item in btnFavorites.Items)
-							 {
-								 if ((item.Tag as ShellObject).ParsingName == e.OldFullPath)
-								 {
-									 item.Header = Path.GetFileNameWithoutExtension(e.Name);
-								 }
-							 }
-						 }));
+            Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Normal,
+                         (Action)(() =>
+                         {
+                             foreach (MenuItem item in btnFavorites.Items)
+                             {
+                                 if ((item.Tag as ShellObject).ParsingName == e.OldFullPath)
+                                 {
+                                     item.Header = Path.GetFileNameWithoutExtension(e.Name);
+                                 }
+                             }
+                         }));
 
-		}
+        }
 
-		void fsw_Deleted(object sender, FileSystemEventArgs e)
-		{
-			Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Normal,
-							 (Action)(() =>
-							 {
-								 MenuItem ItemForRemove = null;
-								 foreach (MenuItem item in btnFavorites.Items)
-								 {
+        void fsw_Deleted(object sender, FileSystemEventArgs e)
+        {
+            Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Normal,
+                             (Action)(() =>
+                             {
+                                 MenuItem ItemForRemove = null;
+                                 foreach (MenuItem item in btnFavorites.Items)
+                                 {
 
-									 if (item.Header.ToString() == Path.GetFileNameWithoutExtension(e.Name))
-									 {
-										 ItemForRemove = item;
+                                     if (item.Header.ToString() == Path.GetFileNameWithoutExtension(e.Name))
+                                     {
+                                         ItemForRemove = item;
 
-									 }
+                                     }
 
-								 }
-								 btnFavorites.Items.Remove(ItemForRemove);
-							 }));
-		}
+                                 }
+                                 btnFavorites.Items.Remove(ItemForRemove);
+                             }));
+        }
 
-		void fsw_Created(object sender, FileSystemEventArgs e)
-		{
-			Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Normal,
-							 (Action)(() =>
-							 {
-								 if (Path.GetExtension(e.FullPath).ToLowerInvariant() == ".lnk")
-								 {
-									 ShellObject so = ShellObject.FromParsingName(e.FullPath);
-									 MenuItem mi = new MenuItem();
-									 mi.Header = so.GetDisplayName(DisplayNameType.Default);
-									 mi.Tag = so;
-									 so.Thumbnail.FormatOption = ShellThumbnailFormatOption.IconOnly;
-									 so.Thumbnail.CurrentSize = new System.Windows.Size(16, 16);
-									 ImageSource icon = so.Thumbnail.BitmapSource;
-									 mi.Icon = icon;
-									 mi.Click += new RoutedEventHandler(mif_Click);
-									 btnFavorites.Items.Add(mi);
-								 }
-							 }));
-			WindowsAPI.SetFocus(Explorer.SysListViewHandle);
-		}
+        void fsw_Created(object sender, FileSystemEventArgs e)
+        {
+            Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Normal,
+                             (Action)(() =>
+                             {
+                                 if (Path.GetExtension(e.FullPath).ToLowerInvariant() == ".lnk")
+                                 {
+                                     ShellObject so = ShellObject.FromParsingName(e.FullPath);
+                                     MenuItem mi = new MenuItem();
+                                     mi.Header = so.GetDisplayName(DisplayNameType.Default);
+                                     mi.Tag = so;
+                                     so.Thumbnail.FormatOption = ShellThumbnailFormatOption.IconOnly;
+                                     so.Thumbnail.CurrentSize = new System.Windows.Size(16, 16);
+                                     ImageSource icon = so.Thumbnail.BitmapSource;
+                                     mi.Icon = icon;
+                                     mi.Click += new RoutedEventHandler(mif_Click);
+                                     btnFavorites.Items.Add(mi);
+                                 }
+                             }));
+            WindowsAPI.SetFocus(Explorer.SysListViewHandle);
+        }
 
 
-		void ExplorerBrowserControl_Paint(object sender, System.Windows.Forms.PaintEventArgs e)
-		{
-			//TheStatusBar.InvalidateVisual();
-			//TheStatusBar.UpdateLayout();
-		}
+        void ExplorerBrowserControl_Paint(object sender, System.Windows.Forms.PaintEventArgs e)
+        {
+            //TheStatusBar.InvalidateVisual();
+            //TheStatusBar.UpdateLayout();
+        }
 
-		void ExplorerBrowserControl_ClientSizeChanged(object sender, EventArgs e)
-		{
-			//TheStatusBar.InvalidateVisual();
-			//TheStatusBar.UpdateLayout();
-		}
+        void ExplorerBrowserControl_ClientSizeChanged(object sender, EventArgs e)
+        {
+            //TheStatusBar.InvalidateVisual();
+            //TheStatusBar.UpdateLayout();
+        }
 
-		bool IsSelectionRized = false;
-		//BackgroundWorker bwSelectionChanged = new BackgroundWorker();
-		//'Selection change (when an item is selected in a folder)
+        bool IsSelectionRized = false;
+        //BackgroundWorker bwSelectionChanged = new BackgroundWorker();
+        //'Selection change (when an item is selected in a folder)
 
-		async void ExplorerBrowserControl_SelectionChanged(object sender, EventArgs e)
-		{
+        async void ExplorerBrowserControl_SelectionChanged(object sender, EventArgs e)
+        {
       int explorerSelectedItemsCount = 0;
 
       await Task.Run(() =>
@@ -1595,7 +1595,7 @@ namespace BetterExplorer
 
       if (!IsAfterFolderCreate && !backstage.IsOpen && IsAfterRename && !Explorer.IsRenameStarted)
           Explorer.SetExplorerFocus();
-		}
+        }
 
     private Boolean SetupEditButton(string item)
     {
@@ -2441,34 +2441,34 @@ namespace BetterExplorer
 
       //}
     }
-		bool IsFromSelectionOrNavigation = false;
+        bool IsFromSelectionOrNavigation = false;
         
-		// background worker code removed. hopefully we don't need it still... Lol.
+        // background worker code removed. hopefully we don't need it still... Lol.
 
-		void cbm_ClipboardChanged(object sender, ClipboardChangedEventArgs e)
-		{
-			btnPaste.IsEnabled = e.DataObject.GetDataPresent(DataFormats.FileDrop);
-			btnPasetShC.IsEnabled = e.DataObject.GetDataPresent(DataFormats.FileDrop);
-		}
+        void cbm_ClipboardChanged(object sender, ClipboardChangedEventArgs e)
+        {
+            btnPaste.IsEnabled = e.DataObject.GetDataPresent(DataFormats.FileDrop);
+            btnPasetShC.IsEnabled = e.DataObject.GetDataPresent(DataFormats.FileDrop);
+        }
 
-		private void TheRibbon_IsCollapsedChanged(object sender, DependencyPropertyChangedEventArgs e)
-		{
-			if ((bool)e.NewValue == true)
-			{
-				this.edtSearchBox.Visibility = System.Windows.Visibility.Collapsed;
-			}
-			else
-			{
-				this.edtSearchBox.Visibility = System.Windows.Visibility.Visible;
-			}
-		}
+        private void TheRibbon_IsCollapsedChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if ((bool)e.NewValue == true)
+            {
+                this.edtSearchBox.Visibility = System.Windows.Visibility.Collapsed;
+            }
+            else
+            {
+                this.edtSearchBox.Visibility = System.Windows.Visibility.Visible;
+            }
+        }
 
-		#endregion
+        #endregion
 
-		#region Conditional Select
+        #region Conditional Select
 
-		private void miSelAllByType_Click(object sender, RoutedEventArgs e)
-		{
+        private void miSelAllByType_Click(object sender, RoutedEventArgs e)
+        {
 
             if (Explorer.SelectedItems.Count > 0)
             {
@@ -2512,13 +2512,13 @@ namespace BetterExplorer
         //        }
         //    }
 
-			btnCondSel.IsDropDownOpen = false;
-			Explorer.Focus();
+            btnCondSel.IsDropDownOpen = false;
+            Explorer.Focus();
 
-		}
+        }
 
-		private void miSelAllByDate_Click(object sender, RoutedEventArgs e)
-		{
+        private void miSelAllByDate_Click(object sender, RoutedEventArgs e)
+        {
             if (Explorer.SelectedItems.Count > 0)
             {
                 List<DateTime> flt = new List<DateTime>();
@@ -2565,523 +2565,523 @@ namespace BetterExplorer
             //    }
             //}
 
-			btnCondSel.IsDropDownOpen = false;
-			Explorer.Focus();
-		}
-
-		private void btnCondSel_Click(object sender, RoutedEventArgs e)
-		{
-			btnCondSel.IsDropDownOpen = false;
-
-			ConditionalSelectForm csf = new ConditionalSelectForm();
-			csf.ShowDialog();
-			if (csf.CancelAction == false)
-			{
-				ConditionallySelectFiles(csf.csd);
-                Explorer.Focus();
-			}
+            btnCondSel.IsDropDownOpen = false;
             Explorer.Focus();
-		}
+        }
 
-		private void ConditionallySelectFiles(ConditionalSelectData csd)
-		{
+        private void btnCondSel_Click(object sender, RoutedEventArgs e)
+        {
+            btnCondSel.IsDropDownOpen = false;
 
-			if (csd == null)
-			{
-				return;
-			}
+            ConditionalSelectForm csf = new ConditionalSelectForm();
+            csf.ShowDialog();
+            if (csf.CancelAction == false)
+            {
+                ConditionallySelectFiles(csf.csd);
+                Explorer.Focus();
+            }
+            Explorer.Focus();
+        }
 
-			ShellObjectCollection shells = Explorer.Items;
-			ShellObjectCollection l1shells = new ShellObjectCollection();
-			ShellObjectCollection l2shells = new ShellObjectCollection();
-			ShellObjectCollection l3shells = new ShellObjectCollection();
-			ShellObjectCollection l4shells = new ShellObjectCollection();
-			ShellObjectCollection l5shells = new ShellObjectCollection();
+        private void ConditionallySelectFiles(ConditionalSelectData csd)
+        {
 
-			Explorer.DeSelectAllItems();
+            if (csd == null)
+            {
+                return;
+            }
 
-			if (csd.FilterByFileName == true)
-			{
-				foreach (ShellObject item in shells)
-				{
-					if (Directory.Exists(item.ParsingName) == false)
-					{
-						FileInfo data = new FileInfo(item.ParsingName);
-						if (csd.FileNameData.matchCase == true)
-						{
-							switch (csd.FileNameData.filter)
-							{
-								case ConditionalSelectParameters.FileNameFilterTypes.Contains:
-									if (data.Name.Contains(csd.FileNameData.query) == true)
-										l1shells.Add(item);
-									break;
-								case ConditionalSelectParameters.FileNameFilterTypes.StartsWith:
-									if (data.Name.StartsWith(csd.FileNameData.query) == true)
-										l1shells.Add(item);
-									break;
-								case ConditionalSelectParameters.FileNameFilterTypes.EndsWith:
-									if (data.Name.EndsWith(csd.FileNameData.query) == true)
-										l1shells.Add(item);
-									break;
-								case ConditionalSelectParameters.FileNameFilterTypes.Equals:
-									if (data.Name == csd.FileNameData.query)
-										l1shells.Add(item);
-									break;
-								case ConditionalSelectParameters.FileNameFilterTypes.DoesNotContain:
-									if (data.Name.Contains(csd.FileNameData.query) == false)
-										l1shells.Add(item);
-									break;
-								case ConditionalSelectParameters.FileNameFilterTypes.NotEqualTo:
-									if (data.Name != csd.FileNameData.query)
-										l1shells.Add(item);
-									break;
-								default:
-									break;
-							}
-						}
-						else
-						{
-							switch (csd.FileNameData.filter)
-							{
-								case ConditionalSelectParameters.FileNameFilterTypes.Contains:
-									if (data.Name.ToLower().Contains(csd.FileNameData.query.ToLower()) == true)
-										l1shells.Add(item);
-									break;
-								case ConditionalSelectParameters.FileNameFilterTypes.StartsWith:
-									if (data.Name.ToLower().StartsWith(csd.FileNameData.query.ToLower()) == true)
-										l1shells.Add(item);
-									break;
-								case ConditionalSelectParameters.FileNameFilterTypes.EndsWith:
-									if (data.Name.ToLower().EndsWith(csd.FileNameData.query.ToLower()) == true)
-										l1shells.Add(item);
-									break;
-								case ConditionalSelectParameters.FileNameFilterTypes.Equals:
-									if (data.Name.ToLower() == csd.FileNameData.query.ToLower())
-										l1shells.Add(item);
-									break;
-								case ConditionalSelectParameters.FileNameFilterTypes.DoesNotContain:
-									if (data.Name.ToLower().Contains(csd.FileNameData.query.ToLower()) == false)
-										l1shells.Add(item);
-									break;
-								case ConditionalSelectParameters.FileNameFilterTypes.NotEqualTo:
-									if (data.Name.ToLower() != csd.FileNameData.query.ToLower())
-										l1shells.Add(item);
-									break;
-								default:
-									break;
-							}
-						}
-					}
-				}
-			}
-			else
-			{
-				foreach (ShellObject item in shells)
-				{
-					if (Directory.Exists(item.ParsingName) == false)
-					{
-						l1shells.Add(item);
-					}
-				}
-			}
+            ShellObjectCollection shells = Explorer.Items;
+            ShellObjectCollection l1shells = new ShellObjectCollection();
+            ShellObjectCollection l2shells = new ShellObjectCollection();
+            ShellObjectCollection l3shells = new ShellObjectCollection();
+            ShellObjectCollection l4shells = new ShellObjectCollection();
+            ShellObjectCollection l5shells = new ShellObjectCollection();
 
-			if (csd.FilterByFileSize == true)
-			{
-				foreach (ShellObject item in l1shells)
-				{
-					FileInfo data = new FileInfo(item.ParsingName);
-					switch (csd.FileSizeData.filter)
-					{
-						case ConditionalSelectParameters.FileSizeFilterTypes.LargerThan:
-							if (data.Length > csd.FileSizeData.query1)
-								l2shells.Add(item);
-							break;
-						case ConditionalSelectParameters.FileSizeFilterTypes.SmallerThan:
-							if (data.Length < csd.FileSizeData.query1)
-								l2shells.Add(item);
-							break;
-						case ConditionalSelectParameters.FileSizeFilterTypes.Equals:
-							if (data.Length == csd.FileSizeData.query1)
-								l2shells.Add(item);
-							break;
-						case ConditionalSelectParameters.FileSizeFilterTypes.Between:
-							long smallbound;
-							long largebound;
-							if (csd.FileSizeData.query2 > csd.FileSizeData.query1)
-							{
-								smallbound = csd.FileSizeData.query1;
-								largebound = csd.FileSizeData.query2;
-							}
-							else
-							{
-								if (csd.FileSizeData.query2 < csd.FileSizeData.query1)
-								{
-									smallbound = csd.FileSizeData.query2;
-									largebound = csd.FileSizeData.query1;
-								}
-								else
-								{
-									// they are the same, use Equal code
+            Explorer.DeSelectAllItems();
 
-									//MessageBox.Show("Could not continue Conditional Select operation. When searching for files that is between a certain size, make sure the upper and lower bounds of the search parameters are not the same.", "BetterExplorer Conditional Select - Filter by File Size", MessageBoxButton.OK, MessageBoxImage.Error);
-									//return;
+            if (csd.FilterByFileName == true)
+            {
+                foreach (ShellObject item in shells)
+                {
+                    if (Directory.Exists(item.ParsingName) == false)
+                    {
+                        FileInfo data = new FileInfo(item.ParsingName);
+                        if (csd.FileNameData.matchCase == true)
+                        {
+                            switch (csd.FileNameData.filter)
+                            {
+                                case ConditionalSelectParameters.FileNameFilterTypes.Contains:
+                                    if (data.Name.Contains(csd.FileNameData.query) == true)
+                                        l1shells.Add(item);
+                                    break;
+                                case ConditionalSelectParameters.FileNameFilterTypes.StartsWith:
+                                    if (data.Name.StartsWith(csd.FileNameData.query) == true)
+                                        l1shells.Add(item);
+                                    break;
+                                case ConditionalSelectParameters.FileNameFilterTypes.EndsWith:
+                                    if (data.Name.EndsWith(csd.FileNameData.query) == true)
+                                        l1shells.Add(item);
+                                    break;
+                                case ConditionalSelectParameters.FileNameFilterTypes.Equals:
+                                    if (data.Name == csd.FileNameData.query)
+                                        l1shells.Add(item);
+                                    break;
+                                case ConditionalSelectParameters.FileNameFilterTypes.DoesNotContain:
+                                    if (data.Name.Contains(csd.FileNameData.query) == false)
+                                        l1shells.Add(item);
+                                    break;
+                                case ConditionalSelectParameters.FileNameFilterTypes.NotEqualTo:
+                                    if (data.Name != csd.FileNameData.query)
+                                        l1shells.Add(item);
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+                        else
+                        {
+                            switch (csd.FileNameData.filter)
+                            {
+                                case ConditionalSelectParameters.FileNameFilterTypes.Contains:
+                                    if (data.Name.ToLower().Contains(csd.FileNameData.query.ToLower()) == true)
+                                        l1shells.Add(item);
+                                    break;
+                                case ConditionalSelectParameters.FileNameFilterTypes.StartsWith:
+                                    if (data.Name.ToLower().StartsWith(csd.FileNameData.query.ToLower()) == true)
+                                        l1shells.Add(item);
+                                    break;
+                                case ConditionalSelectParameters.FileNameFilterTypes.EndsWith:
+                                    if (data.Name.ToLower().EndsWith(csd.FileNameData.query.ToLower()) == true)
+                                        l1shells.Add(item);
+                                    break;
+                                case ConditionalSelectParameters.FileNameFilterTypes.Equals:
+                                    if (data.Name.ToLower() == csd.FileNameData.query.ToLower())
+                                        l1shells.Add(item);
+                                    break;
+                                case ConditionalSelectParameters.FileNameFilterTypes.DoesNotContain:
+                                    if (data.Name.ToLower().Contains(csd.FileNameData.query.ToLower()) == false)
+                                        l1shells.Add(item);
+                                    break;
+                                case ConditionalSelectParameters.FileNameFilterTypes.NotEqualTo:
+                                    if (data.Name.ToLower() != csd.FileNameData.query.ToLower())
+                                        l1shells.Add(item);
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+                    }
+                }
+            }
+            else
+            {
+                foreach (ShellObject item in shells)
+                {
+                    if (Directory.Exists(item.ParsingName) == false)
+                    {
+                        l1shells.Add(item);
+                    }
+                }
+            }
 
-									if (data.Length == csd.FileSizeData.query1)
-										l2shells.Add(item);
-									break;
-								}
-							}
+            if (csd.FilterByFileSize == true)
+            {
+                foreach (ShellObject item in l1shells)
+                {
+                    FileInfo data = new FileInfo(item.ParsingName);
+                    switch (csd.FileSizeData.filter)
+                    {
+                        case ConditionalSelectParameters.FileSizeFilterTypes.LargerThan:
+                            if (data.Length > csd.FileSizeData.query1)
+                                l2shells.Add(item);
+                            break;
+                        case ConditionalSelectParameters.FileSizeFilterTypes.SmallerThan:
+                            if (data.Length < csd.FileSizeData.query1)
+                                l2shells.Add(item);
+                            break;
+                        case ConditionalSelectParameters.FileSizeFilterTypes.Equals:
+                            if (data.Length == csd.FileSizeData.query1)
+                                l2shells.Add(item);
+                            break;
+                        case ConditionalSelectParameters.FileSizeFilterTypes.Between:
+                            long smallbound;
+                            long largebound;
+                            if (csd.FileSizeData.query2 > csd.FileSizeData.query1)
+                            {
+                                smallbound = csd.FileSizeData.query1;
+                                largebound = csd.FileSizeData.query2;
+                            }
+                            else
+                            {
+                                if (csd.FileSizeData.query2 < csd.FileSizeData.query1)
+                                {
+                                    smallbound = csd.FileSizeData.query2;
+                                    largebound = csd.FileSizeData.query1;
+                                }
+                                else
+                                {
+                                    // they are the same, use Equal code
 
-							if (data.Length > smallbound)
-								if (data.Length < largebound)
-									l2shells.Add(item);
+                                    //MessageBox.Show("Could not continue Conditional Select operation. When searching for files that is between a certain size, make sure the upper and lower bounds of the search parameters are not the same.", "BetterExplorer Conditional Select - Filter by File Size", MessageBoxButton.OK, MessageBoxImage.Error);
+                                    //return;
 
-							break;
-						case ConditionalSelectParameters.FileSizeFilterTypes.NotEqualTo:
-							if (data.Length != csd.FileSizeData.query1)
-								l2shells.Add(item);
-							break;
-						case ConditionalSelectParameters.FileSizeFilterTypes.NotBetween:
-							long smallbound2;
-							long largebound2;
-							if (csd.FileSizeData.query2 > csd.FileSizeData.query1)
-							{
-								smallbound2 = csd.FileSizeData.query1;
-								largebound2 = csd.FileSizeData.query2;
-							}
-							else
-							{
-								if (csd.FileSizeData.query2 < csd.FileSizeData.query1)
-								{
-									smallbound2 = csd.FileSizeData.query2;
-									largebound2 = csd.FileSizeData.query1;
-								}
-								else
-								{
-									// they are the same, use Unequal code
-									if (data.Length != csd.FileSizeData.query1)
-										l2shells.Add(item);
-									break;
-									//MessageBox.Show("Could not continue Conditional Select operation. When searching for files that is not between a certain size, make sure the upper and lower bounds of the search parameters are not the same.", "BetterExplorer Conditional Select - Filter by File Size", MessageBoxButton.OK, MessageBoxImage.Error);
-									//return;
-								}
-							}
+                                    if (data.Length == csd.FileSizeData.query1)
+                                        l2shells.Add(item);
+                                    break;
+                                }
+                            }
 
-							if (data.Length < smallbound2 || data.Length > largebound2)
-								l2shells.Add(item);
+                            if (data.Length > smallbound)
+                                if (data.Length < largebound)
+                                    l2shells.Add(item);
 
-							break;
-						default:
-							break;
-					}
+                            break;
+                        case ConditionalSelectParameters.FileSizeFilterTypes.NotEqualTo:
+                            if (data.Length != csd.FileSizeData.query1)
+                                l2shells.Add(item);
+                            break;
+                        case ConditionalSelectParameters.FileSizeFilterTypes.NotBetween:
+                            long smallbound2;
+                            long largebound2;
+                            if (csd.FileSizeData.query2 > csd.FileSizeData.query1)
+                            {
+                                smallbound2 = csd.FileSizeData.query1;
+                                largebound2 = csd.FileSizeData.query2;
+                            }
+                            else
+                            {
+                                if (csd.FileSizeData.query2 < csd.FileSizeData.query1)
+                                {
+                                    smallbound2 = csd.FileSizeData.query2;
+                                    largebound2 = csd.FileSizeData.query1;
+                                }
+                                else
+                                {
+                                    // they are the same, use Unequal code
+                                    if (data.Length != csd.FileSizeData.query1)
+                                        l2shells.Add(item);
+                                    break;
+                                    //MessageBox.Show("Could not continue Conditional Select operation. When searching for files that is not between a certain size, make sure the upper and lower bounds of the search parameters are not the same.", "BetterExplorer Conditional Select - Filter by File Size", MessageBoxButton.OK, MessageBoxImage.Error);
+                                    //return;
+                                }
+                            }
 
-				}
-			}
-			else
-			{
-				foreach (ShellObject item in l1shells)
-				{
-					l2shells.Add(item);
-				}
-			}
+                            if (data.Length < smallbound2 || data.Length > largebound2)
+                                l2shells.Add(item);
 
-			if (csd.FilterByDateCreated == true)
-			{
-				foreach (ShellObject item in FilterByCreateDate(l2shells, csd.DateCreatedData.queryDate, csd.DateCreatedData.filter))
-				{
-					l3shells.Add(item);
-				}
-			}
-			else
-			{
-				foreach (ShellObject item in l2shells)
-				{
-					l3shells.Add(item);
-				}
-			}
+                            break;
+                        default:
+                            break;
+                    }
 
-			if (csd.FilterByDateModified == true)
-			{
-				foreach (ShellObject item in FilterByWriteDate(l3shells, csd.DateModifiedData.queryDate, csd.DateModifiedData.filter))
-				{
-					l4shells.Add(item);
-				}
-			}
-			else
-			{
-				foreach (ShellObject item in l2shells)
-				{
-					l4shells.Add(item);
-				}
-			}
+                }
+            }
+            else
+            {
+                foreach (ShellObject item in l1shells)
+                {
+                    l2shells.Add(item);
+                }
+            }
 
-			if (csd.FilterByDateAccessed == true)
-			{
-				foreach (ShellObject item in FilterByAccessDate(l4shells, csd.DateAccessedData.queryDate, csd.DateAccessedData.filter))
-				{
-					l5shells.Add(item);
-				}
-			}
-			else
-			{
-				foreach (ShellObject item in l4shells)
-				{
-					l5shells.Add(item);
-				}
-			}
+            if (csd.FilterByDateCreated == true)
+            {
+                foreach (ShellObject item in FilterByCreateDate(l2shells, csd.DateCreatedData.queryDate, csd.DateCreatedData.filter))
+                {
+                    l3shells.Add(item);
+                }
+            }
+            else
+            {
+                foreach (ShellObject item in l2shells)
+                {
+                    l3shells.Add(item);
+                }
+            }
 
-			List<ShellObject> sel = new List<ShellObject>();
+            if (csd.FilterByDateModified == true)
+            {
+                foreach (ShellObject item in FilterByWriteDate(l3shells, csd.DateModifiedData.queryDate, csd.DateModifiedData.filter))
+                {
+                    l4shells.Add(item);
+                }
+            }
+            else
+            {
+                foreach (ShellObject item in l2shells)
+                {
+                    l4shells.Add(item);
+                }
+            }
 
-			foreach (ShellObject item in l5shells)
-			{
-				// this is where the code should be to select multiple files.
-				//
-				// However, the Explorer control does not support selecting multiple files.
+            if (csd.FilterByDateAccessed == true)
+            {
+                foreach (ShellObject item in FilterByAccessDate(l4shells, csd.DateAccessedData.queryDate, csd.DateAccessedData.filter))
+                {
+                    l5shells.Add(item);
+                }
+            }
+            else
+            {
+                foreach (ShellObject item in l4shells)
+                {
+                    l5shells.Add(item);
+                }
+            }
 
-				Explorer.SelectItem(item);
-			}
+            List<ShellObject> sel = new List<ShellObject>();
 
-			Explorer.Focus();
+            foreach (ShellObject item in l5shells)
+            {
+                // this is where the code should be to select multiple files.
+                //
+                // However, the Explorer control does not support selecting multiple files.
 
-		}
+                Explorer.SelectItem(item);
+            }
 
-		public ShellObjectCollection FilterByCreateDate(ShellObjectCollection shells, DateTime datetocompare, ConditionalSelectParameters.DateFilterTypes filter)
-		{
-			ShellObjectCollection outshells = new ShellObjectCollection();
+            Explorer.Focus();
 
-			foreach (ShellObject item in shells)
-			{
-				FileInfo data = new FileInfo(item.ParsingName);
-				switch (filter)
-				{
-					case ConditionalSelectParameters.DateFilterTypes.EarlierThan:
-						if (DateTime.Compare(data.CreationTimeUtc.Date, datetocompare.Date) < 0)
-							outshells.Add(item);
-						break;
-					case ConditionalSelectParameters.DateFilterTypes.LaterThan:
-						if (DateTime.Compare(data.CreationTimeUtc.Date, datetocompare.Date) > 0)
-							outshells.Add(item);
-						break;
-					case ConditionalSelectParameters.DateFilterTypes.Equals:
-						if (DateTime.Compare(data.CreationTimeUtc.Date, datetocompare.Date) == 0)
-							outshells.Add(item);
-						break;
-					default:
-						break;
-				}
-			}
+        }
 
-			return outshells;
-		}
+        public ShellObjectCollection FilterByCreateDate(ShellObjectCollection shells, DateTime datetocompare, ConditionalSelectParameters.DateFilterTypes filter)
+        {
+            ShellObjectCollection outshells = new ShellObjectCollection();
 
-		public ShellObjectCollection FilterByWriteDate(ShellObjectCollection shells, DateTime datetocompare, ConditionalSelectParameters.DateFilterTypes filter)
-		{
-			ShellObjectCollection outshells = new ShellObjectCollection();
+            foreach (ShellObject item in shells)
+            {
+                FileInfo data = new FileInfo(item.ParsingName);
+                switch (filter)
+                {
+                    case ConditionalSelectParameters.DateFilterTypes.EarlierThan:
+                        if (DateTime.Compare(data.CreationTimeUtc.Date, datetocompare.Date) < 0)
+                            outshells.Add(item);
+                        break;
+                    case ConditionalSelectParameters.DateFilterTypes.LaterThan:
+                        if (DateTime.Compare(data.CreationTimeUtc.Date, datetocompare.Date) > 0)
+                            outshells.Add(item);
+                        break;
+                    case ConditionalSelectParameters.DateFilterTypes.Equals:
+                        if (DateTime.Compare(data.CreationTimeUtc.Date, datetocompare.Date) == 0)
+                            outshells.Add(item);
+                        break;
+                    default:
+                        break;
+                }
+            }
 
-			foreach (ShellObject item in shells)
-			{
-				FileInfo data = new FileInfo(item.ParsingName);
-				switch (filter)
-				{
-					case ConditionalSelectParameters.DateFilterTypes.EarlierThan:
-						if (DateTime.Compare(data.LastWriteTimeUtc.Date, datetocompare) < 0)
-							outshells.Add(item);
-						break;
-					case ConditionalSelectParameters.DateFilterTypes.LaterThan:
-						if (DateTime.Compare(data.LastWriteTimeUtc.Date, datetocompare) > 0)
-							outshells.Add(item);
-						break;
-					case ConditionalSelectParameters.DateFilterTypes.Equals:
-						if (DateTime.Compare(data.LastWriteTimeUtc.Date, datetocompare) == 0)
-							outshells.Add(item);
-						break;
-					default:
-						break;
-				}
-			}
+            return outshells;
+        }
 
-			return outshells;
-		}
+        public ShellObjectCollection FilterByWriteDate(ShellObjectCollection shells, DateTime datetocompare, ConditionalSelectParameters.DateFilterTypes filter)
+        {
+            ShellObjectCollection outshells = new ShellObjectCollection();
 
-		public ShellObjectCollection FilterByAccessDate(ShellObjectCollection shells, DateTime datetocompare, ConditionalSelectParameters.DateFilterTypes filter)
-		{
-			ShellObjectCollection outshells = new ShellObjectCollection();
+            foreach (ShellObject item in shells)
+            {
+                FileInfo data = new FileInfo(item.ParsingName);
+                switch (filter)
+                {
+                    case ConditionalSelectParameters.DateFilterTypes.EarlierThan:
+                        if (DateTime.Compare(data.LastWriteTimeUtc.Date, datetocompare) < 0)
+                            outshells.Add(item);
+                        break;
+                    case ConditionalSelectParameters.DateFilterTypes.LaterThan:
+                        if (DateTime.Compare(data.LastWriteTimeUtc.Date, datetocompare) > 0)
+                            outshells.Add(item);
+                        break;
+                    case ConditionalSelectParameters.DateFilterTypes.Equals:
+                        if (DateTime.Compare(data.LastWriteTimeUtc.Date, datetocompare) == 0)
+                            outshells.Add(item);
+                        break;
+                    default:
+                        break;
+                }
+            }
 
-			foreach (ShellObject item in shells)
-			{
-				FileInfo data = new FileInfo(item.ParsingName);
-				switch (filter)
-				{
-					case ConditionalSelectParameters.DateFilterTypes.EarlierThan:
-						if (DateTime.Compare(data.LastAccessTimeUtc.Date, datetocompare) < 0)
-							outshells.Add(item);
-						break;
-					case ConditionalSelectParameters.DateFilterTypes.LaterThan:
-						if (DateTime.Compare(data.LastAccessTimeUtc.Date, datetocompare) > 0)
-							outshells.Add(item);
-						break;
-					case ConditionalSelectParameters.DateFilterTypes.Equals:
-						if (DateTime.Compare(data.LastAccessTimeUtc.Date, datetocompare) == 0)
-							outshells.Add(item);
-						break;
-					default:
-						break;
-				}
-			}
+            return outshells;
+        }
 
-			return outshells;
-		}
+        public ShellObjectCollection FilterByAccessDate(ShellObjectCollection shells, DateTime datetocompare, ConditionalSelectParameters.DateFilterTypes filter)
+        {
+            ShellObjectCollection outshells = new ShellObjectCollection();
 
-		#endregion
+            foreach (ShellObject item in shells)
+            {
+                FileInfo data = new FileInfo(item.ParsingName);
+                switch (filter)
+                {
+                    case ConditionalSelectParameters.DateFilterTypes.EarlierThan:
+                        if (DateTime.Compare(data.LastAccessTimeUtc.Date, datetocompare) < 0)
+                            outshells.Add(item);
+                        break;
+                    case ConditionalSelectParameters.DateFilterTypes.LaterThan:
+                        if (DateTime.Compare(data.LastAccessTimeUtc.Date, datetocompare) > 0)
+                            outshells.Add(item);
+                        break;
+                    case ConditionalSelectParameters.DateFilterTypes.Equals:
+                        if (DateTime.Compare(data.LastAccessTimeUtc.Date, datetocompare) == 0)
+                            outshells.Add(item);
+                        break;
+                    default:
+                        break;
+                }
+            }
 
-		#region Size Chart
+            return outshells;
+        }
 
-		private void btnFSizeChart_Click(object sender, RoutedEventArgs e)
-		{
-			if (Explorer.SelectedItems.Count > 0)
-			{
-				if ((Explorer.SelectedItems[0].IsFolder || Explorer.SelectedItems[0].IsDrive) && Explorer.SelectedItems[0].IsFileSystemObject)
-				{
-					FolderSizeWindow fsw = new FolderSizeWindow(Explorer.SelectedItems[0].ParsingName);
-					fsw.Owner = this;
-					fsw.Show();
-				}
-				else
-				{
-					if ((Explorer.NavigationLog.CurrentLocation.IsFolder || Explorer.NavigationLog.CurrentLocation.IsDrive)
-							&& Explorer.NavigationLog.CurrentLocation.IsFileSystemObject)
-					{
-						FolderSizeWindow fsw = new FolderSizeWindow(Explorer.NavigationLog.CurrentLocation.ParsingName);
-						fsw.Owner = this;
-						fsw.Show();
-					}
-				}
+        #endregion
 
-			}
-			else
-			{
-				if ((Explorer.NavigationLog.CurrentLocation.IsFolder || Explorer.NavigationLog.CurrentLocation.IsDrive)
-											&& Explorer.NavigationLog.CurrentLocation.IsFileSystemObject)
-				{
+        #region Size Chart
+
+        private void btnFSizeChart_Click(object sender, RoutedEventArgs e)
+        {
+            if (Explorer.SelectedItems.Count > 0)
+            {
+                if ((Explorer.SelectedItems[0].IsFolder || Explorer.SelectedItems[0].IsDrive) && Explorer.SelectedItems[0].IsFileSystemObject)
+                {
+                    FolderSizeWindow fsw = new FolderSizeWindow(Explorer.SelectedItems[0].ParsingName);
+                    fsw.Owner = this;
+                    fsw.Show();
+                }
+                else
+                {
+                    if ((Explorer.NavigationLog.CurrentLocation.IsFolder || Explorer.NavigationLog.CurrentLocation.IsDrive)
+                            && Explorer.NavigationLog.CurrentLocation.IsFileSystemObject)
+                    {
+                        FolderSizeWindow fsw = new FolderSizeWindow(Explorer.NavigationLog.CurrentLocation.ParsingName);
+                        fsw.Owner = this;
+                        fsw.Show();
+                    }
+                }
+
+            }
+            else
+            {
+                if ((Explorer.NavigationLog.CurrentLocation.IsFolder || Explorer.NavigationLog.CurrentLocation.IsDrive)
+                                            && Explorer.NavigationLog.CurrentLocation.IsFileSystemObject)
+                {
           FolderSizeWindow fsw = new FolderSizeWindow(Explorer.NavigationLog.CurrentLocation.ParsingName) { Owner = this };
-					fsw.Show();
-				}
-			}
+                    fsw.Show();
+                }
+            }
 
-		}
+        }
 
-		private void btnSizeChart_Click(object sender, RoutedEventArgs e)
-		{
+        private void btnSizeChart_Click(object sender, RoutedEventArgs e)
+        {
       FolderSizeWindow fsw = new FolderSizeWindow(Explorer.NavigationLog.CurrentLocation.ParsingName) { Owner = this };
-			fsw.Show();
-		}
+            fsw.Show();
+        }
 
-		#endregion
+        #endregion
 
-		#region Home Tab
+        #region Home Tab
 
-		private void miJunctionpoint_Click(object sender, RoutedEventArgs e)
-		{
-			StringCollection DropList = System.Windows.Forms.Clipboard.GetFileDropList();
-			string PathForDrop = Explorer.NavigationLog.CurrentLocation.ParsingName.Replace(@"\\", @"\");
-			foreach (string item in DropList)
-			{
-				ShellObject o = ShellObject.FromParsingName(item);
-				JunctionPointUtils.JunctionPoint.Create(String.Format(@"{0}\{1}", PathForDrop, o.GetDisplayName(DisplayNameType.Default)),
-														o.ParsingName, true);
-				AddToLog(String.Format(@"Created Junction Point at {0}\{1} linked to {2}", PathForDrop, o.GetDisplayName(DisplayNameType.Default), o.ParsingName));
-				o.Dispose();
-			}
-		}
+        private void miJunctionpoint_Click(object sender, RoutedEventArgs e)
+        {
+            StringCollection DropList = System.Windows.Forms.Clipboard.GetFileDropList();
+            string PathForDrop = Explorer.NavigationLog.CurrentLocation.ParsingName.Replace(@"\\", @"\");
+            foreach (string item in DropList)
+            {
+                ShellObject o = ShellObject.FromParsingName(item);
+                JunctionPointUtils.JunctionPoint.Create(String.Format(@"{0}\{1}", PathForDrop, o.GetDisplayName(DisplayNameType.Default)),
+                                                        o.ParsingName, true);
+                AddToLog(String.Format(@"Created Junction Point at {0}\{1} linked to {2}", PathForDrop, o.GetDisplayName(DisplayNameType.Default), o.ParsingName));
+                o.Dispose();
+            }
+        }
 
-		private void miCreateSymlink_Click(object sender, RoutedEventArgs e)
-		{
+        private void miCreateSymlink_Click(object sender, RoutedEventArgs e)
+        {
 
-			StringCollection DropList = System.Windows.Forms.Clipboard.GetFileDropList();
-			string PathForDrop = Explorer.NavigationLog.CurrentLocation.ParsingName.Replace(@"\\", @"\");
+            StringCollection DropList = System.Windows.Forms.Clipboard.GetFileDropList();
+            string PathForDrop = Explorer.NavigationLog.CurrentLocation.ParsingName.Replace(@"\\", @"\");
 
-			String CurrentexePath = System.Reflection.Assembly.GetExecutingAssembly().GetModules()[0].FullyQualifiedName;
-			string dir = Path.GetDirectoryName(CurrentexePath);
-			string ExePath = Path.Combine(dir, @"BetterExplorerOperations.exe");
-
-
-			int winhandle = (int)WindowsAPI.getWindowId(null, "BetterExplorerOperations");
-
-			List<ShellObject> items = new List<ShellObject>();
-
-			foreach (string item in DropList)
-			{
-				ShellObject o = ShellObject.FromParsingName(item);
-				items.Add(o);
-				AddToLog(String.Format(@"Created Symbolic Link at {0}\\{1} linked to {2}", PathForDrop, o.GetDisplayName(DisplayNameType.Default), o.ParsingName));
-			}
-
-			string sources = PathStringCombiner.CombinePaths(items, ";", true);
-			string drops = PathStringCombiner.CombinePathsWithSinglePath(PathForDrop + @"\", items, false);
+            String CurrentexePath = System.Reflection.Assembly.GetExecutingAssembly().GetModules()[0].FullyQualifiedName;
+            string dir = Path.GetDirectoryName(CurrentexePath);
+            string ExePath = Path.Combine(dir, @"BetterExplorerOperations.exe");
 
 
-			for (int val = 0; val < items.Count; val++)
-			{
-				string source = items[val].ParsingName.Replace(@"\\", @"\");
-				string drop = String.Format(@"{0}\{1}", PathForDrop, items[val].GetDisplayName(DisplayNameType.Default));
-			}
+            int winhandle = (int)WindowsAPI.getWindowId(null, "BetterExplorerOperations");
 
-			using (Process proc = new Process())
-			{
-				var psi = new ProcessStartInfo 
-				{ 
-					FileName = ExePath, 
-					Verb = "runas", 
-					UseShellExecute = true, 
-					Arguments = String.Format("/env /user:Administrator \"{0}\"", ExePath) 
-				};
+            List<ShellObject> items = new List<ShellObject>();
 
-				proc.StartInfo = psi;
-				proc.Start();
-				Thread.Sleep(1000);
-				int res = WindowsAPI.sendWindowsStringMessage((int)WindowsAPI.getWindowId(null, "BetterExplorerOperations"), 0, 
-					"0x88779", sources, drops, "", "", "");
-				proc.WaitForExit();
-				if (proc.ExitCode == 1)
-					MessageBox.Show("Error in creating symlink", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            foreach (string item in DropList)
+            {
+                ShellObject o = ShellObject.FromParsingName(item);
+                items.Add(o);
+                AddToLog(String.Format(@"Created Symbolic Link at {0}\\{1} linked to {2}", PathForDrop, o.GetDisplayName(DisplayNameType.Default), o.ParsingName));
+            }
 
-			}
-		}
+            string sources = PathStringCombiner.CombinePaths(items, ";", true);
+            string drops = PathStringCombiner.CombinePathsWithSinglePath(PathForDrop + @"\", items, false);
 
-		private void btnHistory_Click(object sender, RoutedEventArgs e)
-		{
 
-			Explorer.ShowPropPage(this.Handle, Explorer.SelectedItems[0].ParsingName, 
-				WindowsAPI.LoadResourceString(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.System),"twext.dll"),1024,"Previous Versions"));
-		}
+            for (int val = 0; val < items.Count; val++)
+            {
+                string source = items[val].ParsingName.Replace(@"\\", @"\");
+                string drop = String.Format(@"{0}\{1}", PathForDrop, items[val].GetDisplayName(DisplayNameType.Default));
+            }
 
-		private void btnBackstageExit_Click(object sender, RoutedEventArgs e)
-		{
+            using (Process proc = new Process())
+            {
+                var psi = new ProcessStartInfo 
+                { 
+                    FileName = ExePath, 
+                    Verb = "runas", 
+                    UseShellExecute = true, 
+                    Arguments = String.Format("/env /user:Administrator \"{0}\"", ExePath) 
+                };
+
+                proc.StartInfo = psi;
+                proc.Start();
+                Thread.Sleep(1000);
+                int res = WindowsAPI.sendWindowsStringMessage((int)WindowsAPI.getWindowId(null, "BetterExplorerOperations"), 0, 
+                    "0x88779", sources, drops, "", "", "");
+                proc.WaitForExit();
+                if (proc.ExitCode == 1)
+                    MessageBox.Show("Error in creating symlink", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+
+            }
+        }
+
+        private void btnHistory_Click(object sender, RoutedEventArgs e)
+        {
+
+            Explorer.ShowPropPage(this.Handle, Explorer.SelectedItems[0].ParsingName, 
+                WindowsAPI.LoadResourceString(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.System),"twext.dll"),1024,"Previous Versions"));
+        }
+
+        private void btnBackstageExit_Click(object sender, RoutedEventArgs e)
+        {
       //! We call Shutdown() so to explisit shutdown the app regardless of windows closing cancel flag.
       if (r != null)
         r.Close();
 
       Application.Current.Shutdown();
-		}
+        }
 
-		// create new window
-		private void Button_Click_5(object sender, RoutedEventArgs e)
-		{
+        // create new window
+        private void Button_Click_5(object sender, RoutedEventArgs e)
+        {
 
-			var k = System.Reflection.Assembly.GetExecutingAssembly().Location;
-			Process.Start(k, "/nw");
-		}
+            var k = System.Reflection.Assembly.GetExecutingAssembly().Location;
+            Process.Start(k, "/nw");
+        }
 
 
-		void miow_Click(object sender, RoutedEventArgs e)
-		{
-			MenuItem item = (sender as MenuItem);
-			Process.Start(item.Tag.ToString(), String.Format("\"{0}\"", Explorer.SelectedItems[0].ParsingName));
-		}
+        void miow_Click(object sender, RoutedEventArgs e)
+        {
+            MenuItem item = (sender as MenuItem);
+            Process.Start(item.Tag.ToString(), String.Format("\"{0}\"", Explorer.SelectedItems[0].ParsingName));
+        }
 
-		void mif_Click(object sender, RoutedEventArgs e)
-		{
-			MenuItem item = (sender as MenuItem);
+        void mif_Click(object sender, RoutedEventArgs e)
+        {
+            MenuItem item = (sender as MenuItem);
 
       var obj = ShellObjectFactory.Create((item.Tag as ShellObject).PIDL);
       ShellLink lnk = new ShellLink(obj.NativeShellItem as IShellItem2);
@@ -3090,21 +3090,21 @@ namespace BetterExplorer
 
       lnk.Dispose();
       obj.Dispose();
-		}
+        }
 
-		private void btnCopy_Click(object sender, RoutedEventArgs e)
-		{
-			StringCollection sc = new StringCollection();
-			foreach (ShellObject item in Explorer.SelectedItems)
-			{
-				sc.Add(item.ParsingName);
-			}
-			System.Windows.Forms.Clipboard.SetFileDropList(sc);
-			Explorer.IsMoveClipboardOperation = false;
-		}
+        private void btnCopy_Click(object sender, RoutedEventArgs e)
+        {
+            StringCollection sc = new StringCollection();
+            foreach (ShellObject item in Explorer.SelectedItems)
+            {
+                sc.Add(item.ParsingName);
+            }
+            System.Windows.Forms.Clipboard.SetFileDropList(sc);
+            Explorer.IsMoveClipboardOperation = false;
+        }
 
-		private void btnPaste_Click(object sender, RoutedEventArgs e)
-		{
+        private void btnPaste_Click(object sender, RoutedEventArgs e)
+        {
       if (!ExplorerBrowser.IsCustomDialogs) {
         FileOperationsData PasteData = new FileOperationsData();
         PasteData.DropList = System.Windows.Forms.Clipboard.GetFileDropList();
@@ -3166,251 +3166,251 @@ namespace BetterExplorer
           }
         }
       }
-		}
+        }
 
-		// Delete
-		private void SplitButton_Click(object sender, RoutedEventArgs e)
-		{
-			MenuItem_Click(sender, e);
-		}
+        // Delete
+        private void SplitButton_Click(object sender, RoutedEventArgs e)
+        {
+            MenuItem_Click(sender, e);
+        }
 
-		// Rename
-		private void Button_Click_1(object sender, RoutedEventArgs e)
-		{
-			IsAfterRename = false;
-			Explorer.DoRename();
-		}
+        // Rename
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            IsAfterRename = false;
+            Explorer.DoRename();
+        }
 
-		private void btnPathCopy_Click(object sender, RoutedEventArgs e)
-		{
-			if (Explorer.SelectedItems.Count > 1)
-			{
-				string path = null;
-				foreach (ShellObject item in Explorer.SelectedItems)
-				{
-					//This way i think is better of making multiple line in .Net ;)
-					if (string.IsNullOrEmpty(path))
-					{
-						path = item.ParsingName;
-					}
-					else
-					{
+        private void btnPathCopy_Click(object sender, RoutedEventArgs e)
+        {
+            if (Explorer.SelectedItems.Count > 1)
+            {
+                string path = null;
+                foreach (ShellObject item in Explorer.SelectedItems)
+                {
+                    //This way i think is better of making multiple line in .Net ;)
+                    if (string.IsNullOrEmpty(path))
+                    {
+                        path = item.ParsingName;
+                    }
+                    else
+                    {
             path = String.Format("{0}\r\n{1}", path, item.ParsingName);
-					}
+                    }
 
-				}
-				Clipboards.SetText(path);
-			}
-			else if (Explorer.SelectedItems.Count == 1)
-			{
-				Clipboards.SetText(Explorer.SelectedItems[0].ParsingName);
-			}
-			else
-			{
-				Clipboards.SetText(Explorer.NavigationLog.CurrentLocation.ParsingName);
-			}
+                }
+                Clipboards.SetText(path);
+            }
+            else if (Explorer.SelectedItems.Count == 1)
+            {
+                Clipboards.SetText(Explorer.SelectedItems[0].ParsingName);
+            }
+            else
+            {
+                Clipboards.SetText(Explorer.NavigationLog.CurrentLocation.ParsingName);
+            }
 
-		}
+        }
 
-		private string GetStringsFromCollection(StringCollection coll, string separator = " ")
-		{
-			string path = null;
-			foreach (string item in coll)
-			{
-				if (string.IsNullOrEmpty(path))
-				{
-					path = item;
-				}
-				else
-				{
-					path = path + separator + item;
-				}
-			}
-			return path;
-		}
+        private string GetStringsFromCollection(StringCollection coll, string separator = " ")
+        {
+            string path = null;
+            foreach (string item in coll)
+            {
+                if (string.IsNullOrEmpty(path))
+                {
+                    path = item;
+                }
+                else
+                {
+                    path = path + separator + item;
+                }
+            }
+            return path;
+        }
 
-		private void btnSelAll_Click(object sender, RoutedEventArgs e)
-		{
-			Explorer.SelectAllItems();
-		}
+        private void btnSelAll_Click(object sender, RoutedEventArgs e)
+        {
+            Explorer.SelectAllItems();
+        }
 
-		private void btnSelNone_Click(object sender, RoutedEventArgs e)
-		{
-			Explorer.DeSelectAllItems();
-		}
+        private void btnSelNone_Click(object sender, RoutedEventArgs e)
+        {
+            Explorer.DeSelectAllItems();
+        }
 
-		private string ListAllSelectedItems()
-		{
-			string path = null;
-			foreach (ShellObject item in Explorer.SelectedItems)
-			{
-				//This way i think is better of making multiple line in .Net ;)
-				if (string.IsNullOrEmpty(path))
-				{
-					path = item.ParsingName;
-				}
-				else
-				{
+        private string ListAllSelectedItems()
+        {
+            string path = null;
+            foreach (ShellObject item in Explorer.SelectedItems)
+            {
+                //This way i think is better of making multiple line in .Net ;)
+                if (string.IsNullOrEmpty(path))
+                {
+                    path = item.ParsingName;
+                }
+                else
+                {
           path = String.Format("{0} {1}", path, item.ParsingName);
-				}
+                }
 
-			}
-			return path;
-		}
+            }
+            return path;
+        }
 
-		// Delete > Send to Recycle Bin
-		private void MenuItem_Click(object sender, RoutedEventArgs e)
-		{
-			//KeepFocusOnExplorer = true;
-			AddToLog(String.Format("The following files have been moved to the Recycle Bin: {0}", ListAllSelectedItems()));
+        // Delete > Send to Recycle Bin
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            //KeepFocusOnExplorer = true;
+            AddToLog(String.Format("The following files have been moved to the Recycle Bin: {0}", ListAllSelectedItems()));
             SetDeleteOperation(true);
-		}
+        }
 
-		// Delete > Permanently Delete
-		private void MenuItem_Click_1(object sender, RoutedEventArgs e)
-		{
-			//KeepFocusOnExplorer = true;
+        // Delete > Permanently Delete
+        private void MenuItem_Click_1(object sender, RoutedEventArgs e)
+        {
+            //KeepFocusOnExplorer = true;
             SetDeleteOperation(false);
-		}
+        }
 
-		string LastPath = "";
-		public bool IsCompartibleRename = false;
-		public bool IsAfterRename = false;
+        string LastPath = "";
+        public bool IsCompartibleRename = false;
+        public bool IsAfterRename = false;
 
-		// New Folder/Library
-		private void Button_Click_2(object sender, RoutedEventArgs e)
-		{
+        // New Folder/Library
+        private void Button_Click_2(object sender, RoutedEventArgs e)
+        {
       Explorer.SetExplorerFocus();
-			string path = "";
+            string path = "";
 
-			bool IsLib = false;
-			if (Explorer.NavigationLog.CurrentLocation.ParsingName == KnownFolders.Libraries.ParsingName)
-			{
+            bool IsLib = false;
+            if (Explorer.NavigationLog.CurrentLocation.ParsingName == KnownFolders.Libraries.ParsingName)
+            {
         path = Explorer.CreateNewLibrary(FindResource("btnNewLibraryCP").ToString()).GetDisplayName(DisplayNameType.Default);
-				AddToLog("Library created");
-				IsLib = true;
-			}
-			else
-			{
-				path = Explorer.CreateNewFolder(FindResource("btnNewFolderCP").ToString());
-				AddToLog("Folder created in " + Explorer.NavigationLog.CurrentLocation.ParsingName);
-			}
+                AddToLog("Library created");
+                IsLib = true;
+            }
+            else
+            {
+                path = Explorer.CreateNewFolder(FindResource("btnNewFolderCP").ToString());
+                AddToLog("Folder created in " + Explorer.NavigationLog.CurrentLocation.ParsingName);
+            }
 
-			LastPath = path;
+            LastPath = path;
 
-			//if (IsCompartibleRename)
-			//{
-			//	Explorer.RefreshExplorer();
+            //if (IsCompartibleRename)
+            //{
+            //	Explorer.RefreshExplorer();
 
-			//}
-			//else
-			//{
-				WindowsAPI.SHChangeNotify(WindowsAPI.HChangeNotifyEventID.SHCNE_MKDIR,
-				WindowsAPI.HChangeNotifyFlags.SHCNF_PATHW | WindowsAPI.HChangeNotifyFlags.SHCNF_FLUSHNOWAIT,
-					Marshal.StringToHGlobalAuto(path.Replace(@"\\", @"\")), IntPtr.Zero);
-			//}
-
-
-			IsAfterRename = false;
+            //}
+            //else
+            //{
+                WindowsAPI.SHChangeNotify(WindowsAPI.HChangeNotifyEventID.SHCNE_MKDIR,
+                WindowsAPI.HChangeNotifyFlags.SHCNF_PATHW | WindowsAPI.HChangeNotifyFlags.SHCNF_FLUSHNOWAIT,
+                    Marshal.StringToHGlobalAuto(path.Replace(@"\\", @"\")), IntPtr.Zero);
+            //}
 
 
+            IsAfterRename = false;
 
 
-			IsLibW = IsLib;
-			IsAfterFolderCreate = true;
-
-		}
 
 
-		private void btnProperties_Click(object sender, RoutedEventArgs e)
-		{
-			if (Explorer.SelectedItems.Count > 0)
-			{
-				Explorer.ShowFileProperties();
-			}
-			else
-			{
-				Explorer.ShowFileProperties(Explorer.NavigationLog.CurrentLocation.ParsingName);
-			}
-			Explorer.Focus();
-		}
+            IsLibW = IsLib;
+            IsAfterFolderCreate = true;
+
+        }
 
 
-		[DllImport("user32.dll", SetLastError = true)]
-		private static extern int RegisterHotKey(IntPtr hwnd, int id, int fsModifiers, int vk);
+        private void btnProperties_Click(object sender, RoutedEventArgs e)
+        {
+            if (Explorer.SelectedItems.Count > 0)
+            {
+                Explorer.ShowFileProperties();
+            }
+            else
+            {
+                Explorer.ShowFileProperties(Explorer.NavigationLog.CurrentLocation.ParsingName);
+            }
+            Explorer.Focus();
+        }
 
-		[DllImport("user32.dll", SetLastError = true)]
-		private static extern int UnregisterHotKey(IntPtr hwnd, int id);
 
-		//short mHotKeyId = 0;
+        [DllImport("user32.dll", SetLastError = true)]
+        private static extern int RegisterHotKey(IntPtr hwnd, int id, int fsModifiers, int vk);
 
-		private void btnInvSel_Click(object sender, RoutedEventArgs e)
-		{
-			Explorer.InvertSelection();
-			//WindowsAPI.SendMessage((int)Explorer.Handle, 0x0111, 0x7013, 0);
-		}
+        [DllImport("user32.dll", SetLastError = true)]
+        private static extern int UnregisterHotKey(IntPtr hwnd, int id);
 
-		private void btnPasetShC_Click(object sender, RoutedEventArgs e)
-		{
+        //short mHotKeyId = 0;
 
-			StringCollection DropList = System.Windows.Forms.Clipboard.GetFileDropList();
-			string PathForDrop = Explorer.NavigationLog.CurrentLocation.ParsingName;
-			foreach (string item in DropList)
-			{
+        private void btnInvSel_Click(object sender, RoutedEventArgs e)
+        {
+            Explorer.InvertSelection();
+            //WindowsAPI.SendMessage((int)Explorer.Handle, 0x0111, 0x7013, 0);
+        }
+
+        private void btnPasetShC_Click(object sender, RoutedEventArgs e)
+        {
+
+            StringCollection DropList = System.Windows.Forms.Clipboard.GetFileDropList();
+            string PathForDrop = Explorer.NavigationLog.CurrentLocation.ParsingName;
+            foreach (string item in DropList)
+            {
         using (ShellLinkApi shortcut = new ShellLinkApi())
-				{
-					ShellObject o = ShellObject.FromParsingName(item);
-					shortcut.Target = item;
-					shortcut.WorkingDirectory = System.IO.Path.GetDirectoryName(item);
-					shortcut.Description = o.GetDisplayName(DisplayNameType.Default);
+                {
+                    ShellObject o = ShellObject.FromParsingName(item);
+                    shortcut.Target = item;
+                    shortcut.WorkingDirectory = System.IO.Path.GetDirectoryName(item);
+                    shortcut.Description = o.GetDisplayName(DisplayNameType.Default);
           shortcut.DisplayMode = ShellLinkApi.LinkDisplayMode.edmNormal;
-					shortcut.Save(PathForDrop + "\\" + o.GetDisplayName(DisplayNameType.Default) + ".lnk");
-					AddToLog(String.Format("Shortcut created at {0}\\{1} from source {2}", PathForDrop, o.GetDisplayName(DisplayNameType.Default), item));
-					o.Dispose();
-				}
-			}
+                    shortcut.Save(PathForDrop + "\\" + o.GetDisplayName(DisplayNameType.Default) + ".lnk");
+                    AddToLog(String.Format("Shortcut created at {0}\\{1} from source {2}", PathForDrop, o.GetDisplayName(DisplayNameType.Default), item));
+                    o.Dispose();
+                }
+            }
 
-		}
+        }
 
-		private void btnctDocuments_Click(object sender, RoutedEventArgs e)
-		{
+        private void btnctDocuments_Click(object sender, RoutedEventArgs e)
+        {
             SetFOperation(KnownFolders.Documents.ParsingName, OperationType.Copy);
-		}
+        }
 
-		private void btnctDesktop_Click(object sender, RoutedEventArgs e)
-		{
+        private void btnctDesktop_Click(object sender, RoutedEventArgs e)
+        {
             SetFOperation(KnownFolders.Desktop.ParsingName, OperationType.Copy);
-		}
+        }
 
-		private void btnctDounloads_Click(object sender, RoutedEventArgs e)
-		{
+        private void btnctDounloads_Click(object sender, RoutedEventArgs e)
+        {
             SetFOperation(KnownFolders.Downloads.ParsingName, OperationType.Copy);
-		}
+        }
 
-		private void btnmtDocuments_Click(object sender, RoutedEventArgs e)
-		{
+        private void btnmtDocuments_Click(object sender, RoutedEventArgs e)
+        {
             SetFOperation(KnownFolders.Documents.ParsingName, OperationType.Move);
-		}
+        }
 
-		private void btnmtDesktop_Click(object sender, RoutedEventArgs e)
-		{
+        private void btnmtDesktop_Click(object sender, RoutedEventArgs e)
+        {
             SetFOperation(KnownFolders.Desktop.ParsingName, OperationType.Move);
-		}
+        }
 
-		private void btnmtDounloads_Click(object sender, RoutedEventArgs e)
-		{
+        private void btnmtDounloads_Click(object sender, RoutedEventArgs e)
+        {
             SetFOperation(KnownFolders.Downloads.ParsingName, OperationType.Move);
-		}
+        }
 
-		private void btnmtOther_Click(object sender, RoutedEventArgs e)
-		{
-			CommonOpenFileDialog dlg = new CommonOpenFileDialog();
-			dlg.IsFolderPicker = true;
-			if (dlg.ShowDialog() == CommonFileDialogResult.Ok)
-			{
+        private void btnmtOther_Click(object sender, RoutedEventArgs e)
+        {
+            CommonOpenFileDialog dlg = new CommonOpenFileDialog();
+            dlg.IsFolderPicker = true;
+            if (dlg.ShowDialog() == CommonFileDialogResult.Ok)
+            {
                 SetFOperation(dlg.FileName, OperationType.Move);
-			}
-		}
+            }
+        }
 
     private void SetFOperation(String FileName,  OperationType opType) {
         if (!ExplorerBrowser.IsCustomDialogs) {
@@ -3491,83 +3491,83 @@ namespace BetterExplorer
         }
         else
         {
-					var sourceItemsCollection = Explorer.SelectedItems.Select(c => c.ParsingName).ToArray();
-	        HookLibManager.ShowDeleteDialog(sourceItemsCollection, this, isMoveToRB);
+                    var sourceItemsCollection = Explorer.SelectedItems.Select(c => c.ParsingName).ToArray();
+            HookLibManager.ShowDeleteDialog(sourceItemsCollection, this, isMoveToRB);
         }
     }
 
     private void btnctOther_Click(object sender, RoutedEventArgs e)
-		{
+        {
       CommonOpenFileDialog dlg = new CommonOpenFileDialog();
       dlg.IsFolderPicker = true;
       if (dlg.ShowDialog() == CommonFileDialogResult.Ok) {
         SetFOperation(dlg.FileName,OperationType.Copy);
       }
-			Explorer.Focus();
-		}
+            Explorer.Focus();
+        }
 
-		private void btnCopyto_Click(object sender, RoutedEventArgs e)
-		{
-			btnctOther_Click(sender, e);
-		}
+        private void btnCopyto_Click(object sender, RoutedEventArgs e)
+        {
+            btnctOther_Click(sender, e);
+        }
 
-		private void btnMoveto_Click(object sender, RoutedEventArgs e)
-		{
-			btnmtOther_Click(sender, e);
-		}
+        private void btnMoveto_Click(object sender, RoutedEventArgs e)
+        {
+            btnmtOther_Click(sender, e);
+        }
 
-		private void btnCut_Click(object sender, RoutedEventArgs e)
-		{
-			AddToLog("The following files have been cut: " + PathStringCombiner.CombinePaths(Explorer.SelectedItems.ToList(), " ", false));
-			Explorer.DoCut();
-		}
+        private void btnCut_Click(object sender, RoutedEventArgs e)
+        {
+            AddToLog("The following files have been cut: " + PathStringCombiner.CombinePaths(Explorer.SelectedItems.ToList(), " ", false));
+            Explorer.DoCut();
+        }
 
-		private void btnNewItem_Click(object sender, RoutedEventArgs e)
-		{
-			WindowsAPI.SHELLSTATE state = new WindowsAPI.SHELLSTATE() { fShowAllObjects = 0 };
-			WindowsAPI.SHGetSetSettings(ref state, WindowsAPI.SSF.SSF_SHOWALLOBJECTS, true);
-		}
+        private void btnNewItem_Click(object sender, RoutedEventArgs e)
+        {
+            WindowsAPI.SHELLSTATE state = new WindowsAPI.SHELLSTATE() { fShowAllObjects = 0 };
+            WindowsAPI.SHGetSetSettings(ref state, WindowsAPI.SSF.SSF_SHOWALLOBJECTS, true);
+        }
 
-		private void btnOpenWith_Click(object sender, RoutedEventArgs e)
-		{
-			Process.Start(String.Format("\"{0}\"", Explorer.SelectedItems[0].ParsingName));
-		}
+        private void btnOpenWith_Click(object sender, RoutedEventArgs e)
+        {
+            Process.Start(String.Format("\"{0}\"", Explorer.SelectedItems[0].ParsingName));
+        }
 
-		private void btnEdit_Click(object sender, RoutedEventArgs e)
-		{
+        private void btnEdit_Click(object sender, RoutedEventArgs e)
+        {
       Explorer.EditFile(Explorer.SelectedItems[0].ParsingName);
-		}
+        }
 
-		private void btnFavorites_Click(object sender, RoutedEventArgs e)
-		{
-			if (Explorer.GetSelectedItemsCount() == 1)
-			{
+        private void btnFavorites_Click(object sender, RoutedEventArgs e)
+        {
+            if (Explorer.GetSelectedItemsCount() == 1)
+            {
         ShellLinkApi link = new ShellLinkApi();
         link.DisplayMode = ShellLinkApi.LinkDisplayMode.edmNormal;
-				link.Target = Explorer.SelectedItems[0].ParsingName;
-				link.Save(KnownFolders.Links.ParsingName + @"\" +
-					Explorer.SelectedItems[0].GetDisplayName(DisplayNameType.Default) + ".lnk");
-				link.Dispose();
-			}
+                link.Target = Explorer.SelectedItems[0].ParsingName;
+                link.Save(KnownFolders.Links.ParsingName + @"\" +
+                    Explorer.SelectedItems[0].GetDisplayName(DisplayNameType.Default) + ".lnk");
+                link.Dispose();
+            }
 
-			if (Explorer.GetSelectedItemsCount() == 0)
-			{
+            if (Explorer.GetSelectedItemsCount() == 0)
+            {
         ShellLinkApi link = new ShellLinkApi();
         link.DisplayMode = ShellLinkApi.LinkDisplayMode.edmNormal;
-				link.Target = Explorer.NavigationLog.CurrentLocation.ParsingName;
-				link.Save(KnownFolders.Links.ParsingName + @"\" +
-					Explorer.NavigationLog.CurrentLocation.GetDisplayName(DisplayNameType.Default) + ".lnk");
-				link.Dispose();
-			}
+                link.Target = Explorer.NavigationLog.CurrentLocation.ParsingName;
+                link.Save(KnownFolders.Links.ParsingName + @"\" +
+                    Explorer.NavigationLog.CurrentLocation.GetDisplayName(DisplayNameType.Default) + ".lnk");
+                link.Dispose();
+            }
 
-		}
+        }
 
-		#endregion
+        #endregion
 
-		#region Drive Tools / Virtual Disk Tools
+        #region Drive Tools / Virtual Disk Tools
 
-		private void btnFormatDrive_Click(object sender, RoutedEventArgs e)
-		{
+        private void btnFormatDrive_Click(object sender, RoutedEventArgs e)
+        {
       if (MessageBox.Show("Are you sure you want to do this?", FindResource("btnFormatDriveCP").ToString(), MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
       {
         Thread formatDriveThread = new Thread(() =>
@@ -3576,17 +3576,17 @@ namespace BetterExplorer
         });
         formatDriveThread.Start();
       }
-		}
+        }
 
-		private void btnCleanDrive_Click(object sender, RoutedEventArgs e)
-		{
-			Explorer.CleanupDrive();
-		}
+        private void btnCleanDrive_Click(object sender, RoutedEventArgs e)
+        {
+            Explorer.CleanupDrive();
+        }
 
-		private void btnDefragDrive_Click(object sender, RoutedEventArgs e)
-		{
-			Explorer.DefragDrive();
-		}
+        private void btnDefragDrive_Click(object sender, RoutedEventArgs e)
+        {
+            Explorer.DefragDrive();
+        }
 
         [DllImport("winmm.dll")]
         static extern Int32 mciSendString(String command, StringBuilder buffer, Int32 bufferSize, IntPtr hwndCallback);
@@ -3805,7 +3805,7 @@ namespace BetterExplorer
                 }
 
                 switch (mi.cbbAccess.SelectedIndex)
-	            {
+                {
                     case 0:
                         // Access directly
                         imflags |= ImDiskFlags.FileTypeDirect;
@@ -3817,7 +3817,7 @@ namespace BetterExplorer
                     default:
                         imflags |= ImDiskFlags.FileTypeDirect;
                         break;
-	            }
+                }
 
                 if (mi.chkRemovable.IsChecked == true)
                 {
@@ -3931,26 +3931,33 @@ namespace BetterExplorer
             {
                 if (MessageBox.Show("The drive could not be removed. Would you like to try to force a removal?", "Remove Drive Failed", MessageBoxButton.YesNo, MessageBoxImage.Error) == MessageBoxResult.Yes)
                 {
-                    ImDiskAPI.ForceRemoveDevice(SelectedDriveID);
+                    try
+                    {
+                        ImDiskAPI.ForceRemoveDevice(SelectedDriveID);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Could not force remove this drive. Double-check to make sure this drive is a mounted ISO or VHD file.", "Could Not Force Remove Drive", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
                 }
             }
             Explorer.RefreshExplorer();
             ctgDrive.Visibility = System.Windows.Visibility.Collapsed;
         }
 
-		#endregion
+        #endregion
 
-		#region Application Tools
+        #region Application Tools
 
-		private void btnRunAsAdmin_Click(object sender, RoutedEventArgs e)
-		{
-			ExplorerBrowser.RunExeAsAdmin(Explorer.SelectedItems[0].ParsingName);
-		}
+        private void btnRunAsAdmin_Click(object sender, RoutedEventArgs e)
+        {
+            ExplorerBrowser.RunExeAsAdmin(Explorer.SelectedItems[0].ParsingName);
+        }
 
-		private void btnPin_Click(object sender, RoutedEventArgs e)
-		{
-			WindowsAPI.PinUnpinToTaskbar(Explorer.SelectedItems[0].ParsingName);
-		}
+        private void btnPin_Click(object sender, RoutedEventArgs e)
+        {
+            WindowsAPI.PinUnpinToTaskbar(Explorer.SelectedItems[0].ParsingName);
+        }
 
         private void btnPinToStart_Click(object sender, RoutedEventArgs e)
         {
@@ -3978,14 +3985,14 @@ namespace BetterExplorer
             WindowsAPI.RunProcesssAsUser(Explorer.SelectedItems[0].ParsingName);
         }
 
-		#endregion
+        #endregion
 
-		#region Backstage - Information Tab
+        #region Backstage - Information Tab
 
-		private void Button_Click_6(object sender, RoutedEventArgs e)
-		{
+        private void Button_Click_6(object sender, RoutedEventArgs e)
+        {
             backstage.IsOpen = true;
-			//CheckForUpdate();
+            //CheckForUpdate();
             
             switch (autoUpdater.UpdateStepOn)
             {
@@ -4015,69 +4022,69 @@ namespace BetterExplorer
                     autoUpdater.ForceCheckForUpdate(true);
                     break;
             }
-			
-		}
+            
+        }
 
-		private void Button_Click_7(object sender, RoutedEventArgs e)
-		{
-			Process.Start("http://better-explorer.com/");
+        private void Button_Click_7(object sender, RoutedEventArgs e)
+        {
+            Process.Start("http://better-explorer.com/");
 
-		}
+        }
 
-		#endregion
+        #endregion
 
-		#region Path to String HelperFunctions / Other HelperFunctions
+        #region Path to String HelperFunctions / Other HelperFunctions
 
-		private string RemoveExtensionsFromFile(string file, string ext)
-		{
-			if (file.EndsWith(ext) == true)
-			{
-				return file.Remove(file.LastIndexOf(ext), ext.Length);
-			}
-			else
-			{
-				return file;
-			}
-		}
+        private string RemoveExtensionsFromFile(string file, string ext)
+        {
+            if (file.EndsWith(ext) == true)
+            {
+                return file.Remove(file.LastIndexOf(ext), ext.Length);
+            }
+            else
+            {
+                return file;
+            }
+        }
 
-		private string GetExtension(string file)
-		{
-			return file.Substring(file.LastIndexOf("."));
-		}
+        private string GetExtension(string file)
+        {
+            return file.Substring(file.LastIndexOf("."));
+        }
 
-		private string GetUseablePath(string path)
-		{
-			if (path.StartsWith("::"))
-			{
-				string lib = path.Substring(0, path.IndexOf("\\"));
-				string gp = GetDefaultFolderfromLibrary(lib);
-				if (gp == lib)
-				{
-					return path;
-				}
-				else
-				{
-					return gp + path.Substring(path.IndexOf("\\") + 1);
-				}
-			}
-			else
-			{
-				return path;
-			}
-		}
+        private string GetUseablePath(string path)
+        {
+            if (path.StartsWith("::"))
+            {
+                string lib = path.Substring(0, path.IndexOf("\\"));
+                string gp = GetDefaultFolderfromLibrary(lib);
+                if (gp == lib)
+                {
+                    return path;
+                }
+                else
+                {
+                    return gp + path.Substring(path.IndexOf("\\") + 1);
+                }
+            }
+            else
+            {
+                return path;
+            }
+        }
 
-		private string GetDefaultFolderfromLibrary(string library)
-		{
-			try
-			{
-				ShellLibrary lib = ShellLibrary.Load(library, true);
-				return lib.DefaultSaveFolder;
-			}
-			catch
-			{
-				return library;
-			}
-		}
+        private string GetDefaultFolderfromLibrary(string library)
+        {
+            try
+            {
+                ShellLibrary lib = ShellLibrary.Load(library, true);
+                return lib.DefaultSaveFolder;
+            }
+            catch
+            {
+                return library;
+            }
+        }
 
         private void OpenCommandPromptHere(string dir)
         {
@@ -4098,69 +4105,69 @@ namespace BetterExplorer
             }
         }
 
-		#endregion
+        #endregion
 
-		#region Updater
+        #region Updater
 
-		public void CheckForUpdate(bool ShowUpdateUI = true)
-		{
-			this.UpdaterWorker = new BackgroundWorker();
-			this.UpdaterWorker.WorkerSupportsCancellation = true;
-			this.UpdaterWorker.WorkerReportsProgress = true;
-			this.UpdaterWorker.DoWork += new DoWorkEventHandler(UpdaterWorker_DoWork);
+        public void CheckForUpdate(bool ShowUpdateUI = true)
+        {
+            this.UpdaterWorker = new BackgroundWorker();
+            this.UpdaterWorker.WorkerSupportsCancellation = true;
+            this.UpdaterWorker.WorkerReportsProgress = true;
+            this.UpdaterWorker.DoWork += new DoWorkEventHandler(UpdaterWorker_DoWork);
 
-			if (!this.UpdaterWorker.IsBusy)
-				this.UpdaterWorker.RunWorkerAsync(ShowUpdateUI);
-			else {
-				if (ShowUpdateUI)
-					MessageBox.Show("Update in progress! Please wait!");
-			}
-		 // var informalVersion = (Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyInformationalVersionAttribute), false).FirstOrDefault() as AssemblyInformationalVersionAttribute).InformationalVersion;
-		}
+            if (!this.UpdaterWorker.IsBusy)
+                this.UpdaterWorker.RunWorkerAsync(ShowUpdateUI);
+            else {
+                if (ShowUpdateUI)
+                    MessageBox.Show("Update in progress! Please wait!");
+            }
+         // var informalVersion = (Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyInformationalVersionAttribute), false).FirstOrDefault() as AssemblyInformationalVersionAttribute).InformationalVersion;
+        }
 
-		void UpdaterWorker_DoWork(object sender, DoWorkEventArgs e) {
-			Updater updater = new Updater("http://update.better-explorer.com/update.xml", 5, this.UpdateCheckType == 1);
-			if (updater.LoadUpdateFile()) {
-				if ((bool)e.Argument) {
-					Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Normal,
-												(Action)(() => {
-													UpdateWizard updateWizzard = new UpdateWizard(updater);
+        void UpdaterWorker_DoWork(object sender, DoWorkEventArgs e) {
+            Updater updater = new Updater("http://update.better-explorer.com/update.xml", 5, this.UpdateCheckType == 1);
+            if (updater.LoadUpdateFile()) {
+                if ((bool)e.Argument) {
+                    Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Normal,
+                                                (Action)(() => {
+                                                    UpdateWizard updateWizzard = new UpdateWizard(updater);
 
-													updateWizzard.ShowDialog(this.GetWin32Window());
-												}));
-				} else {
-					Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Normal,
-												(Action)(() => {
-													stiUpdate.Content = FindResource("stUpdateAvailableCP").ToString().Replace("VER", updater.AvailableUpdates[0].Version);
-													stiUpdate.Foreground = System.Windows.Media.Brushes.Red;
-												}));
-				}
-			} else {
-				Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Normal,
-												(Action)(() => {
-																stiUpdate.Content = FindResource("stUpdateNotAvailableCP").ToString();
-																stiUpdate.Foreground = System.Windows.Media.Brushes.Black;
+                                                    updateWizzard.ShowDialog(this.GetWin32Window());
+                                                }));
+                } else {
+                    Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Normal,
+                                                (Action)(() => {
+                                                    stiUpdate.Content = FindResource("stUpdateAvailableCP").ToString().Replace("VER", updater.AvailableUpdates[0].Version);
+                                                    stiUpdate.Foreground = System.Windows.Media.Brushes.Red;
+                                                }));
+                }
+            } else {
+                Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Normal,
+                                                (Action)(() => {
+                                                                stiUpdate.Content = FindResource("stUpdateNotAvailableCP").ToString();
+                                                                stiUpdate.Foreground = System.Windows.Media.Brushes.Black;
                                 if ((bool)e.Argument)
                                   MessageBox.Show(FindResource("stUpdateNotAvailableCP").ToString());
-												}));
-			}
+                                                }));
+            }
 
-	  RegistryKey rk = Registry.CurrentUser;
-	  RegistryKey rks = rk.OpenSubKey(@"Software\BExplorer", true);
-	  rks.SetValue(@"LastUpdateCheck", DateTime.Now.ToBinary(), RegistryValueKind.QWord);
-	  LastUpdateCheck = DateTime.Now;
-	  rks.Close();
-	  rk.Close();
-		}
+      RegistryKey rk = Registry.CurrentUser;
+      RegistryKey rks = rk.OpenSubKey(@"Software\BExplorer", true);
+      rks.SetValue(@"LastUpdateCheck", DateTime.Now.ToBinary(), RegistryValueKind.QWord);
+      LastUpdateCheck = DateTime.Now;
+      rks.Close();
+      rk.Close();
+        }
 
-		//Code source - Codeplex User Salysle
-		//Hope it works...
-		private bool IsConnectedToInternet()
-		{
-			int lngFlags = 0;
+        //Code source - Codeplex User Salysle
+        //Hope it works...
+        private bool IsConnectedToInternet()
+        {
+            int lngFlags = 0;
 
-			return WindowsAPI.InternetGetConnectedState(lngFlags, 0);
-		}
+            return WindowsAPI.InternetGetConnectedState(lngFlags, 0);
+        }
 
         private void btnAdvancedUpdateSettings_Click(object sender, RoutedEventArgs e)
         {
@@ -4279,34 +4286,34 @@ namespace BetterExplorer
     [StructLayout(LayoutKind.Sequential)]
     internal struct Win32Point
     {
-	    public Int32 X;
-	    public Int32 Y;
+        public Int32 X;
+        public Int32 Y;
     };
     public static System.Drawing.Point GetMousePosition()
     {
-	    Win32Point w32Mouse = new Win32Point();
-	    GetCursorPos(ref w32Mouse);
-	    return new System.Drawing.Point(w32Mouse.X, w32Mouse.Y);
+        Win32Point w32Mouse = new Win32Point();
+        GetCursorPos(ref w32Mouse);
+        return new System.Drawing.Point(w32Mouse.X, w32Mouse.Y);
     }
 
 
     List<DependencyObject> hitTestList = null;
     HitTestResultBehavior CollectAllVisuals_Callback(HitTestResult result)
     {
-	    if (result == null || result.VisualHit == null)
-		    return HitTestResultBehavior.Stop;
+        if (result == null || result.VisualHit == null)
+            return HitTestResultBehavior.Stop;
 
-	    hitTestList.Add(result.VisualHit);
-	    return HitTestResultBehavior.Continue;
+        hitTestList.Add(result.VisualHit);
+        return HitTestResultBehavior.Continue;
     }
     public bool Activate(bool restoreIfMinimized)
     {
-	    if (restoreIfMinimized && WindowState == WindowState.Minimized)
-	    {
-		    WindowState = PreviouseWindowState == WindowState.Normal
-								    ? WindowState.Normal : WindowState.Maximized;
-	    }
-	    return Activate();
+        if (restoreIfMinimized && WindowState == WindowState.Minimized)
+        {
+            WindowState = PreviouseWindowState == WindowState.Normal
+                                    ? WindowState.Normal : WindowState.Maximized;
+        }
+        return Activate();
     }
 
     /// <summary>
@@ -4315,109 +4322,109 @@ namespace BetterExplorer
     /// <param name="args">The args.</param>
     public void ApendArgs(string[] args)
     {
-	    //if (args == null) return;
-	    //Application.Current.Properties["cmd2"] = args[0];
+        //if (args == null) return;
+        //Application.Current.Properties["cmd2"] = args[0];
     }
 
 #endregion
 
-	public MainWindow() {
+    public MainWindow() {
 
       TaskbarManager.Instance.ApplicationId = "{A8795DFC-A37C-41E1-BC3D-6BBF118E64AD}";
 
-			CommandBinding cbnewtab = new CommandBinding(AppCommands.RoutedNewTab, ERNewTab);
-			this.CommandBindings.Add(cbnewtab);
-			CommandBinding cbGotoCombo = new CommandBinding(AppCommands.RoutedEnterInBreadCrumbCombo, ERGoToBCCombo);
-			this.CommandBindings.Add(cbGotoCombo);
-			CommandBinding cbCloseTab = new CommandBinding(AppCommands.RoutedCloseTab, RCloseTab);
-			this.CommandBindings.Add(cbCloseTab);
-			CommandBinding cbChangeTab= new CommandBinding(AppCommands.RoutedChangeTab, ChangeTab);
-			this.CommandBindings.Add(cbChangeTab);
-			RegistryKey rk = Registry.CurrentUser;
-			RegistryKey rks = rk.OpenSubKey(@"Software\BExplorer", true);
+            CommandBinding cbnewtab = new CommandBinding(AppCommands.RoutedNewTab, ERNewTab);
+            this.CommandBindings.Add(cbnewtab);
+            CommandBinding cbGotoCombo = new CommandBinding(AppCommands.RoutedEnterInBreadCrumbCombo, ERGoToBCCombo);
+            this.CommandBindings.Add(cbGotoCombo);
+            CommandBinding cbCloseTab = new CommandBinding(AppCommands.RoutedCloseTab, RCloseTab);
+            this.CommandBindings.Add(cbCloseTab);
+            CommandBinding cbChangeTab= new CommandBinding(AppCommands.RoutedChangeTab, ChangeTab);
+            this.CommandBindings.Add(cbChangeTab);
+            RegistryKey rk = Registry.CurrentUser;
+            RegistryKey rks = rk.OpenSubKey(@"Software\BExplorer", true);
 
       ExplorerBrowser.SetCustomDialogs(false);//Convert.ToInt32(rks.GetValue(@"IsCustomFO", 0)) == 1);
-			ExplorerBrowser.IsOldSysListView = Convert.ToInt32(rks.GetValue(@"IsVistaStyleListView", 1)) == 1;
+            ExplorerBrowser.IsOldSysListView = Convert.ToInt32(rks.GetValue(@"IsVistaStyleListView", 1)) == 1;
 
-			// loads current Ribbon color theme
-			try
-			{
-				switch (Convert.ToString(rks.GetValue(@"CurrentTheme", "Blue")))
-				{
-					case "Blue":
-						ChangeRibbonTheme("Blue");
-						break;
-					case "Silver":
-						ChangeRibbonTheme("Silver");
-						break;
-					case "Black":
-						ChangeRibbonTheme("Black");
-						break;
-					case "Green":
-						ChangeRibbonTheme("Green");
-						break;
-					default:
-						ChangeRibbonTheme("Blue");
-						break;
-				}
+            // loads current Ribbon color theme
+            try
+            {
+                switch (Convert.ToString(rks.GetValue(@"CurrentTheme", "Blue")))
+                {
+                    case "Blue":
+                        ChangeRibbonTheme("Blue");
+                        break;
+                    case "Silver":
+                        ChangeRibbonTheme("Silver");
+                        break;
+                    case "Black":
+                        ChangeRibbonTheme("Black");
+                        break;
+                    case "Green":
+                        ChangeRibbonTheme("Green");
+                        break;
+                    default:
+                        ChangeRibbonTheme("Blue");
+                        break;
+                }
         
-			}
-			catch (Exception ex)
-			{
+            }
+            catch (Exception ex)
+            {
         MessageBox.Show(String.Format("An error occurred while trying to load the theme data from the Registry. \n\r \n\r{0}\n\r \n\rPlease let us know of this issue at http://bugtracker.better-explorer.com/", ex.Message), "RibbonTheme Error - " + ex.ToString());
-			}
+            }
 
-			// loads current UI language (uses en-US if default)
-			try
-			{
+            // loads current UI language (uses en-US if default)
+            try
+            {
 
-				string loc;
-				if (Convert.ToString(rks.GetValue(@"Locale", ":null:")) == ":null:")
-				{
-					// creates value in Registry if value does not exist
-					rks.SetValue(@"Locale", "en-US");
-					loc = "en-US";
-				}
-				else
-				{
-					loc = Convert.ToString(rks.GetValue(@"Locale", ":null:"));
-				}
+                string loc;
+                if (Convert.ToString(rks.GetValue(@"Locale", ":null:")) == ":null:")
+                {
+                    // creates value in Registry if value does not exist
+                    rks.SetValue(@"Locale", "en-US");
+                    loc = "en-US";
+                }
+                else
+                {
+                    loc = Convert.ToString(rks.GetValue(@"Locale", ":null:"));
+                }
 
                 SelectCulture(loc, Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\BExplorer\\translation.xaml");
 
-			}
-			catch (Exception ex)
-			{
+            }
+            catch (Exception ex)
+            {
         MessageBox.Show(String.Format("An error occurred while trying to load the locale data from the Registry. \n\r \n\r{0}\n\r \n\rPlease let us know of this issue at http://bugtracker.better-explorer.com/", ex.Message), "Locale Load Error - " + ex);
-			}
+            }
 
-			// gets values from registry to be applied after initialization
-			string lohc = Convert.ToString(rks.GetValue(@"Locale", ":null:"));
-			double sbw = Convert.ToDouble(rks.GetValue(@"SearchBarWidth", "220"));
+            // gets values from registry to be applied after initialization
+            string lohc = Convert.ToString(rks.GetValue(@"Locale", ":null:"));
+            double sbw = Convert.ToDouble(rks.GetValue(@"SearchBarWidth", "220"));
 
-			string rtlused = Convert.ToString(rks.GetValue(@"RTLMode", "notset"));
+            string rtlused = Convert.ToString(rks.GetValue(@"RTLMode", "notset"));
 
-			string tabba = Convert.ToString(rks.GetValue(@"TabBarAlignment", "top"));
+            string tabba = Convert.ToString(rks.GetValue(@"TabBarAlignment", "top"));
 
-			rks.Close();
-			rk.Close();
+            rks.Close();
+            rk.Close();
 
 
-			//Main Initialization routine
+            //Main Initialization routine
       InitializeComponent();
 
-			isOnLoad = true;
-			//chkOldSysListView.IsChecked = ExplorerBrowser.IsOldSysListView;
-			isOnLoad = false;
+            isOnLoad = true;
+            //chkOldSysListView.IsChecked = ExplorerBrowser.IsOldSysListView;
+            isOnLoad = false;
 
-			// sets up ComboBox to select the current UI language
-			foreach (TranslationComboBoxItem item in this.TranslationComboBox.Items)
-			{
-				if (item.LocaleCode == lohc)
-				{
-					this.TranslationComboBox.SelectedItem = item;
-				}
-			}
+            // sets up ComboBox to select the current UI language
+            foreach (TranslationComboBoxItem item in this.TranslationComboBox.Items)
+            {
+                if (item.LocaleCode == lohc)
+                {
+                    this.TranslationComboBox.SelectedItem = item;
+                }
+            }
 
             bool rtlset = false;
 
@@ -4437,53 +4444,53 @@ namespace BetterExplorer
                 }
             }
 
-			// sets size of search bar
-			this.SearchBarColumn.Width = new GridLength(sbw);
+            // sets size of search bar
+            this.SearchBarColumn.Width = new GridLength(sbw);
 
-			// store 1st value
-			PreviouseWindowState = WindowState;
+            // store 1st value
+            PreviouseWindowState = WindowState;
 
-			// attach to event (used to store prev. win. state)
-			LayoutUpdated += Window_LayoutUpdated;
+            // attach to event (used to store prev. win. state)
+            LayoutUpdated += Window_LayoutUpdated;
 
-			ShellVView.Child = Explorer;
+            ShellVView.Child = Explorer;
 
-			// prepares RTL mode
-			if (rtlused == "true")
-			{
-				FlowDirection = System.Windows.FlowDirection.RightToLeft;
-			}
-			else
-			{
-				FlowDirection = System.Windows.FlowDirection.LeftToRight;
-			}
+            // prepares RTL mode
+            if (rtlused == "true")
+            {
+                FlowDirection = System.Windows.FlowDirection.RightToLeft;
+            }
+            else
+            {
+                FlowDirection = System.Windows.FlowDirection.LeftToRight;
+            }
 
             if (rtlset == true)
             {
                 rtlused = "notset";
             }
 
-			// sets tab bar alignment
-			if (tabba == "top")
-			{
-				TabbaTop.IsChecked = true;
-			}
-			else if (tabba == "bottom")
-			{
-				TabbaBottom.IsChecked = true;
-			}
-			else
-			{
-				TabbaTop.IsChecked = true;
-			}
+            // sets tab bar alignment
+            if (tabba == "top")
+            {
+                TabbaTop.IsChecked = true;
+            }
+            else if (tabba == "bottom")
+            {
+                TabbaBottom.IsChecked = true;
+            }
+            else
+            {
+                TabbaTop.IsChecked = true;
+            }
 
-			// allows user to change language
-			ReadyToChangeLanguage = true;
+            // allows user to change language
+            ReadyToChangeLanguage = true;
       Task.Run(() =>
           {
             LoadInternalList();
           });
-		}
+        }
 
     MessageReceiver r;
 
@@ -4925,7 +4932,7 @@ namespace BetterExplorer
       }
     }
     private void Window_Loaded(object sender, RoutedEventArgs e)
-		{
+        {
       Task.Run(() =>
         {
           UpdateRecycleBinInfos();
@@ -4936,10 +4943,10 @@ namespace BetterExplorer
       r.OnMessageReceived += r_OnMessageReceived;
       r.Show();
 
-			bool exitApp = false;
+            bool exitApp = false;
 
-			try
-			{
+            try
+            {
         Task.Run(() =>
         {
           if (WindowsAPI.getOSInfo() == WindowsAPI.OsVersionInfo.Windows8)
@@ -4955,23 +4962,23 @@ namespace BetterExplorer
           }
         });
 
-				
+                
 
-				//Sets up FileSystemWatcher for Favorites folder
-				try
-				{
-					FileSystemWatcher fsw = new FileSystemWatcher(KnownFolders.Links.ParsingName);
+                //Sets up FileSystemWatcher for Favorites folder
+                try
+                {
+                    FileSystemWatcher fsw = new FileSystemWatcher(KnownFolders.Links.ParsingName);
           fsw.Created += fsw_Created;
           fsw.Deleted += fsw_Deleted;
           fsw.Renamed += fsw_Renamed;
-					fsw.EnableRaisingEvents = true;
-				}
-				catch
-				{
-				}
+                    fsw.EnableRaisingEvents = true;
+                }
+                catch
+                {
+                }
 
-				//Set up breadcrumb bar drag/drop functionality
-				breadcrumbBarControl1.SetDragHandlers(new DragEventHandler(bbi_DragEnter), new DragEventHandler(bbi_DragLeave), new DragEventHandler(bbi_DragOver), new DragEventHandler(bbi_Drop));
+                //Set up breadcrumb bar drag/drop functionality
+                breadcrumbBarControl1.SetDragHandlers(new DragEventHandler(bbi_DragEnter), new DragEventHandler(bbi_DragLeave), new DragEventHandler(bbi_DragOver), new DragEventHandler(bbi_Drop));
 
         //Set up Favorites Menu
         Task.Run(() =>
@@ -4985,72 +4992,72 @@ namespace BetterExplorer
 
         //Load the ShellSettings
         IsCalledFromLoading = true;
-				WindowsAPI.SHELLSTATE statef = new WindowsAPI.SHELLSTATE();
+                WindowsAPI.SHELLSTATE statef = new WindowsAPI.SHELLSTATE();
         WindowsAPI.SHGetSetSettings(ref statef, WindowsAPI.SSF.SSF_SHOWALLOBJECTS | WindowsAPI.SSF.SSF_SHOWEXTENSIONS, false);
         chkHiddenFiles.IsChecked = (statef.fShowAllObjects == 1);
         chkExtensions.IsChecked = (statef.fShowExtensions == 1);
-				IsCalledFromLoading = false;
+                IsCalledFromLoading = false;
 
-				isOnLoad = true;
+                isOnLoad = true;
 
-				//'load from Registry
+                //'load from Registry
         LoadRegistryRelatedSettings();
 
         //'set up Explorer control
         InitializeExplorerControl();
 
-				// set up history on breadcrumb bar (currently missing try-catch statement in order to catch error)
-				try
-				{
+                // set up history on breadcrumb bar (currently missing try-catch statement in order to catch error)
+                try
+                {
           Task.Run(() =>
           {
             breadcrumbBarControl1.ClearHistory();
             breadcrumbBarControl1.HistoryItems = ReadHistoryFromFile(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\history.txt");
           });
-				}
-				catch (FileNotFoundException)
-				{
-					logger.Warn(String.Format("History file not found at location:{0}\\history.txt", Environment.SpecialFolder.LocalApplicationData));
-				}
+                }
+                catch (FileNotFoundException)
+                {
+                    logger.Warn(String.Format("History file not found at location:{0}\\history.txt", Environment.SpecialFolder.LocalApplicationData));
+                }
 
-				AddToLog("Session Began");
+                AddToLog("Session Began");
 
-				isOnLoad = false;
+                isOnLoad = false;
                          
-				//'set StartUp location
+                //'set StartUp location
         if (Application.Current.Properties["cmd"] != null && Application.Current.Properties["cmd"].ToString() != "-minimized")
-				{
+                {
 
-					String cmd = Application.Current.Properties["cmd"].ToString();
+                    String cmd = Application.Current.Properties["cmd"].ToString();
 
-					if (cmd.IndexOf("::") == 0)
-					{
+                    if (cmd.IndexOf("::") == 0)
+                    {
 
-						Explorer.Navigate(ShellObject.FromParsingName("shell:" + cmd));
-					}
-					else
-						Explorer.Navigate(ShellObject.FromParsingName(cmd.Replace("\"", "")));
+                        Explorer.Navigate(ShellObject.FromParsingName("shell:" + cmd));
+                    }
+                    else
+                        Explorer.Navigate(ShellObject.FromParsingName(cmd.Replace("\"", "")));
 
 
           NewTab(Explorer.NavigationLog.CurrentLocation,true);
-					
-				}
-				else
-				{
+                    
+                }
+                else
+                {
             InitializeInitialTabs();
-				}
+                }
 
         SetsUpJumpList();
       
-				//Setup Clipboard monitor
-				cbm.ClipboardChanged += new EventHandler<ClipboardChangedEventArgs>(cbm_ClipboardChanged);
+                //Setup Clipboard monitor
+                cbm.ClipboardChanged += new EventHandler<ClipboardChangedEventArgs>(cbm_ClipboardChanged);
                     
 
-				if (exitApp)
-				{
-					Application.Current.Shutdown();
-					return;
-				}
+                if (exitApp)
+                {
+                    Application.Current.Shutdown();
+                    return;
+                }
 
         if (this.IsConsoleShown) {
           ctrlConsole.StartProcess("cmd.exe", null);
@@ -5059,17 +5066,17 @@ namespace BetterExplorer
         }
 
         //Set up Version Info
-				verNumber.Content = "Version " + (Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyInformationalVersionAttribute), false).FirstOrDefault() as AssemblyInformationalVersionAttribute).InformationalVersion;
-				lblArchitecture.Content = WindowsAPI.Is64bitProcess(Process.GetCurrentProcess()) ? "64-bit version" : "32-bit version";
+                verNumber.Content = "Version " + (Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyInformationalVersionAttribute), false).FirstOrDefault() as AssemblyInformationalVersionAttribute).InformationalVersion;
+                lblArchitecture.Content = WindowsAPI.Is64bitProcess(Process.GetCurrentProcess()) ? "64-bit version" : "32-bit version";
 
         this.Activate(true);
-			}
-			catch (Exception exe)
-			{
-				MessageBox.Show(String.Format("An error occurred while loading the window. Please report this issue at http://bugtracker.better-explorer.com/. \r\n\r\n Here is some information about the error: \r\n\r\n{0}\r\n\r\n{1}", exe.Message, exe), "Error While Loading", MessageBoxButton.OK, MessageBoxImage.Error);
-			}
+            }
+            catch (Exception exe)
+            {
+                MessageBox.Show(String.Format("An error occurred while loading the window. Please report this issue at http://bugtracker.better-explorer.com/. \r\n\r\n Here is some information about the error: \r\n\r\n{0}\r\n\r\n{1}", exe.Message, exe), "Error While Loading", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
             
-		}
+        }
 
     void Explorer_MouseWheel(object sender, ExplorerMoiseWheelArgs e)
     {
@@ -5098,764 +5105,764 @@ namespace BetterExplorer
     private const int WM_VSCROLL = 277;
     private const int SB_PAGEBOTTOM = 7;
 
-		#region Old Search Code
-		private ShellObject BeforeSearchFolder;
-		Thread backgroundSearchThread;
-		// Helper method to do the search on a background thread
-		internal void DoSimpleSearch(object arg)
-		{
-			SearchCondition searchCondition = SearchConditionFactory.ParseStructuredQuery(arg.ToString());
-			ShellSearchFolder searchFolder =
-				new ShellSearchFolder(searchCondition, (ShellContainer)BeforeSearchFolder);
+        #region Old Search Code
+        private ShellObject BeforeSearchFolder;
+        Thread backgroundSearchThread;
+        // Helper method to do the search on a background thread
+        internal void DoSimpleSearch(object arg)
+        {
+            SearchCondition searchCondition = SearchConditionFactory.ParseStructuredQuery(arg.ToString());
+            ShellSearchFolder searchFolder =
+                new ShellSearchFolder(searchCondition, (ShellContainer)BeforeSearchFolder);
 
 
-			//Dispatcher.Invoke(
-			//		System.Windows.Threading.DispatcherPriority.Normal,
-			//		new Action(
-			//		delegate()
-			//		{
-						Explorer.Navigate(searchFolder);
+            //Dispatcher.Invoke(
+            //		System.Windows.Threading.DispatcherPriority.Normal,
+            //		new Action(
+            //		delegate()
+            //		{
+                        Explorer.Navigate(searchFolder);
 
-				//	}
-				//));
+                //	}
+                //));
 
-			if (BeforeSearchFolder != null)
-			{
-				//Thread.Sleep(750);
-				//Explorer.RefreshExplorer();
-			}
-
-
-		}
+            if (BeforeSearchFolder != null)
+            {
+                //Thread.Sleep(750);
+                //Explorer.RefreshExplorer();
+            }
 
 
-		void bw_DoWork(object sender, DoWorkEventArgs e)
-		{
-			Explorer.Navigate((ShellSearchFolder)e.Argument);
-		}
-
-		public void DoSearch(string SearchCriteria)
-		{
-			if (backgroundSearchThread != null)
-				backgroundSearchThread.Abort();
+        }
 
 
-			if (Explorer.NavigationLog.CurrentLocation.IsSearchFolder)
-			{
-				if (BeforeSearchFolder == null)
-				{
-					BeforeSearchFolder = Explorer.NavigationLog.CurrentLocation;
-				}
-			}
-			else
-			{
-				BeforeSearchFolder = Explorer.NavigationLog.CurrentLocation;
-			}
+        void bw_DoWork(object sender, DoWorkEventArgs e)
+        {
+            Explorer.Navigate((ShellSearchFolder)e.Argument);
+        }
 
-			if (SearchCriteria != "")
-			{
+        public void DoSearch(string SearchCriteria)
+        {
+            if (backgroundSearchThread != null)
+                backgroundSearchThread.Abort();
+
+
+            if (Explorer.NavigationLog.CurrentLocation.IsSearchFolder)
+            {
+                if (BeforeSearchFolder == null)
+                {
+                    BeforeSearchFolder = Explorer.NavigationLog.CurrentLocation;
+                }
+            }
+            else
+            {
+                BeforeSearchFolder = Explorer.NavigationLog.CurrentLocation;
+            }
+
+            if (SearchCriteria != "")
+            {
         DoSimpleSearch(SearchCriteria);
-				//backgroundSearchThread = new Thread(new ParameterizedThreadStart(DoSimpleSearch));
-				//backgroundSearchThread.IsBackground = true;
-				//// ApartmentState.STA is required for COM
-				//backgroundSearchThread.SetApartmentState(ApartmentState.STA);
-				//backgroundSearchThread.Start(SearchCriteria);
+                //backgroundSearchThread = new Thread(new ParameterizedThreadStart(DoSimpleSearch));
+                //backgroundSearchThread.IsBackground = true;
+                //// ApartmentState.STA is required for COM
+                //backgroundSearchThread.SetApartmentState(ApartmentState.STA);
+                //backgroundSearchThread.Start(SearchCriteria);
 
-			}
-		}
-		private void searchTextBox1_Search(object sender, RoutedEventArgs e)
-		{
+            }
+        }
+        private void searchTextBox1_Search(object sender, RoutedEventArgs e)
+        {
 
-			//DoSearch(searchTextBox1.Text);
-			//StatusBar.UpdateLayout();
+            //DoSearch(searchTextBox1.Text);
+            //StatusBar.UpdateLayout();
 
-		}
-		int searchcicles = 0;
-		//int BeforeSearcCicles = 0;
-		int CurrentProgressValue = 0;
-		#endregion
+        }
+        int searchcicles = 0;
+        //int BeforeSearcCicles = 0;
+        int CurrentProgressValue = 0;
+        #endregion
 
-		#region Change Ribbon Color (Theme)
+        #region Change Ribbon Color (Theme)
 
-		public void ChangeRibbonThemeL(string ThemeName)
-		{
-			Dispatcher.BeginInvoke(DispatcherPriority.Render, (ThreadStart)(() =>
-			{
+        public void ChangeRibbonThemeL(string ThemeName)
+        {
+            Dispatcher.BeginInvoke(DispatcherPriority.Render, (ThreadStart)(() =>
+            {
 
-				Resources.BeginInit();
+                Resources.BeginInit();
         Resources.MergedDictionaries.Add(new ResourceDictionary() { Source = new Uri(String.Format("pack://application:,,,/Fluent;component/Themes/Office2010/{0}.xaml", ThemeName)) });
-				Resources.MergedDictionaries.RemoveAt(0);
-				Resources.EndInit();
-			}));
-		}
+                Resources.MergedDictionaries.RemoveAt(0);
+                Resources.EndInit();
+            }));
+        }
 
-		private void btnSilver_Click(object sender, RoutedEventArgs e)
-		{
-			ChangeRibbonTheme("Silver");
-			RegistryKey rk = Registry.CurrentUser;
-			RegistryKey rks = rk.OpenSubKey(@"Software\BExplorer", true);
-			rks.SetValue(@"CurrentTheme", "Silver");
-			rks.Close();
-			KeepBackstageOpen = true;
-		}
+        private void btnSilver_Click(object sender, RoutedEventArgs e)
+        {
+            ChangeRibbonTheme("Silver");
+            RegistryKey rk = Registry.CurrentUser;
+            RegistryKey rks = rk.OpenSubKey(@"Software\BExplorer", true);
+            rks.SetValue(@"CurrentTheme", "Silver");
+            rks.Close();
+            KeepBackstageOpen = true;
+        }
 
     public void ChangeRibbonTheme(string ThemeName, bool IsMetro = false)
-		{
-			Dispatcher.BeginInvoke(DispatcherPriority.Render, (ThreadStart)(() =>
-			{
-				Application.Current.Resources.BeginInit();
-				Application.Current.Resources.MergedDictionaries.RemoveAt(1);
+        {
+            Dispatcher.BeginInvoke(DispatcherPriority.Render, (ThreadStart)(() =>
+            {
+                Application.Current.Resources.BeginInit();
+                Application.Current.Resources.MergedDictionaries.RemoveAt(1);
         if (IsMetro) {
           Application.Current.Resources.MergedDictionaries.Insert(1, new ResourceDictionary() { Source = new Uri(String.Format("pack://application:,,,/Fluent;component/Themes/Metro/{0}.xaml", "White")) });
         } else {
           Application.Current.Resources.MergedDictionaries.Insert(1, new ResourceDictionary() { Source = new Uri(String.Format("pack://application:,,,/Fluent;component/Themes/Office2010/{0}.xaml", ThemeName)) });
         }
-				Application.Current.Resources.EndInit();
-			}));
-		}
+                Application.Current.Resources.EndInit();
+            }));
+        }
 
-		private void btnBlue_Click(object sender, RoutedEventArgs e)
-		{
-			ChangeRibbonTheme("Blue");
-			RegistryKey rk = Registry.CurrentUser;
-			RegistryKey rks = rk.OpenSubKey(@"Software\BExplorer", true);
-			rks.SetValue(@"CurrentTheme", "Blue");
-			rks.Close();
-			KeepBackstageOpen = true;
-		}
+        private void btnBlue_Click(object sender, RoutedEventArgs e)
+        {
+            ChangeRibbonTheme("Blue");
+            RegistryKey rk = Registry.CurrentUser;
+            RegistryKey rks = rk.OpenSubKey(@"Software\BExplorer", true);
+            rks.SetValue(@"CurrentTheme", "Blue");
+            rks.Close();
+            KeepBackstageOpen = true;
+        }
 
-		private void btnBlack_Click(object sender, RoutedEventArgs e)
-		{
-			ChangeRibbonTheme("Black");
-			btnBlack.IsChecked = true;
-			RegistryKey rk = Registry.CurrentUser;
-			RegistryKey rks = rk.OpenSubKey(@"Software\BExplorer", true);
-			rks.SetValue(@"CurrentTheme", "Black");
-			rks.Close();
-			KeepBackstageOpen = true;
-		}
+        private void btnBlack_Click(object sender, RoutedEventArgs e)
+        {
+            ChangeRibbonTheme("Black");
+            btnBlack.IsChecked = true;
+            RegistryKey rk = Registry.CurrentUser;
+            RegistryKey rks = rk.OpenSubKey(@"Software\BExplorer", true);
+            rks.SetValue(@"CurrentTheme", "Black");
+            rks.Close();
+            KeepBackstageOpen = true;
+        }
 
-		private void btnGreen_Click(object sender, RoutedEventArgs e)
-		{
-			ChangeRibbonThemeL("Green");
-			RegistryKey rk = Registry.CurrentUser;
-			RegistryKey rks = rk.OpenSubKey(@"Software\BExplorer", true);
-			rks.SetValue(@"CurrentTheme", "Green");
-			rks.Close();
-			KeepBackstageOpen = true;
-		}
+        private void btnGreen_Click(object sender, RoutedEventArgs e)
+        {
+            ChangeRibbonThemeL("Green");
+            RegistryKey rk = Registry.CurrentUser;
+            RegistryKey rks = rk.OpenSubKey(@"Software\BExplorer", true);
+            rks.SetValue(@"CurrentTheme", "Green");
+            rks.Close();
+            KeepBackstageOpen = true;
+        }
 
-		#endregion
+        #endregion
 
-		#region Archive Commands
+        #region Archive Commands
 
-		//private void CreateArchive_Show(OutArchiveFormat format) 
-		//{
-		//    var selectedItems = new List<string>();
-		//    foreach(ShellObject item in Explorer.SelectedItems)
-		//    {
-		//        if (Directory.Exists(item.ParsingName))
-		//        {
-		//            DirectoryInfo di = new DirectoryInfo(item.ParsingName);
-		//            FileInfo[] Files = di.GetFiles("*", SearchOption.AllDirectories);
-		//            foreach (FileInfo fi in Files)
-		//            {
-		//                selectedItems.Add(fi.FullName);
-		//            }
+        //private void CreateArchive_Show(OutArchiveFormat format) 
+        //{
+        //    var selectedItems = new List<string>();
+        //    foreach(ShellObject item in Explorer.SelectedItems)
+        //    {
+        //        if (Directory.Exists(item.ParsingName))
+        //        {
+        //            DirectoryInfo di = new DirectoryInfo(item.ParsingName);
+        //            FileInfo[] Files = di.GetFiles("*", SearchOption.AllDirectories);
+        //            foreach (FileInfo fi in Files)
+        //            {
+        //                selectedItems.Add(fi.FullName);
+        //            }
 
-		//        }
-		//        else
-		//        {
-		//            selectedItems.Add(item.ParsingName);
-		//        }
+        //        }
+        //        else
+        //        {
+        //            selectedItems.Add(item.ParsingName);
+        //        }
 
-		//    }
-		//    if (selectedItems.Count > 0)
-		//    {
-		//        try
-		//        {
-		//            var CAI = new CreateArchive(selectedItems,
-		//                                        true,
-		//                                        Path.GetDirectoryName(selectedItems[0]),
-		//                                        format);
+        //    }
+        //    if (selectedItems.Count > 0)
+        //    {
+        //        try
+        //        {
+        //            var CAI = new CreateArchive(selectedItems,
+        //                                        true,
+        //                                        Path.GetDirectoryName(selectedItems[0]),
+        //                                        format);
 
-		//            CAI.Show(this.GetWin32Window());
-
-
-		//        }
-		//        catch (Exception exception)
-		//        {
-		//            var dialog = new TaskDialog();
-		//            dialog.StandardButtons = TaskDialogStandardButtons.Ok;
-		//            dialog.Text = exception.Message;
-		//            dialog.Show();
-		//        }
-		//    }
-		// }
-
-		private void ExtractFiles()
-		{
-			var selectedItems = new List<string>();
-			foreach (ShellObject item in Explorer.SelectedItems)
-			{
-				selectedItems.Add(item.ParsingName);
-			}
-			try
-			{
-				var CAI = new CreateArchive(selectedItems,
-											false,
-											Explorer.SelectedItems[0].ParsingName);
-
-				CAI.Show(this.GetWin32Window());
+        //            CAI.Show(this.GetWin32Window());
 
 
-			}
-			catch (Exception exception)
-			{
-				var dialog = new TaskDialog();
-				dialog.StandardButtons = TaskDialogStandardButtons.Ok;
-				dialog.Text = exception.Message;
-				dialog.Show();
-			}
-		}
+        //        }
+        //        catch (Exception exception)
+        //        {
+        //            var dialog = new TaskDialog();
+        //            dialog.StandardButtons = TaskDialogStandardButtons.Ok;
+        //            dialog.Text = exception.Message;
+        //            dialog.Show();
+        //        }
+        //    }
+        // }
 
-		private void btnExtractNow_Click(object sender, RoutedEventArgs e)
-		{
-			if (chkUseNewFolder.IsChecked == true)
-			{
+        private void ExtractFiles()
+        {
+            var selectedItems = new List<string>();
+            foreach (ShellObject item in Explorer.SelectedItems)
+            {
+                selectedItems.Add(item.ParsingName);
+            }
+            try
+            {
+                var CAI = new CreateArchive(selectedItems,
+                                            false,
+                                            Explorer.SelectedItems[0].ParsingName);
+
+                CAI.Show(this.GetWin32Window());
+
+
+            }
+            catch (Exception exception)
+            {
+                var dialog = new TaskDialog();
+                dialog.StandardButtons = TaskDialogStandardButtons.Ok;
+                dialog.Text = exception.Message;
+                dialog.Show();
+            }
+        }
+
+        private void btnExtractNow_Click(object sender, RoutedEventArgs e)
+        {
+            if (chkUseNewFolder.IsChecked == true)
+            {
         string OutputLoc = String.Format("{0}\\{1}", txtExtractLocation.Text, RemoveExtensionsFromFile(Explorer.SelectedItems[0].Name, new FileInfo(Explorer.SelectedItems[0].ParsingName).Extension));
-				try
-				{
-					Directory.CreateDirectory(OutputLoc);
-					ExtractToLocation(SelectedArchive, OutputLoc);
-				}
-				catch (Exception)
-				{
+                try
+                {
+                    Directory.CreateDirectory(OutputLoc);
+                    ExtractToLocation(SelectedArchive, OutputLoc);
+                }
+                catch (Exception)
+                {
           MessageBoxResult wtd = MessageBox.Show(String.Format("The directory {0} already exists. Would you like for BetterExplorer to extract there instead?", OutputLoc), "Folder Exists", MessageBoxButton.YesNo, MessageBoxImage.Exclamation);
-					switch (wtd)
-					{
-						case MessageBoxResult.Cancel:
-							break;
-						case MessageBoxResult.No:
-							break;
-						case MessageBoxResult.None:
-							break;
-						case MessageBoxResult.OK:
-							break;
-						case MessageBoxResult.Yes:
-							ExtractToLocation(SelectedArchive, OutputLoc);
-							break;
-						default:
-							break;
-					}
-				}
+                    switch (wtd)
+                    {
+                        case MessageBoxResult.Cancel:
+                            break;
+                        case MessageBoxResult.No:
+                            break;
+                        case MessageBoxResult.None:
+                            break;
+                        case MessageBoxResult.OK:
+                            break;
+                        case MessageBoxResult.Yes:
+                            ExtractToLocation(SelectedArchive, OutputLoc);
+                            break;
+                        default:
+                            break;
+                    }
+                }
 
-			}
-			else
-			{
-				ExtractToLocation(SelectedArchive, txtExtractLocation.Text);
-			}
+            }
+            else
+            {
+                ExtractToLocation(SelectedArchive, txtExtractLocation.Text);
+            }
 
-		}
+        }
 
-		private void btnChooseLocation_Click(object sender, RoutedEventArgs e)
-		{
-			CommonOpenFileDialog dlg = new CommonOpenFileDialog();
-			dlg.IsFolderPicker = true;
-			if (dlg.ShowDialog() == CommonFileDialogResult.Ok)
-			{
-				txtExtractLocation.Text = dlg.FileName;
-			}
-		}
+        private void btnChooseLocation_Click(object sender, RoutedEventArgs e)
+        {
+            CommonOpenFileDialog dlg = new CommonOpenFileDialog();
+            dlg.IsFolderPicker = true;
+            if (dlg.ShowDialog() == CommonFileDialogResult.Ok)
+            {
+                txtExtractLocation.Text = dlg.FileName;
+            }
+        }
 
-		private void ExtractToLocation(string archive, string output)
-		{
-			var selectedItems = new List<string>() { archive };
+        private void ExtractToLocation(string archive, string output)
+        {
+            var selectedItems = new List<string>() { archive };
 
-			var archiveProcressScreen = new ArchiveProcressScreen(selectedItems,
-								 output,
-								 ArchiveAction.Extract,
-								 "");
-			archiveProcressScreen.ExtractionCompleted += new ArchiveProcressScreen.ExtractionCompleteEventHandler(ExtractionHasCompleted);
+            var archiveProcressScreen = new ArchiveProcressScreen(selectedItems,
+                                 output,
+                                 ArchiveAction.Extract,
+                                 "");
+            archiveProcressScreen.ExtractionCompleted += new ArchiveProcressScreen.ExtractionCompleteEventHandler(ExtractionHasCompleted);
 
       AddToLog(String.Format("Archive Extracted to {0} from source {1}", output, archive));
 
-			archiveProcressScreen.Show();
-		}
+            archiveProcressScreen.Show();
+        }
 
-		private void ExtractionHasCompleted(object sender, ArchiveEventArgs e)
-		{
-			if (chkOpenResults.IsChecked == true)
-			{
-				NewTab(e.OutputLocation);
-			}
-		}
+        private void ExtractionHasCompleted(object sender, ArchiveEventArgs e)
+        {
+            if (chkOpenResults.IsChecked == true)
+            {
+                NewTab(e.OutputLocation);
+            }
+        }
 
-		//private void miCreateZIP_Click(object sender, RoutedEventArgs e)
-		//{
-		//    CreateArchive_Show(OutArchiveFormat.Zip);
-		//}
+        //private void miCreateZIP_Click(object sender, RoutedEventArgs e)
+        //{
+        //    CreateArchive_Show(OutArchiveFormat.Zip);
+        //}
 
-		//private void miCreate7z_Click(object sender, RoutedEventArgs e)
-		//{
-		//    CreateArchive_Show(OutArchiveFormat.SevenZip);
-		//}
+        //private void miCreate7z_Click(object sender, RoutedEventArgs e)
+        //{
+        //    CreateArchive_Show(OutArchiveFormat.SevenZip);
+        //}
 
-		//private void miCreateCAB_Click(object sender, RoutedEventArgs e)
-		//{
-		//    CreateArchive_Show(OutArchiveFormat.Tar);
-		//}
+        //private void miCreateCAB_Click(object sender, RoutedEventArgs e)
+        //{
+        //    CreateArchive_Show(OutArchiveFormat.Tar);
+        //}
 
-		private void miExtractToLocation_Click(object sender, RoutedEventArgs e)
-		{
-			ExtractFiles();
-		}
+        private void miExtractToLocation_Click(object sender, RoutedEventArgs e)
+        {
+            ExtractFiles();
+        }
 
-		private void miExtractHere_Click(object sender, RoutedEventArgs e)
-		{
-			//Dispatcher.BeginInvoke(
-			//					System.Windows.Threading.DispatcherPriority.Background,
-			//					new ThreadStart(
-			//					delegate()
-			//					{
+        private void miExtractHere_Click(object sender, RoutedEventArgs e)
+        {
+            //Dispatcher.BeginInvoke(
+            //					System.Windows.Threading.DispatcherPriority.Background,
+            //					new ThreadStart(
+            //					delegate()
+            //					{
 
-									string FileName = Explorer.SelectedItems[0].ParsingName;
-									SevenZipExtractor extractor = new SevenZipExtractor(FileName);
-									string DirectoryName = System.IO.Path.GetDirectoryName(FileName);
-									string ArchName = System.IO.Path.GetFileNameWithoutExtension(FileName);
-									extractor.Extracting += new EventHandler<ProgressEventArgs>(extractor_Extracting);
-									extractor.ExtractionFinished += new EventHandler<EventArgs>(extractor_ExtractionFinished);
-									extractor.FileExtractionStarted += new EventHandler<FileInfoEventArgs>(extractor_FileExtractionStarted);
-									extractor.FileExtractionFinished += new EventHandler<FileInfoEventArgs>(extractor_FileExtractionFinished);
-									extractor.PreserveDirectoryStructure = true;
-									string Separator = "";
-									if (DirectoryName[DirectoryName.Length - 1] != Char.Parse(@"\"))
-									{
-										Separator = @"\";
-									}
+                                    string FileName = Explorer.SelectedItems[0].ParsingName;
+                                    SevenZipExtractor extractor = new SevenZipExtractor(FileName);
+                                    string DirectoryName = System.IO.Path.GetDirectoryName(FileName);
+                                    string ArchName = System.IO.Path.GetFileNameWithoutExtension(FileName);
+                                    extractor.Extracting += new EventHandler<ProgressEventArgs>(extractor_Extracting);
+                                    extractor.ExtractionFinished += new EventHandler<EventArgs>(extractor_ExtractionFinished);
+                                    extractor.FileExtractionStarted += new EventHandler<FileInfoEventArgs>(extractor_FileExtractionStarted);
+                                    extractor.FileExtractionFinished += new EventHandler<FileInfoEventArgs>(extractor_FileExtractionFinished);
+                                    extractor.PreserveDirectoryStructure = true;
+                                    string Separator = "";
+                                    if (DirectoryName[DirectoryName.Length - 1] != Char.Parse(@"\"))
+                                    {
+                                        Separator = @"\";
+                                    }
                   AddToLog(String.Format("Extracted Archive to {0}{1}{2} from source {3}", DirectoryName, Separator, ArchName, FileName));
-									extractor.BeginExtractArchive(DirectoryName + Separator + ArchName);
-							//	}));
-		}
+                                    extractor.BeginExtractArchive(DirectoryName + Separator + ArchName);
+                            //	}));
+        }
 
-		void extractor_FileExtractionFinished(object sender, FileInfoEventArgs e)
-		{
-			//throw new NotImplementedException();
-		}
+        void extractor_FileExtractionFinished(object sender, FileInfoEventArgs e)
+        {
+            //throw new NotImplementedException();
+        }
 
-		void extractor_FileExtractionStarted(object sender, FileInfoEventArgs e)
-		{
-			//throw new NotImplementedException();
-		}
+        void extractor_FileExtractionStarted(object sender, FileInfoEventArgs e)
+        {
+            //throw new NotImplementedException();
+        }
 
-		void extractor_ExtractionFinished(object sender, EventArgs e)
-		{
-			//throw new NotImplementedException();
-			if ((sender as SevenZipExtractor) != null)
-			{
-				(sender as SevenZipExtractor).Dispose();
-			}
+        void extractor_ExtractionFinished(object sender, EventArgs e)
+        {
+            //throw new NotImplementedException();
+            if ((sender as SevenZipExtractor) != null)
+            {
+                (sender as SevenZipExtractor).Dispose();
+            }
 
-		}
+        }
 
-		void extractor_Extracting(object sender, ProgressEventArgs e)
-		{
-			//throw new NotImplementedException();
-		}
+        void extractor_Extracting(object sender, ProgressEventArgs e)
+        {
+            //throw new NotImplementedException();
+        }
 
-		private void btnExtract_Click(object sender, RoutedEventArgs e)
-		{
-			miExtractHere_Click(sender, e);
-		}
+        private void btnExtract_Click(object sender, RoutedEventArgs e)
+        {
+            miExtractHere_Click(sender, e);
+        }
 
-		private void btnCheckArchive_Click(object sender, RoutedEventArgs e)
-		{
-			Thread trIntegrityCheck = new Thread(new ThreadStart(DoCheck));
-			trIntegrityCheck.Start();
-		}
+        private void btnCheckArchive_Click(object sender, RoutedEventArgs e)
+        {
+            Thread trIntegrityCheck = new Thread(new ThreadStart(DoCheck));
+            trIntegrityCheck.Start();
+        }
 
 
-		private void DoCheck()
-		{
+        private void DoCheck()
+        {
 
-			string FileName = Explorer.SelectedItems[0].ParsingName;
-			SevenZipExtractor extractor = new SevenZipExtractor(FileName);
-			if (!extractor.Check())
-				MessageBox.Show("Not Pass");
-			else
-				MessageBox.Show("Pass");
+            string FileName = Explorer.SelectedItems[0].ParsingName;
+            SevenZipExtractor extractor = new SevenZipExtractor(FileName);
+            if (!extractor.Check())
+                MessageBox.Show("Not Pass");
+            else
+                MessageBox.Show("Pass");
 
-			extractor.Dispose();
-		}
+            extractor.Dispose();
+        }
 
-		private void btnViewArchive_Click(object sender, RoutedEventArgs e)
-		{
-			var name = Explorer.SelectedItems.First().ParsingName;
-			var archiveDetailView = new ArchiveDetailView(ICON_DLLPATH, name);
-			archiveDetailView.Show(this.GetWin32Window());
+        private void btnViewArchive_Click(object sender, RoutedEventArgs e)
+        {
+            var name = Explorer.SelectedItems.First().ParsingName;
+            var archiveDetailView = new ArchiveDetailView(ICON_DLLPATH, name);
+            archiveDetailView.Show(this.GetWin32Window());
 
-			//ArchiveViewWindow g = new ArchiveViewWindow(Explorer.SelectedItems[0], IsPreviewPaneEnabled, IsInfoPaneEnabled);
-			//g.Show();
-		}
+            //ArchiveViewWindow g = new ArchiveViewWindow(Explorer.SelectedItems[0], IsPreviewPaneEnabled, IsInfoPaneEnabled);
+            //g.Show();
+        }
 
-		private void btnCreateArchive_Click(object sender, RoutedEventArgs e)
-		{
-			ArchiveCreateWizard acw = new ArchiveCreateWizard(Explorer.SelectedItems, Explorer.NavigationLog.CurrentLocation.ParsingName);
+        private void btnCreateArchive_Click(object sender, RoutedEventArgs e)
+        {
+            ArchiveCreateWizard acw = new ArchiveCreateWizard(Explorer.SelectedItems, Explorer.NavigationLog.CurrentLocation.ParsingName);
             acw.win = this;
             acw.LoadStrings();
-			acw.Show();
-			AddToLog("Archive Creation Wizard begun. Current location: " + Explorer.NavigationLog.CurrentLocation.ParsingName);
-		}
+            acw.Show();
+            AddToLog("Archive Creation Wizard begun. Current location: " + Explorer.NavigationLog.CurrentLocation.ParsingName);
+        }
 
-		#endregion
+        #endregion
 
-		#region Library Commands
+        #region Library Commands
 
-		private void btnOLItem_Click(object sender, RoutedEventArgs e)
-		{
+        private void btnOLItem_Click(object sender, RoutedEventArgs e)
+        {
 
-			ShellLibrary lib = null;
-			if (Explorer.GetSelectedItemsCount() == 1)
-			{
-				lib = ShellLibrary.Load(Explorer.SelectedItems[0].GetDisplayName(DisplayNameType.Default), false);
-			}
-			else
-			{
-				lib = ShellLibrary.Load(Explorer.NavigationLog.CurrentLocation.GetDisplayName(DisplayNameType.Default), false);
-			}
-			switch ((sender as MenuItem).Tag.ToString())
-			{
-				case "gu":
-					lib.LibraryType = LibraryFolderType.Generic;
-					lib.Close();
-					break;
-				case "doc":
-					lib.LibraryType = LibraryFolderType.Documents;
-					lib.Close();
-					break;
-				case "pic":
-					lib.LibraryType = LibraryFolderType.Pictures;
-					lib.Close();
-					break;
-				case "vid":
-					lib.LibraryType = LibraryFolderType.Videos;
-					lib.Close();
-					break;
-				case "mu":
-					lib.LibraryType = LibraryFolderType.Music;
-					lib.Close();
-					break;
-				default:
-					break;
-			}
-		}
+            ShellLibrary lib = null;
+            if (Explorer.GetSelectedItemsCount() == 1)
+            {
+                lib = ShellLibrary.Load(Explorer.SelectedItems[0].GetDisplayName(DisplayNameType.Default), false);
+            }
+            else
+            {
+                lib = ShellLibrary.Load(Explorer.NavigationLog.CurrentLocation.GetDisplayName(DisplayNameType.Default), false);
+            }
+            switch ((sender as MenuItem).Tag.ToString())
+            {
+                case "gu":
+                    lib.LibraryType = LibraryFolderType.Generic;
+                    lib.Close();
+                    break;
+                case "doc":
+                    lib.LibraryType = LibraryFolderType.Documents;
+                    lib.Close();
+                    break;
+                case "pic":
+                    lib.LibraryType = LibraryFolderType.Pictures;
+                    lib.Close();
+                    break;
+                case "vid":
+                    lib.LibraryType = LibraryFolderType.Videos;
+                    lib.Close();
+                    break;
+                case "mu":
+                    lib.LibraryType = LibraryFolderType.Music;
+                    lib.Close();
+                    break;
+                default:
+                    break;
+            }
+        }
 
-		private void chkPinNav_Checked(object sender, RoutedEventArgs e)
-		{
-			ShellLibrary lib = null;
-			if (Explorer.GetSelectedItemsCount() == 1)
-			{
-				lib = ShellLibrary.Load(Explorer.SelectedItems[0].GetDisplayName(DisplayNameType.Default), false);
-			}
-			else
-			{
-				lib = ShellLibrary.Load(Explorer.NavigationLog.CurrentLocation.GetDisplayName(DisplayNameType.Default), false);
-			}
-			if (!IsFromSelectionOrNavigation)
-			{
-				lib.IsPinnedToNavigationPane = true;
-			}
+        private void chkPinNav_Checked(object sender, RoutedEventArgs e)
+        {
+            ShellLibrary lib = null;
+            if (Explorer.GetSelectedItemsCount() == 1)
+            {
+                lib = ShellLibrary.Load(Explorer.SelectedItems[0].GetDisplayName(DisplayNameType.Default), false);
+            }
+            else
+            {
+                lib = ShellLibrary.Load(Explorer.NavigationLog.CurrentLocation.GetDisplayName(DisplayNameType.Default), false);
+            }
+            if (!IsFromSelectionOrNavigation)
+            {
+                lib.IsPinnedToNavigationPane = true;
+            }
 
-			lib.Close();
-		}
+            lib.Close();
+        }
 
-		private void chkPinNav_Unchecked(object sender, RoutedEventArgs e)
-		{
-			ShellLibrary lib = null;
-			if (Explorer.GetSelectedItemsCount() == 1)
-			{
-				lib = ShellLibrary.Load(Explorer.SelectedItems[0].GetDisplayName(DisplayNameType.Default), false);
-			}
-			else
-			{
-				lib = ShellLibrary.Load(Explorer.NavigationLog.CurrentLocation.GetDisplayName(DisplayNameType.Default), false);
-			}
-			if (!IsFromSelectionOrNavigation)
-			{
-				lib.IsPinnedToNavigationPane = false;
-			}
+        private void chkPinNav_Unchecked(object sender, RoutedEventArgs e)
+        {
+            ShellLibrary lib = null;
+            if (Explorer.GetSelectedItemsCount() == 1)
+            {
+                lib = ShellLibrary.Load(Explorer.SelectedItems[0].GetDisplayName(DisplayNameType.Default), false);
+            }
+            else
+            {
+                lib = ShellLibrary.Load(Explorer.NavigationLog.CurrentLocation.GetDisplayName(DisplayNameType.Default), false);
+            }
+            if (!IsFromSelectionOrNavigation)
+            {
+                lib.IsPinnedToNavigationPane = false;
+            }
 
-			lib.Close();
-		}
+            lib.Close();
+        }
 
-		private void btnChangeLibIcon_Click(object sender, RoutedEventArgs e)
-		{
-			IconView iv = new IconView();
+        private void btnChangeLibIcon_Click(object sender, RoutedEventArgs e)
+        {
+            IconView iv = new IconView();
 
-			iv.LoadIcons(Explorer, true);
-		}
+            iv.LoadIcons(Explorer, true);
+        }
 
-		private void btnManageLib_Click(object sender, RoutedEventArgs e)
-		{
-			try
-			{
-				ShellLibrary.ShowManageLibraryUI(Explorer.SelectedItems[0].GetDisplayName(DisplayNameType.Default),
-					this.Handle, "Choose which folders will be in this library", "A library gathers content from all of the folders listed below and puts it all in one window for you to see.", true);
-			}
-			catch
-			{
+        private void btnManageLib_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                ShellLibrary.ShowManageLibraryUI(Explorer.SelectedItems[0].GetDisplayName(DisplayNameType.Default),
+                    this.Handle, "Choose which folders will be in this library", "A library gathers content from all of the folders listed below and puts it all in one window for you to see.", true);
+            }
+            catch
+            {
 
-				ShellLibrary.ShowManageLibraryUI(Explorer.NavigationLog.CurrentLocation.GetDisplayName(DisplayNameType.Default),
-					this.Handle, "Choose which folders will be in this library", "A library gathers content from all of the folders listed below and puts it all in one window for you to see.", true);
-			}
-		}
+                ShellLibrary.ShowManageLibraryUI(Explorer.NavigationLog.CurrentLocation.GetDisplayName(DisplayNameType.Default),
+                    this.Handle, "Choose which folders will be in this library", "A library gathers content from all of the folders listed below and puts it all in one window for you to see.", true);
+            }
+        }
 
-		private void Button_Click_3(object sender, RoutedEventArgs e)
-		{
-			TaskDialog td = new TaskDialog();
-			td.Caption = "Reset Library";
-			td.Icon = TaskDialogStandardIcon.Warning;
-			td.Text = "Click \"OK\" to reset currently selected library properties";
-			td.InstructionText = "Reset Library Properties?";
-			td.FooterIcon = TaskDialogStandardIcon.Information;
-			//td.FooterText = "This will reset all the properties to default properties for library type";
-			td.DetailsCollapsedLabel = "More info";
-			td.DetailsExpandedLabel = "More Info";
-			td.DetailsExpandedText = "This will reset all the properties to default properties for library type";
-			td.DetailsExpanded = false;
-			td.ExpansionMode = TaskDialogExpandedDetailsLocation.ExpandFooter;
-			td.StandardButtons = TaskDialogStandardButtons.Ok | TaskDialogStandardButtons.Cancel;
-			td.OwnerWindowHandle = this.Handle;
-			if (td.Show() == TaskDialogResult.Ok)
-			{
-				if (Explorer.SelectedItems[0].GetDisplayName(DisplayNameType.Default).ToLowerInvariant() != "documents" &&
-					Explorer.SelectedItems[0].GetDisplayName(DisplayNameType.Default).ToLowerInvariant() != "music" &&
-					Explorer.SelectedItems[0].GetDisplayName(DisplayNameType.Default).ToLowerInvariant() != "videos" &&
-					Explorer.SelectedItems[0].GetDisplayName(DisplayNameType.Default).ToLowerInvariant() != "pictures")
-				{
-					ShellLibrary lib = ShellLibrary.Load(Explorer.SelectedItems[0].GetDisplayName(DisplayNameType.Default),
-								false);
-					lib.IsPinnedToNavigationPane = true;
-					lib.LibraryType = LibraryFolderType.Generic;
-					lib.IconResourceId = new IconReference(@"C:\Windows\System32\imageres.dll", 187);
-					lib.Close();
-				}
-			}
-		}
+        private void Button_Click_3(object sender, RoutedEventArgs e)
+        {
+            TaskDialog td = new TaskDialog();
+            td.Caption = "Reset Library";
+            td.Icon = TaskDialogStandardIcon.Warning;
+            td.Text = "Click \"OK\" to reset currently selected library properties";
+            td.InstructionText = "Reset Library Properties?";
+            td.FooterIcon = TaskDialogStandardIcon.Information;
+            //td.FooterText = "This will reset all the properties to default properties for library type";
+            td.DetailsCollapsedLabel = "More info";
+            td.DetailsExpandedLabel = "More Info";
+            td.DetailsExpandedText = "This will reset all the properties to default properties for library type";
+            td.DetailsExpanded = false;
+            td.ExpansionMode = TaskDialogExpandedDetailsLocation.ExpandFooter;
+            td.StandardButtons = TaskDialogStandardButtons.Ok | TaskDialogStandardButtons.Cancel;
+            td.OwnerWindowHandle = this.Handle;
+            if (td.Show() == TaskDialogResult.Ok)
+            {
+                if (Explorer.SelectedItems[0].GetDisplayName(DisplayNameType.Default).ToLowerInvariant() != "documents" &&
+                    Explorer.SelectedItems[0].GetDisplayName(DisplayNameType.Default).ToLowerInvariant() != "music" &&
+                    Explorer.SelectedItems[0].GetDisplayName(DisplayNameType.Default).ToLowerInvariant() != "videos" &&
+                    Explorer.SelectedItems[0].GetDisplayName(DisplayNameType.Default).ToLowerInvariant() != "pictures")
+                {
+                    ShellLibrary lib = ShellLibrary.Load(Explorer.SelectedItems[0].GetDisplayName(DisplayNameType.Default),
+                                false);
+                    lib.IsPinnedToNavigationPane = true;
+                    lib.LibraryType = LibraryFolderType.Generic;
+                    lib.IconResourceId = new IconReference(@"C:\Windows\System32\imageres.dll", 187);
+                    lib.Close();
+                }
+            }
+        }
 
-		#endregion
+        #endregion
 
-		#region Navigation (Back/Forward Arrows) and Up Button
+        #region Navigation (Back/Forward Arrows) and Up Button
 
-		private void leftNavBut_Click(object sender, RoutedEventArgs e)
-		{
-			isGoingBackOrForward = true;
-			Explorer.Navigate((tabControl1.SelectedItem as ClosableTabItem).log.NavigateBack());
-		}
+        private void leftNavBut_Click(object sender, RoutedEventArgs e)
+        {
+            isGoingBackOrForward = true;
+            Explorer.Navigate((tabControl1.SelectedItem as ClosableTabItem).log.NavigateBack());
+        }
 
-		private void rightNavBut_Click(object sender, RoutedEventArgs e)
-		{
-			isGoingBackOrForward = true;
-			Explorer.Navigate((tabControl1.SelectedItem as ClosableTabItem).log.NavigateForward());
-		}
+        private void rightNavBut_Click(object sender, RoutedEventArgs e)
+        {
+            isGoingBackOrForward = true;
+            Explorer.Navigate((tabControl1.SelectedItem as ClosableTabItem).log.NavigateForward());
+        }
 
-		private void downArrow_Click(object sender, RoutedEventArgs e)
-		{
-			cmHistory.Items.Clear();
-			cmHistory.Opened += new RoutedEventHandler(cmHistory_Opened);
-			cmHistory.Closed += new RoutedEventHandler(cmHistory_Closed);
+        private void downArrow_Click(object sender, RoutedEventArgs e)
+        {
+            cmHistory.Items.Clear();
+            cmHistory.Opened += new RoutedEventHandler(cmHistory_Opened);
+            cmHistory.Closed += new RoutedEventHandler(cmHistory_Closed);
 
-			NavigationLog nl = (tabControl1.SelectedItem as ClosableTabItem).log;
-			int i = 0;
-			foreach (ShellObject item in nl.HistoryItemsList)
-			{
+            NavigationLog nl = (tabControl1.SelectedItem as ClosableTabItem).log;
+            int i = 0;
+            foreach (ShellObject item in nl.HistoryItemsList)
+            {
 
-				if (item != null)
-				{
-					item.Thumbnail.FormatOption = ShellThumbnailFormatOption.IconOnly;
-					item.Thumbnail.CurrentSize = new System.Windows.Size(16, 16);
-					MenuItem mi = new MenuItem();
-					mi.Header = item.GetDisplayName(DisplayNameType.Default);
-					mi.Tag = item;
-					mi.Icon = item.Thumbnail.BitmapSource;
-					mi.IsCheckable = true;
-					mi.IsChecked = (i == nl.CurrentLocPos);
-					mi.GroupName = "G1";
-					mi.Click += new RoutedEventHandler(miItems_Click);
-					cmHistory.Items.Add(mi);
-				}
-				i++;
-			}
+                if (item != null)
+                {
+                    item.Thumbnail.FormatOption = ShellThumbnailFormatOption.IconOnly;
+                    item.Thumbnail.CurrentSize = new System.Windows.Size(16, 16);
+                    MenuItem mi = new MenuItem();
+                    mi.Header = item.GetDisplayName(DisplayNameType.Default);
+                    mi.Tag = item;
+                    mi.Icon = item.Thumbnail.BitmapSource;
+                    mi.IsCheckable = true;
+                    mi.IsChecked = (i == nl.CurrentLocPos);
+                    mi.GroupName = "G1";
+                    mi.Click += new RoutedEventHandler(miItems_Click);
+                    cmHistory.Items.Add(mi);
+                }
+                i++;
+            }
 
-			cmHistory.Placement = PlacementMode.Bottom;
-			cmHistory.PlacementTarget = navBarGrid;
-			cmHistory.IsOpen = true;
-		}
+            cmHistory.Placement = PlacementMode.Bottom;
+            cmHistory.PlacementTarget = navBarGrid;
+            cmHistory.IsOpen = true;
+        }
 
-		void miItems_Click(object sender, RoutedEventArgs e)
-		{
-			ShellObject item = (ShellObject)(sender as MenuItem).Tag;
-			if (item != null)
-			{
-				isGoingBackOrForward = true;
-				NavigationLog nl = (tabControl1.Items[tabControl1.SelectedIndex] as ClosableTabItem).log;
-				(sender as MenuItem).IsChecked = true;
-				nl.CurrentLocPos = cmHistory.Items.IndexOf((sender as MenuItem));
-				Explorer.Navigate(item);
-			}
-		}
+        void miItems_Click(object sender, RoutedEventArgs e)
+        {
+            ShellObject item = (ShellObject)(sender as MenuItem).Tag;
+            if (item != null)
+            {
+                isGoingBackOrForward = true;
+                NavigationLog nl = (tabControl1.Items[tabControl1.SelectedIndex] as ClosableTabItem).log;
+                (sender as MenuItem).IsChecked = true;
+                nl.CurrentLocPos = cmHistory.Items.IndexOf((sender as MenuItem));
+                Explorer.Navigate(item);
+            }
+        }
 
-		private void btnUpLevel_Click(object sender, RoutedEventArgs e)
-		{
+        private void btnUpLevel_Click(object sender, RoutedEventArgs e)
+        {
       if (Explorer.NavigationLog.CurrentLocation.Parent != null)
         Explorer.Navigate(Explorer.NavigationLog.CurrentLocation.Parent);
       else
         btnUpLevel.IsEnabled = false;
 
-			WindowsAPI.SetFocus(Explorer.SysListViewHandle);
-			//ShellContextMenu cm = new ShellContextMenu();
-			//FileInfo fi = new FileInfo(Explorer.SelectedItems[0].ParsingName);
-			//FileInfo[] fii = new FileInfo[1];
-			//fii[0] = fi;
-			//cm.ShowContextMenu(Handle, fii, GetMousePosition());
-			
+            WindowsAPI.SetFocus(Explorer.SysListViewHandle);
+            //ShellContextMenu cm = new ShellContextMenu();
+            //FileInfo fi = new FileInfo(Explorer.SelectedItems[0].ParsingName);
+            //FileInfo[] fii = new FileInfo[1];
+            //fii[0] = fi;
+            //cm.ShowContextMenu(Handle, fii, GetMousePosition());
+            
 
 
-		}
+        }
 
 
-		#endregion
+        #endregion
 
-		#region View Tab/Status Bar
+        #region View Tab/Status Bar
 
-		private void btnMoreColls_Click(object sender, RoutedEventArgs e)
-		{
-			MoreColumns fMoreCollumns = new MoreColumns();
-			fMoreCollumns.PopulateAvailableColumns(Explorer.AvailableColumns(true), Explorer,
-				this.PointToScreen(Mouse.GetPosition(this)));
-		}
+        private void btnMoreColls_Click(object sender, RoutedEventArgs e)
+        {
+            MoreColumns fMoreCollumns = new MoreColumns();
+            fMoreCollumns.PopulateAvailableColumns(Explorer.AvailableColumns(true), Explorer,
+                this.PointToScreen(Mouse.GetPosition(this)));
+        }
 
-		void mig_Click(object sender, RoutedEventArgs e)
-		{
-			MenuItem item = (sender as MenuItem);
-			Explorer.SetGroupCollumn(((Collumns)item.Tag).pkey, true);
-		}
+        void mig_Click(object sender, RoutedEventArgs e)
+        {
+            MenuItem item = (sender as MenuItem);
+            Explorer.SetGroupCollumn(((Collumns)item.Tag).pkey, true);
+        }
 
-		private void btnAutosizeColls_Click(object sender, RoutedEventArgs e)
-		{
-			Explorer.SetAutoSizeColumns();
-		}
+        private void btnAutosizeColls_Click(object sender, RoutedEventArgs e)
+        {
+            Explorer.SetAutoSizeColumns();
+        }
 
-		private void btnSbDetails_Click(object sender, RoutedEventArgs e)
-		{
-			if (Explorer.ContentOptions.ViewMode == ExplorerBrowserViewMode.Details)
-			{
-				btnSbDetails.IsChecked = true;
-			}
+        private void btnSbDetails_Click(object sender, RoutedEventArgs e)
+        {
+            if (Explorer.ContentOptions.ViewMode == ExplorerBrowserViewMode.Details)
+            {
+                btnSbDetails.IsChecked = true;
+            }
 
-			else
-				Explorer.ContentOptions.ViewMode = ExplorerBrowserViewMode.Details;
-		}
+            else
+                Explorer.ContentOptions.ViewMode = ExplorerBrowserViewMode.Details;
+        }
 
-		private void btnSbIcons_Click(object sender, RoutedEventArgs e)
-		{
-			if (Explorer.ContentOptions.ViewMode == ExplorerBrowserViewMode.Icon)
-			{
-				btnSbIcons.IsChecked = true;
-			}
-			else
-				Explorer.ContentOptions.ViewMode = ExplorerBrowserViewMode.Icon;
-		}
+        private void btnSbIcons_Click(object sender, RoutedEventArgs e)
+        {
+            if (Explorer.ContentOptions.ViewMode == ExplorerBrowserViewMode.Icon)
+            {
+                btnSbIcons.IsChecked = true;
+            }
+            else
+                Explorer.ContentOptions.ViewMode = ExplorerBrowserViewMode.Icon;
+        }
 
-		private void btnSbTiles_Click(object sender, RoutedEventArgs e)
-		{
+        private void btnSbTiles_Click(object sender, RoutedEventArgs e)
+        {
 
-			if (Explorer.ContentOptions.ViewMode == ExplorerBrowserViewMode.Tile)
-			{
-				btnSbTiles.IsChecked = true;
-			}
-			else
-				Explorer.ContentOptions.ViewMode = ExplorerBrowserViewMode.Tile;
+            if (Explorer.ContentOptions.ViewMode == ExplorerBrowserViewMode.Tile)
+            {
+                btnSbTiles.IsChecked = true;
+            }
+            else
+                Explorer.ContentOptions.ViewMode = ExplorerBrowserViewMode.Tile;
 
-		}
+        }
     bool isCalledFromSlider = false;
-		private void zoomSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-		{
+        private void zoomSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
       
-			if (!IsCalledFromLoading && !IsCalledFromViewEnum)
-			{
-				//Dispatcher.BeginInvoke(
-				//				new Action(
-				//				delegate()
-				//				{
-				Explorer.ContentOptions.ViewMode = ExplorerBrowserViewMode.Thumbnail;
-				Explorer.ContentOptions.ThumbnailSize = (int)e.NewValue;
-							//	}));
+            if (!IsCalledFromLoading && !IsCalledFromViewEnum)
+            {
+                //Dispatcher.BeginInvoke(
+                //				new Action(
+                //				delegate()
+                //				{
+                Explorer.ContentOptions.ViewMode = ExplorerBrowserViewMode.Thumbnail;
+                Explorer.ContentOptions.ThumbnailSize = (int)e.NewValue;
+                            //	}));
 
-			}
-			IsCalledFromLoading = false;
-			IsCalledFromViewEnum = false;
+            }
+            IsCalledFromLoading = false;
+            IsCalledFromViewEnum = false;
 
-		}
+        }
 
-		private void Button_Click(object sender, RoutedEventArgs e)
-		{
-			Explorer.RefreshExplorer();
-		}
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            Explorer.RefreshExplorer();
+        }
 
-		private void btnRefresh_Click(object sender, RoutedEventArgs e)
-		{
-			//DoubleAnimation da = new DoubleAnimation(100, new Duration(new TimeSpan(0, 0, 2)));
-			//da.FillBehavior = FillBehavior.Stop;
-			//breadcrumbBar1.BeginAnimation(Odyssey.Controls.BreadcrumbBar.ProgressValueProperty, da);
-			//Explorer.HideFocusRectangle();
-
-
-			//For some reason, this was giving off an error.
-
-			//ChangePaneVisibility(0x1, true);
-			//Explorer.ShowPropPage(this.Handle, Explorer.SelectedItems[0].ParsingName, "Security");
+        private void btnRefresh_Click(object sender, RoutedEventArgs e)
+        {
+            //DoubleAnimation da = new DoubleAnimation(100, new Duration(new TimeSpan(0, 0, 2)));
+            //da.FillBehavior = FillBehavior.Stop;
+            //breadcrumbBar1.BeginAnimation(Odyssey.Controls.BreadcrumbBar.ProgressValueProperty, da);
+            //Explorer.HideFocusRectangle();
 
 
+            //For some reason, this was giving off an error.
 
-			//Explorer.RefreshExplorer();
+            //ChangePaneVisibility(0x1, true);
+            //Explorer.ShowPropPage(this.Handle, Explorer.SelectedItems[0].ParsingName, "Security");
 
 
-			//resets Refresh image back to normal
-			//except I can't get it to work (it's probably just a small error I made, but I don't have time to fix right now.
-			//BitmapImage go = new BitmapImage(new Uri("\\Images\\Refresh16.png", UriKind.Relative));
-			//RefreshButtonImage.Source = go;
-		}
 
-		void mi_Click(object sender, RoutedEventArgs e)
-		{
-			MenuItem item = (sender as MenuItem);
+            //Explorer.RefreshExplorer();
+
+
+            //resets Refresh image back to normal
+            //except I can't get it to work (it's probably just a small error I made, but I don't have time to fix right now.
+            //BitmapImage go = new BitmapImage(new Uri("\\Images\\Refresh16.png", UriKind.Relative));
+            //RefreshButtonImage.Source = go;
+        }
+
+        void mi_Click(object sender, RoutedEventArgs e)
+        {
+            MenuItem item = (sender as MenuItem);
       var parentButton = item.Parent as DropDownButton;
       MenuItem ascitem = (MenuItem)parentButton.Items[parentButton.Items.IndexOf(misa)];
-			if (ascitem.IsChecked)
-			{
+            if (ascitem.IsChecked)
+            {
         Explorer.SetSortCollumn(((Collumns)item.Tag).pkey, WindowsAPI.SORT.ASCENDING);
-			}
-			else
-			{
-				Explorer.SetSortCollumn(((Collumns)item.Tag).pkey, WindowsAPI.SORT.DESCENDING);
-			}
+            }
+            else
+            {
+                Explorer.SetSortCollumn(((Collumns)item.Tag).pkey, WindowsAPI.SORT.DESCENDING);
+            }
 
-		}
+        }
 
-		void misng_Click(object sender, RoutedEventArgs e)
-		{
-			MenuItem item = (sender as MenuItem);
-			item.IsChecked = true;
+        void misng_Click(object sender, RoutedEventArgs e)
+        {
+            MenuItem item = (sender as MenuItem);
+            item.IsChecked = true;
       WindowsAPI.PROPERTYKEY pk = new WindowsAPI.PROPERTYKEY();
-			pk.fmtid = new Guid("00000000-0000-0000-0000-000000000000");
-			pk.pid = 0;
-			Explorer.SetGroupCollumn(pk, true);
-		}
+            pk.fmtid = new Guid("00000000-0000-0000-0000-000000000000");
+            pk.pid = 0;
+            Explorer.SetGroupCollumn(pk, true);
+        }
 
 
-		private void inRibbonGallery1_SelectionChanged(object sender, SelectionChangedEventArgs e)
-		{
+        private void inRibbonGallery1_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
       if (IsViewSelection)
       {
         switch (ViewGallery.SelectedIndex)
@@ -5896,353 +5903,353 @@ namespace BetterExplorer
         }
       }
 
-		}
+        }
 
-		private void chkHiddenFiles_Checked(object sender, RoutedEventArgs e)
-		{
+        private void chkHiddenFiles_Checked(object sender, RoutedEventArgs e)
+        {
 
-			if (!IsCalledFromLoading)
-			{
-				Dispatcher.BeginInvoke(
-								new Action(
-								delegate()
-								{
-									WindowsAPI.SHELLSTATE state = new WindowsAPI.SHELLSTATE();
-									state.fShowAllObjects = 1;
-									WindowsAPI.SHGetSetSettings(ref state, WindowsAPI.SSF.SSF_SHOWALLOBJECTS, true);
-									Explorer.RefreshExplorer();
-								}
-				));
-			};
-		}
+            if (!IsCalledFromLoading)
+            {
+                Dispatcher.BeginInvoke(
+                                new Action(
+                                delegate()
+                                {
+                                    WindowsAPI.SHELLSTATE state = new WindowsAPI.SHELLSTATE();
+                                    state.fShowAllObjects = 1;
+                                    WindowsAPI.SHGetSetSettings(ref state, WindowsAPI.SSF.SSF_SHOWALLOBJECTS, true);
+                                    Explorer.RefreshExplorer();
+                                }
+                ));
+            };
+        }
 
-		private void chkHiddenFiles_Unchecked(object sender, RoutedEventArgs e)
-		{
-			if (!IsCalledFromLoading)
-			{
-				Dispatcher.BeginInvoke(
-								new Action(
-								delegate()
-								{
-									WindowsAPI.SHELLSTATE state = new WindowsAPI.SHELLSTATE();
-									state.fShowAllObjects = 0;
-									WindowsAPI.SHGetSetSettings(ref state, WindowsAPI.SSF.SSF_SHOWALLOBJECTS, true);
-									Explorer.RefreshExplorer();
-								}
-				));
-			}
-		}
+        private void chkHiddenFiles_Unchecked(object sender, RoutedEventArgs e)
+        {
+            if (!IsCalledFromLoading)
+            {
+                Dispatcher.BeginInvoke(
+                                new Action(
+                                delegate()
+                                {
+                                    WindowsAPI.SHELLSTATE state = new WindowsAPI.SHELLSTATE();
+                                    state.fShowAllObjects = 0;
+                                    WindowsAPI.SHGetSetSettings(ref state, WindowsAPI.SSF.SSF_SHOWALLOBJECTS, true);
+                                    Explorer.RefreshExplorer();
+                                }
+                ));
+            }
+        }
 
-		private void chkExtensions_Checked(object sender, RoutedEventArgs e)
-		{
+        private void chkExtensions_Checked(object sender, RoutedEventArgs e)
+        {
 
-			if (!IsCalledFromLoading)
-			{
-				Dispatcher.BeginInvoke(
-								new Action(
-								delegate()
-								{
-									WindowsAPI.SHELLSTATE state = new WindowsAPI.SHELLSTATE();
-									state.fShowExtensions = 1;
-									WindowsAPI.SHGetSetSettings(ref state, WindowsAPI.SSF.SSF_SHOWEXTENSIONS, true);
-									Explorer.RefreshExplorer();
-								}
-				));
-			}
-		}
+            if (!IsCalledFromLoading)
+            {
+                Dispatcher.BeginInvoke(
+                                new Action(
+                                delegate()
+                                {
+                                    WindowsAPI.SHELLSTATE state = new WindowsAPI.SHELLSTATE();
+                                    state.fShowExtensions = 1;
+                                    WindowsAPI.SHGetSetSettings(ref state, WindowsAPI.SSF.SSF_SHOWEXTENSIONS, true);
+                                    Explorer.RefreshExplorer();
+                                }
+                ));
+            }
+        }
 
-		private void chkExtensions_Unchecked(object sender, RoutedEventArgs e)
-		{
-			if (!IsCalledFromLoading)
-			{
-				Dispatcher.BeginInvoke(
-								new Action(
-								delegate()
-								{
-									WindowsAPI.SHELLSTATE state = new WindowsAPI.SHELLSTATE();
-									state.fShowExtensions = 0;
-									WindowsAPI.SHGetSetSettings(ref state, WindowsAPI.SSF.SSF_SHOWEXTENSIONS, true);
-									Explorer.RefreshExplorer();
-								}
-				));
-			}
-		}
+        private void chkExtensions_Unchecked(object sender, RoutedEventArgs e)
+        {
+            if (!IsCalledFromLoading)
+            {
+                Dispatcher.BeginInvoke(
+                                new Action(
+                                delegate()
+                                {
+                                    WindowsAPI.SHELLSTATE state = new WindowsAPI.SHELLSTATE();
+                                    state.fShowExtensions = 0;
+                                    WindowsAPI.SHGetSetSettings(ref state, WindowsAPI.SSF.SSF_SHOWEXTENSIONS, true);
+                                    Explorer.RefreshExplorer();
+                                }
+                ));
+            }
+        }
 
-		#endregion
+        #endregion
 
-		#region Hide items
+        #region Hide items
 
-		private void btnHideSelItems_Click(object sender, RoutedEventArgs e)
-		{
+        private void btnHideSelItems_Click(object sender, RoutedEventArgs e)
+        {
 
-			ShellObjectCollection SelItems = Explorer.SelectedItems;
-			pd = new IProgressDialog(this.Handle);
-			pd.Title = "Applying attributes";
-			pd.CancelMessage = "Please wait while the operation is cancelled";
-			pd.Maximum = (uint)SelItems.Count;
-			pd.Value = 0;
-			pd.Line1 = "Applying attributes to:";
-			pd.Line3 = "Calculating Time Remaining...";
-			pd.ShowDialog(IProgressDialog.PROGDLG.Normal, IProgressDialog.PROGDLG.AutoTime, IProgressDialog.PROGDLG.NoMinimize);
-			Thread hthread = new Thread(new ParameterizedThreadStart(DoHideShow));
-			hthread.Start(SelItems);
+            ShellObjectCollection SelItems = Explorer.SelectedItems;
+            pd = new IProgressDialog(this.Handle);
+            pd.Title = "Applying attributes";
+            pd.CancelMessage = "Please wait while the operation is cancelled";
+            pd.Maximum = (uint)SelItems.Count;
+            pd.Value = 0;
+            pd.Line1 = "Applying attributes to:";
+            pd.Line3 = "Calculating Time Remaining...";
+            pd.ShowDialog(IProgressDialog.PROGDLG.Normal, IProgressDialog.PROGDLG.AutoTime, IProgressDialog.PROGDLG.NoMinimize);
+            Thread hthread = new Thread(new ParameterizedThreadStart(DoHideShow));
+            hthread.Start(SelItems);
 
-		}
-		bool IsHidingUserCancel = false;
-		public void DoHideShowWithChilds(object o)
-		{
-			IsHidingUserCancel = false;
-			ShellObjectCollection SelItems = o as ShellObjectCollection;
-			List<string> ItemsToHideShow = new List<string>();
-			foreach (ShellObject obj in SelItems)
-			{
-				ItemsToHideShow.Add(obj.ParsingName);
-				if (Directory.Exists(obj.ParsingName))
-				{
-					DirectoryInfo di = new DirectoryInfo(obj.ParsingName);
-					DirectoryInfo[] dirs = di.GetDirectories("*", SearchOption.AllDirectories);
-					FileInfo[] files = di.GetFiles("*", SearchOption.AllDirectories);
-					foreach (DirectoryInfo dir in dirs)
-					{
-						ItemsToHideShow.Add(dir.FullName);
-					}
-					foreach (FileInfo file in files)
-					{
-						ItemsToHideShow.Add(file.FullName);
-					}
-				}
+        }
+        bool IsHidingUserCancel = false;
+        public void DoHideShowWithChilds(object o)
+        {
+            IsHidingUserCancel = false;
+            ShellObjectCollection SelItems = o as ShellObjectCollection;
+            List<string> ItemsToHideShow = new List<string>();
+            foreach (ShellObject obj in SelItems)
+            {
+                ItemsToHideShow.Add(obj.ParsingName);
+                if (Directory.Exists(obj.ParsingName))
+                {
+                    DirectoryInfo di = new DirectoryInfo(obj.ParsingName);
+                    DirectoryInfo[] dirs = di.GetDirectories("*", SearchOption.AllDirectories);
+                    FileInfo[] files = di.GetFiles("*", SearchOption.AllDirectories);
+                    foreach (DirectoryInfo dir in dirs)
+                    {
+                        ItemsToHideShow.Add(dir.FullName);
+                    }
+                    foreach (FileInfo file in files)
+                    {
+                        ItemsToHideShow.Add(file.FullName);
+                    }
+                }
 
-			}
+            }
 
-			Dispatcher.BeginInvoke(DispatcherPriority.Normal, (Action)(() =>
-			{
+            Dispatcher.BeginInvoke(DispatcherPriority.Normal, (Action)(() =>
+            {
 
-				pd.Maximum = (uint)ItemsToHideShow.Count;
+                pd.Maximum = (uint)ItemsToHideShow.Count;
 
-			}));
+            }));
 
-			foreach (string item in ItemsToHideShow)
-			{
-				try
-				{
-					Dispatcher.BeginInvoke(DispatcherPriority.Normal, (Action)(() =>
-					{
-						if (pd.HasUserCancelled)
-						{
-							IsHidingUserCancel = true;
+            foreach (string item in ItemsToHideShow)
+            {
+                try
+                {
+                    Dispatcher.BeginInvoke(DispatcherPriority.Normal, (Action)(() =>
+                    {
+                        if (pd.HasUserCancelled)
+                        {
+                            IsHidingUserCancel = true;
 
-						}
-					}));
+                        }
+                    }));
 
-					if (IsHidingUserCancel)
-					{
-						break;
-					}
+                    if (IsHidingUserCancel)
+                    {
+                        break;
+                    }
 
-					Dispatcher.BeginInvoke(DispatcherPriority.Normal, (Action)(() =>
-					{
+                    Dispatcher.BeginInvoke(DispatcherPriority.Normal, (Action)(() =>
+                    {
 
-						pd.Line2 = item;
+                        pd.Line2 = item;
 
-					}));
+                    }));
 
-					System.IO.FileAttributes attr = File.GetAttributes(item);
+                    System.IO.FileAttributes attr = File.GetAttributes(item);
 
-					if ((attr & System.IO.FileAttributes.Hidden) == System.IO.FileAttributes.Hidden)
-					{
-						File.SetAttributes(item, attr & ~System.IO.FileAttributes.Hidden);
-					}
-					else
-					{
-						File.SetAttributes(item, attr | System.IO.FileAttributes.Hidden);
-					}
+                    if ((attr & System.IO.FileAttributes.Hidden) == System.IO.FileAttributes.Hidden)
+                    {
+                        File.SetAttributes(item, attr & ~System.IO.FileAttributes.Hidden);
+                    }
+                    else
+                    {
+                        File.SetAttributes(item, attr | System.IO.FileAttributes.Hidden);
+                    }
 
-				}
-				finally
-				{
+                }
+                finally
+                {
 
-				}
+                }
 
-				Dispatcher.BeginInvoke(DispatcherPriority.Normal, (Action)(() =>
-				{
+                Dispatcher.BeginInvoke(DispatcherPriority.Normal, (Action)(() =>
+                {
 
-					pd.Value++;
+                    pd.Value++;
 
-				}));
+                }));
 
-			}
-			Dispatcher.BeginInvoke(DispatcherPriority.Normal, (Action)(() =>
-			{
+            }
+            Dispatcher.BeginInvoke(DispatcherPriority.Normal, (Action)(() =>
+            {
 
-				pd.CloseDialog();
-			}));
-		}
-		public void DoHideShow(object o)
-		{
-			ShellObjectCollection SelItems = o as ShellObjectCollection;
-			IsHidingUserCancel = false;
-			foreach (ShellObject item in SelItems)
-			{
-				try
-				{
-					Dispatcher.BeginInvoke(DispatcherPriority.Normal, (Action)(() =>
-					{
-						if (pd.HasUserCancelled)
-						{
-							IsHidingUserCancel = true;
+                pd.CloseDialog();
+            }));
+        }
+        public void DoHideShow(object o)
+        {
+            ShellObjectCollection SelItems = o as ShellObjectCollection;
+            IsHidingUserCancel = false;
+            foreach (ShellObject item in SelItems)
+            {
+                try
+                {
+                    Dispatcher.BeginInvoke(DispatcherPriority.Normal, (Action)(() =>
+                    {
+                        if (pd.HasUserCancelled)
+                        {
+                            IsHidingUserCancel = true;
 
-						}
-					}));
+                        }
+                    }));
 
-					if (IsHidingUserCancel)
-					{
-						break;
-					}
+                    if (IsHidingUserCancel)
+                    {
+                        break;
+                    }
 
-					Dispatcher.BeginInvoke(DispatcherPriority.Normal, (Action)(() =>
-					{
+                    Dispatcher.BeginInvoke(DispatcherPriority.Normal, (Action)(() =>
+                    {
 
-						pd.Line2 = item.ParsingName;
+                        pd.Line2 = item.ParsingName;
 
-					}));
+                    }));
 
-					System.IO.FileAttributes attr = File.GetAttributes(item.ParsingName);
+                    System.IO.FileAttributes attr = File.GetAttributes(item.ParsingName);
 
-					if ((attr & System.IO.FileAttributes.Hidden) == System.IO.FileAttributes.Hidden)
-					{
-						File.SetAttributes(item.ParsingName, attr & ~System.IO.FileAttributes.Hidden);
-					}
-					else
-					{
-						File.SetAttributes(item.ParsingName, attr | System.IO.FileAttributes.Hidden);
-					}
+                    if ((attr & System.IO.FileAttributes.Hidden) == System.IO.FileAttributes.Hidden)
+                    {
+                        File.SetAttributes(item.ParsingName, attr & ~System.IO.FileAttributes.Hidden);
+                    }
+                    else
+                    {
+                        File.SetAttributes(item.ParsingName, attr | System.IO.FileAttributes.Hidden);
+                    }
 
-				}
-				finally
-				{
+                }
+                finally
+                {
 
-				}
+                }
 
-				Dispatcher.BeginInvoke(DispatcherPriority.Normal, (Action)(() =>
-				{
+                Dispatcher.BeginInvoke(DispatcherPriority.Normal, (Action)(() =>
+                {
 
-					pd.Value++;
+                    pd.Value++;
 
-				}));
+                }));
 
-			}
-			Dispatcher.BeginInvoke(DispatcherPriority.Normal, (Action)(() =>
-			{
+            }
+            Dispatcher.BeginInvoke(DispatcherPriority.Normal, (Action)(() =>
+            {
 
-				pd.CloseDialog();
-			}));
-		}
+                pd.CloseDialog();
+            }));
+        }
 
-		private void miHideItems_Click(object sender, RoutedEventArgs e)
-		{
-			ShellObjectCollection SelItems = Explorer.SelectedItems;
-			pd = new IProgressDialog(this.Handle);
-			pd.Title = "Applying attributes";
-			pd.CancelMessage = "Please wait while the operation is cancelled";
-			pd.Maximum = 100;
-			pd.Value = 0;
-			pd.Line1 = "Applying attributes to:";
-			pd.Line3 = "Calculating Time Remaining...";
-			pd.ShowDialog(IProgressDialog.PROGDLG.Normal, IProgressDialog.PROGDLG.AutoTime, IProgressDialog.PROGDLG.NoMinimize);
-			Thread hthread = new Thread(new ParameterizedThreadStart(DoHideShowWithChilds));
-			hthread.Start(SelItems);
-		}
+        private void miHideItems_Click(object sender, RoutedEventArgs e)
+        {
+            ShellObjectCollection SelItems = Explorer.SelectedItems;
+            pd = new IProgressDialog(this.Handle);
+            pd.Title = "Applying attributes";
+            pd.CancelMessage = "Please wait while the operation is cancelled";
+            pd.Maximum = 100;
+            pd.Value = 0;
+            pd.Line1 = "Applying attributes to:";
+            pd.Line3 = "Calculating Time Remaining...";
+            pd.ShowDialog(IProgressDialog.PROGDLG.Normal, IProgressDialog.PROGDLG.AutoTime, IProgressDialog.PROGDLG.NoMinimize);
+            Thread hthread = new Thread(new ParameterizedThreadStart(DoHideShowWithChilds));
+            hthread.Start(SelItems);
+        }
 
-		#endregion
+        #endregion
 
-		#region Share Tab Commands (excluding Archive)
+        #region Share Tab Commands (excluding Archive)
 
-		private void btnMapDrive_Click(object sender, RoutedEventArgs e)
-		{
+        private void btnMapDrive_Click(object sender, RoutedEventArgs e)
+        {
       WindowsAPI.MapDrive(this.Handle, Explorer.SelectedItems.Count == 1 ? Explorer.SelectedItems[0].ParsingName : String.Empty);
-		}
+        }
 
-		private void btnDisconectDrive_Click(object sender, RoutedEventArgs e)
-		{
-			WindowsAPI.WNetDisconnectDialog(this.Handle, 1);
-		}
+        private void btnDisconectDrive_Click(object sender, RoutedEventArgs e)
+        {
+            WindowsAPI.WNetDisconnectDialog(this.Handle, 1);
+        }
 
-		private void Button_Click_4(object sender, RoutedEventArgs e)
-		{
-			Explorer.OpenShareUI();
-		}
+        private void Button_Click_4(object sender, RoutedEventArgs e)
+        {
+            Explorer.OpenShareUI();
+        }
 
-		private void btnAdvancedSecurity_Click(object sender, RoutedEventArgs e)
-		{
-			Explorer.ShowPropPage(this.Handle, Explorer.SelectedItems[0].ParsingName, "Security");
-		}
+        private void btnAdvancedSecurity_Click(object sender, RoutedEventArgs e)
+        {
+            Explorer.ShowPropPage(this.Handle, Explorer.SelectedItems[0].ParsingName, "Security");
+        }
 
-		#endregion
+        #endregion
 
-		#region Change Language
+        #region Change Language
 
-		//private void btnchangeLocale_Click(object sender, RoutedEventArgs e)
-		//{
-		//    RegistryKey rk = Registry.CurrentUser;
-		//    RegistryKey rks = rk.OpenSubKey(@"Software\BExplorer", true);
+        //private void btnchangeLocale_Click(object sender, RoutedEventArgs e)
+        //{
+        //    RegistryKey rk = Registry.CurrentUser;
+        //    RegistryKey rks = rk.OpenSubKey(@"Software\BExplorer", true);
 
-		//    rks.SetValue(@"Locale", txtLocale.Text);
+        //    rks.SetValue(@"Locale", txtLocale.Text);
 
-		//    SelectCulture(txtLocale.Text);
+        //    SelectCulture(txtLocale.Text);
 
-		//    rks.Close();
-		//    rk.Close();
-		//}
+        //    rks.Close();
+        //    rk.Close();
+        //}
 
-		public void ChangeLocale(string locale)
-		{
-			RegistryKey rk = Registry.CurrentUser;
-			RegistryKey rks = rk.OpenSubKey(@"Software\BExplorer", true);
+        public void ChangeLocale(string locale)
+        {
+            RegistryKey rk = Registry.CurrentUser;
+            RegistryKey rks = rk.OpenSubKey(@"Software\BExplorer", true);
 
-			rks.SetValue(@"Locale", locale);
+            rks.SetValue(@"Locale", locale);
 
-			SelectCulture(locale);
+            SelectCulture(locale);
 
-			rks.Close();
-			rk.Close();
-		}
+            rks.Close();
+            rk.Close();
+        }
 
-		/// <summary>
-		/// Sets the UI language
-		/// </summary>
-		/// <param name="culture">Language code (ex. "en-EN")</param>
-		public static void SelectCulture(string culture)
-		{
-			// List all our resources      
-			List<ResourceDictionary> dictionaryList = new List<ResourceDictionary>();
-			foreach (ResourceDictionary dictionary in Application.Current.Resources.MergedDictionaries)
-			{
-				dictionaryList.Add(dictionary);
-			}
-			// We want our specific culture      
-			string requestedCulture = string.Format("Locale.{0}.xaml", culture);
-			ResourceDictionary resourceDictionary =
-				dictionaryList.FirstOrDefault(d => d.Source.OriginalString == "/BetterExplorer;component/Translation/" + requestedCulture);
-			if (resourceDictionary == null)
-			{
-				// If not found, we select our default language        
-				//        
-				requestedCulture = "DefaultLocale.xaml";
-				resourceDictionary = dictionaryList.FirstOrDefault(d => d.Source.OriginalString == "/BetterExplorer;component/Translation/" + requestedCulture);
-			}
+        /// <summary>
+        /// Sets the UI language
+        /// </summary>
+        /// <param name="culture">Language code (ex. "en-EN")</param>
+        public static void SelectCulture(string culture)
+        {
+            // List all our resources      
+            List<ResourceDictionary> dictionaryList = new List<ResourceDictionary>();
+            foreach (ResourceDictionary dictionary in Application.Current.Resources.MergedDictionaries)
+            {
+                dictionaryList.Add(dictionary);
+            }
+            // We want our specific culture      
+            string requestedCulture = string.Format("Locale.{0}.xaml", culture);
+            ResourceDictionary resourceDictionary =
+                dictionaryList.FirstOrDefault(d => d.Source.OriginalString == "/BetterExplorer;component/Translation/" + requestedCulture);
+            if (resourceDictionary == null)
+            {
+                // If not found, we select our default language        
+                //        
+                requestedCulture = "DefaultLocale.xaml";
+                resourceDictionary = dictionaryList.FirstOrDefault(d => d.Source.OriginalString == "/BetterExplorer;component/Translation/" + requestedCulture);
+            }
 
-			// If we have the requested resource, remove it from the list and place at the end.\      
-			// Then this language will be our string table to use.      
-			if (resourceDictionary != null)
-			{
-				Application.Current.Resources.MergedDictionaries.Remove(resourceDictionary);
-				Application.Current.Resources.MergedDictionaries.Add(resourceDictionary);
-			}
-			// Inform the threads of the new culture      
+            // If we have the requested resource, remove it from the list and place at the end.\      
+            // Then this language will be our string table to use.      
+            if (resourceDictionary != null)
+            {
+                Application.Current.Resources.MergedDictionaries.Remove(resourceDictionary);
+                Application.Current.Resources.MergedDictionaries.Add(resourceDictionary);
+            }
+            // Inform the threads of the new culture      
 
-			Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture(culture);
-			Thread.CurrentThread.CurrentUICulture = new CultureInfo(culture);
-		}
+            Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture(culture);
+            Thread.CurrentThread.CurrentUICulture = new CultureInfo(culture);
+        }
 
         /// <summary>
         /// Sets the UI language
@@ -6293,656 +6300,656 @@ namespace BetterExplorer
             Thread.CurrentThread.CurrentUICulture = new CultureInfo(culture);
         }
 
-		private void TranslationComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-		{
-			if (ReadyToChangeLanguage == true)
-			{
-				ChangeLocale(((TranslationComboBoxItem)e.AddedItems[0]).LocaleCode);
+        private void TranslationComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (ReadyToChangeLanguage == true)
+            {
+                ChangeLocale(((TranslationComboBoxItem)e.AddedItems[0]).LocaleCode);
         TranslateUI();
-			}
-		}
+            }
+        }
 
-		private void btnRemoveLangSetting_Click(object sender, RoutedEventArgs e)
-		{
-			RegistryKey rk = Registry.CurrentUser;
-			RegistryKey rks = rk.OpenSubKey(@"Software\BExplorer", true);
+        private void btnRemoveLangSetting_Click(object sender, RoutedEventArgs e)
+        {
+            RegistryKey rk = Registry.CurrentUser;
+            RegistryKey rks = rk.OpenSubKey(@"Software\BExplorer", true);
 
-			rks.DeleteValue(@"Locale");
+            rks.DeleteValue(@"Locale");
 
-			rks.Close();
-			rk.Close();
-		}
+            rks.Close();
+            rk.Close();
+        }
 
-		private void TranslationHelp_Click(object sender, RoutedEventArgs e)
-		{
-			Process.Start(TranslationURL.Text);
-		}
+        private void TranslationHelp_Click(object sender, RoutedEventArgs e)
+        {
+            Process.Start(TranslationURL.Text);
+        }
 
-		#endregion
+        #endregion
 
-		#region Image Editing
+        #region Image Editing
 
-		private ImageFormat GetImageFormat(string FileName)
-		{
-			using (Bitmap bitmap = new Bitmap(FileName))
-			{
-				return bitmap.RawFormat;
-			}
-		}
+        private ImageFormat GetImageFormat(string FileName)
+        {
+            using (Bitmap bitmap = new Bitmap(FileName))
+            {
+                return bitmap.RawFormat;
+            }
+        }
 
-		private void RotateAndSaveImage(String input, String output, ImageFormat format, RotateFlipType type)
-		{
-			//create an object that we can use to examine an image file
-			System.Drawing.Image img = System.Drawing.Image.FromFile(input);
+        private void RotateAndSaveImage(String input, String output, ImageFormat format, RotateFlipType type)
+        {
+            //create an object that we can use to examine an image file
+            System.Drawing.Image img = System.Drawing.Image.FromFile(input);
 
-			//rotate the picture by 90 degrees
-			img.RotateFlip(type);
+            //rotate the picture by 90 degrees
+            img.RotateFlip(type);
 
-			//re-save the picture
-			img.Save(output, format);
+            //re-save the picture
+            img.Save(output, format);
 
-			//tidy up after we've finished
-			img.Dispose();
-		}
+            //tidy up after we've finished
+            img.Dispose();
+        }
 
-		private void ConvertImage(ImageFormat format, string name, string extension)
-		{
-			System.Drawing.Bitmap cvt = new Bitmap(name);
-			string namen = RemoveExtensionsFromFile(name, new System.IO.FileInfo(name).Extension);
-			try
-			{
-				AddToLog("Converted Image from " + name + " to new file " + namen + extension);
-				cvt.Save(namen + extension, format);
-			}
-			catch (Exception)
-			{
-				MessageBox.Show("There appears to have been an issue with converting the file. Make sure the filename \"" + RemoveExtensionsFromFile(Explorer.SelectedItems[0].GetDisplayName(DisplayNameType.Default), new System.IO.FileInfo(name).Extension) + extension + "\" does already not exist.", "Conversion Error", MessageBoxButton.OK, MessageBoxImage.Error);
-			}
-			cvt.Dispose();
-		}
+        private void ConvertImage(ImageFormat format, string name, string extension)
+        {
+            System.Drawing.Bitmap cvt = new Bitmap(name);
+            string namen = RemoveExtensionsFromFile(name, new System.IO.FileInfo(name).Extension);
+            try
+            {
+                AddToLog("Converted Image from " + name + " to new file " + namen + extension);
+                cvt.Save(namen + extension, format);
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("There appears to have been an issue with converting the file. Make sure the filename \"" + RemoveExtensionsFromFile(Explorer.SelectedItems[0].GetDisplayName(DisplayNameType.Default), new System.IO.FileInfo(name).Extension) + extension + "\" does already not exist.", "Conversion Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            cvt.Dispose();
+        }
 
-		private void ConvertToJPG_Click(object sender, RoutedEventArgs e)
-		{
-			foreach (ShellObject item in Explorer.SelectedItems)
-			{
-				ConvertImage(ImageFormat.Jpeg, item.ParsingName, ".jpg");
-			}
-		}
+        private void ConvertToJPG_Click(object sender, RoutedEventArgs e)
+        {
+            foreach (ShellObject item in Explorer.SelectedItems)
+            {
+                ConvertImage(ImageFormat.Jpeg, item.ParsingName, ".jpg");
+            }
+        }
 
-		private void ConvertToPNG_Click(object sender, RoutedEventArgs e)
-		{
-			foreach (ShellObject item in Explorer.SelectedItems)
-			{
-				ConvertImage(ImageFormat.Png, item.ParsingName, ".png");
-			}
-		}
+        private void ConvertToPNG_Click(object sender, RoutedEventArgs e)
+        {
+            foreach (ShellObject item in Explorer.SelectedItems)
+            {
+                ConvertImage(ImageFormat.Png, item.ParsingName, ".png");
+            }
+        }
 
-		private void ConvertToGIF_Click(object sender, RoutedEventArgs e)
-		{
-			foreach (ShellObject item in Explorer.SelectedItems)
-			{
-				ConvertImage(ImageFormat.Gif, item.ParsingName, ".gif");
-			}
-		}
+        private void ConvertToGIF_Click(object sender, RoutedEventArgs e)
+        {
+            foreach (ShellObject item in Explorer.SelectedItems)
+            {
+                ConvertImage(ImageFormat.Gif, item.ParsingName, ".gif");
+            }
+        }
 
-		private void ConvertToBMP_Click(object sender, RoutedEventArgs e)
-		{
-			foreach (ShellObject item in Explorer.SelectedItems)
-			{
-				ConvertImage(ImageFormat.Bmp, item.ParsingName, ".bmp");
-			}
-		}
+        private void ConvertToBMP_Click(object sender, RoutedEventArgs e)
+        {
+            foreach (ShellObject item in Explorer.SelectedItems)
+            {
+                ConvertImage(ImageFormat.Bmp, item.ParsingName, ".bmp");
+            }
+        }
 
-		private void ConvertToWMF_Click(object sender, RoutedEventArgs e)
-		{
-			foreach (ShellObject item in Explorer.SelectedItems)
-			{
-				ConvertImage(ImageFormat.Wmf, item.ParsingName, ".wmf");
-			}
-		}
+        private void ConvertToWMF_Click(object sender, RoutedEventArgs e)
+        {
+            foreach (ShellObject item in Explorer.SelectedItems)
+            {
+                ConvertImage(ImageFormat.Wmf, item.ParsingName, ".wmf");
+            }
+        }
 
-		private void btnRotateLeft_Click(object sender, RoutedEventArgs e)
-		{
-			//Dispatcher.BeginInvoke(
-			//                  System.Windows.Threading.DispatcherPriority.Background,
-			//                  new Action(
-			//                    delegate()
-			//                    {
-			//                        ImageFormat imagef = GetImageFormat(Explorer.SelectedItems[0].ParsingName);
-			//                        RotateAndSaveImage(Explorer.SelectedItems[0].ParsingName,
-			//                            Explorer.SelectedItems[0].ParsingName, imagef, RotateFlipType.Rotate270FlipNone);
-			//                    }));
-			foreach (ShellObject item in Explorer.SelectedItems)
-			{
-				if (OverwriteOnRotate == true)
-				{
-					System.Drawing.Bitmap cvt = new Bitmap(item.ParsingName);
-					cvt.RotateFlip(RotateFlipType.Rotate270FlipNone);
-					cvt.Save(item.ParsingName);
-					cvt.Dispose();
-					AddToLog("Rotated image " + item.ParsingName);
-				}
-				else
-				{
-					System.Drawing.Bitmap cvt = new Bitmap(item.ParsingName);
-					string ext = GetExtension(item.ParsingName);
-					string name = item.ParsingName;
-					string namen = RemoveExtensionsFromFile(name, new System.IO.FileInfo(name).Extension);
-					cvt.RotateFlip(RotateFlipType.Rotate270FlipNone);
-					cvt.Save(namen + "_Rotated270" + ext);
-					cvt.Dispose();
-					AddToLog("Rotated image " + item.ParsingName);
-				}
-			}
+        private void btnRotateLeft_Click(object sender, RoutedEventArgs e)
+        {
+            //Dispatcher.BeginInvoke(
+            //                  System.Windows.Threading.DispatcherPriority.Background,
+            //                  new Action(
+            //                    delegate()
+            //                    {
+            //                        ImageFormat imagef = GetImageFormat(Explorer.SelectedItems[0].ParsingName);
+            //                        RotateAndSaveImage(Explorer.SelectedItems[0].ParsingName,
+            //                            Explorer.SelectedItems[0].ParsingName, imagef, RotateFlipType.Rotate270FlipNone);
+            //                    }));
+            foreach (ShellObject item in Explorer.SelectedItems)
+            {
+                if (OverwriteOnRotate == true)
+                {
+                    System.Drawing.Bitmap cvt = new Bitmap(item.ParsingName);
+                    cvt.RotateFlip(RotateFlipType.Rotate270FlipNone);
+                    cvt.Save(item.ParsingName);
+                    cvt.Dispose();
+                    AddToLog("Rotated image " + item.ParsingName);
+                }
+                else
+                {
+                    System.Drawing.Bitmap cvt = new Bitmap(item.ParsingName);
+                    string ext = GetExtension(item.ParsingName);
+                    string name = item.ParsingName;
+                    string namen = RemoveExtensionsFromFile(name, new System.IO.FileInfo(name).Extension);
+                    cvt.RotateFlip(RotateFlipType.Rotate270FlipNone);
+                    cvt.Save(namen + "_Rotated270" + ext);
+                    cvt.Dispose();
+                    AddToLog("Rotated image " + item.ParsingName);
+                }
+            }
 
-		}
+        }
 
-		private void btnRotateRight_Click(object sender, RoutedEventArgs e)
-		{
-			//Dispatcher.BeginInvoke(
-			//                  System.Windows.Threading.DispatcherPriority.Background,
-			//                  new Action(
-			//                    delegate()
-			//                    {
-			//                        ImageFormat imagef = GetImageFormat(Explorer.SelectedItems[0].ParsingName);
-			//                        RotateAndSaveImage(Explorer.SelectedItems[0].ParsingName,
-			//                            Explorer.SelectedItems[0].ParsingName, imagef, RotateFlipType.Rotate90FlipNone);
-			//                    }));
-			foreach (ShellObject item in Explorer.SelectedItems)
-			{
-				if (OverwriteOnRotate == true)
-				{
-					System.Drawing.Bitmap cvt = new Bitmap(item.ParsingName);
-					cvt.RotateFlip(RotateFlipType.Rotate90FlipNone);
-					cvt.Save(item.ParsingName);
-					cvt.Dispose();
-					AddToLog("Rotated image " + item.ParsingName);
-				}
-				else
-				{
-					System.Drawing.Bitmap cvt = new Bitmap(item.ParsingName);
-					string ext = GetExtension(item.ParsingName);
-					string name = item.ParsingName;
-					string namen = RemoveExtensionsFromFile(name, new System.IO.FileInfo(name).Extension);
-					cvt.RotateFlip(RotateFlipType.Rotate90FlipNone);
-					cvt.Save(namen + "_Rotated90" + ext);
-					cvt.Dispose();
-					AddToLog("Rotated image " + item.ParsingName);
-				}
-			}
-		}
+        private void btnRotateRight_Click(object sender, RoutedEventArgs e)
+        {
+            //Dispatcher.BeginInvoke(
+            //                  System.Windows.Threading.DispatcherPriority.Background,
+            //                  new Action(
+            //                    delegate()
+            //                    {
+            //                        ImageFormat imagef = GetImageFormat(Explorer.SelectedItems[0].ParsingName);
+            //                        RotateAndSaveImage(Explorer.SelectedItems[0].ParsingName,
+            //                            Explorer.SelectedItems[0].ParsingName, imagef, RotateFlipType.Rotate90FlipNone);
+            //                    }));
+            foreach (ShellObject item in Explorer.SelectedItems)
+            {
+                if (OverwriteOnRotate == true)
+                {
+                    System.Drawing.Bitmap cvt = new Bitmap(item.ParsingName);
+                    cvt.RotateFlip(RotateFlipType.Rotate90FlipNone);
+                    cvt.Save(item.ParsingName);
+                    cvt.Dispose();
+                    AddToLog("Rotated image " + item.ParsingName);
+                }
+                else
+                {
+                    System.Drawing.Bitmap cvt = new Bitmap(item.ParsingName);
+                    string ext = GetExtension(item.ParsingName);
+                    string name = item.ParsingName;
+                    string namen = RemoveExtensionsFromFile(name, new System.IO.FileInfo(name).Extension);
+                    cvt.RotateFlip(RotateFlipType.Rotate90FlipNone);
+                    cvt.Save(namen + "_Rotated90" + ext);
+                    cvt.Dispose();
+                    AddToLog("Rotated image " + item.ParsingName);
+                }
+            }
+        }
 
-		private void btnWallpaper_Click(object sender, RoutedEventArgs e)
-		{
-			Dispatcher.BeginInvoke(DispatcherPriority.Normal, (ThreadStart)(() =>
-			{
-				Wallpaper TheWall = new Wallpaper();
+        private void btnWallpaper_Click(object sender, RoutedEventArgs e)
+        {
+            Dispatcher.BeginInvoke(DispatcherPriority.Normal, (ThreadStart)(() =>
+            {
+                Wallpaper TheWall = new Wallpaper();
 
-				TheWall.Set(new Uri(Explorer.SelectedItems[0].ParsingName), Wallpaper.Style.Stretched);
-			}));
-		}
+                TheWall.Set(new Uri(Explorer.SelectedItems[0].ParsingName), Wallpaper.Style.Stretched);
+            }));
+        }
 
-		private void miWallFill_Click(object sender, RoutedEventArgs e)
-		{
-			Dispatcher.BeginInvoke(DispatcherPriority.Normal, (ThreadStart)(() =>
-			{
-				Wallpaper TheWall = new Wallpaper();
+        private void miWallFill_Click(object sender, RoutedEventArgs e)
+        {
+            Dispatcher.BeginInvoke(DispatcherPriority.Normal, (ThreadStart)(() =>
+            {
+                Wallpaper TheWall = new Wallpaper();
 
-				TheWall.Set(new Uri(Explorer.SelectedItems[0].ParsingName), Wallpaper.Style.Fill);
-			}));
-		}
+                TheWall.Set(new Uri(Explorer.SelectedItems[0].ParsingName), Wallpaper.Style.Fill);
+            }));
+        }
 
-		private void miWallFit_Click(object sender, RoutedEventArgs e)
-		{
-			Dispatcher.BeginInvoke(DispatcherPriority.Normal, (ThreadStart)(() =>
-			{
-				Wallpaper TheWall = new Wallpaper();
+        private void miWallFit_Click(object sender, RoutedEventArgs e)
+        {
+            Dispatcher.BeginInvoke(DispatcherPriority.Normal, (ThreadStart)(() =>
+            {
+                Wallpaper TheWall = new Wallpaper();
 
-				TheWall.Set(new Uri(Explorer.SelectedItems[0].ParsingName), Wallpaper.Style.Fit);
-			}));
-		}
+                TheWall.Set(new Uri(Explorer.SelectedItems[0].ParsingName), Wallpaper.Style.Fit);
+            }));
+        }
 
-		private void miWallStretch_Click(object sender, RoutedEventArgs e)
-		{
-			Dispatcher.BeginInvoke(DispatcherPriority.Normal, (ThreadStart)(() =>
-			{
-				Wallpaper TheWall = new Wallpaper();
+        private void miWallStretch_Click(object sender, RoutedEventArgs e)
+        {
+            Dispatcher.BeginInvoke(DispatcherPriority.Normal, (ThreadStart)(() =>
+            {
+                Wallpaper TheWall = new Wallpaper();
 
-				TheWall.Set(new Uri(Explorer.SelectedItems[0].ParsingName), Wallpaper.Style.Stretched);
-			}));
-		}
+                TheWall.Set(new Uri(Explorer.SelectedItems[0].ParsingName), Wallpaper.Style.Stretched);
+            }));
+        }
 
-		private void miWallTile_Click(object sender, RoutedEventArgs e)
-		{
-			Dispatcher.BeginInvoke(DispatcherPriority.Normal, (ThreadStart)(() =>
-			{
-				Wallpaper TheWall = new Wallpaper();
+        private void miWallTile_Click(object sender, RoutedEventArgs e)
+        {
+            Dispatcher.BeginInvoke(DispatcherPriority.Normal, (ThreadStart)(() =>
+            {
+                Wallpaper TheWall = new Wallpaper();
 
-				TheWall.Set(new Uri(Explorer.SelectedItems[0].ParsingName), Wallpaper.Style.Tiled);
-			}));
-		}
+                TheWall.Set(new Uri(Explorer.SelectedItems[0].ParsingName), Wallpaper.Style.Tiled);
+            }));
+        }
 
-		private void miWallCenter_Click(object sender, RoutedEventArgs e)
-		{
-			Dispatcher.BeginInvoke(DispatcherPriority.Normal, (ThreadStart)(() =>
-			{
-				Wallpaper TheWall = new Wallpaper();
+        private void miWallCenter_Click(object sender, RoutedEventArgs e)
+        {
+            Dispatcher.BeginInvoke(DispatcherPriority.Normal, (ThreadStart)(() =>
+            {
+                Wallpaper TheWall = new Wallpaper();
 
-				TheWall.Set(new Uri(Explorer.SelectedItems[0].ParsingName), Wallpaper.Style.Centered);
-			}));
-		}
+                TheWall.Set(new Uri(Explorer.SelectedItems[0].ParsingName), Wallpaper.Style.Centered);
+            }));
+        }
 
-		private void btnFlipX_Click(object sender, RoutedEventArgs e)
-		{
-			foreach (ShellObject item in Explorer.SelectedItems)
-			{
-				if (OverwriteOnRotate == true)
-				{
-					System.Drawing.Bitmap cvt = new Bitmap(item.ParsingName);
-					cvt.RotateFlip(RotateFlipType.RotateNoneFlipX);
-					cvt.Save(item.ParsingName);
-					cvt.Dispose();
-					AddToLog("Flipped image " + item.ParsingName);
-				}
-				else
-				{
-					System.Drawing.Bitmap cvt = new Bitmap(item.ParsingName);
-					string ext = GetExtension(item.ParsingName);
-					string name = item.ParsingName;
-					string namen = RemoveExtensionsFromFile(name, new System.IO.FileInfo(name).Extension);
-					cvt.RotateFlip(RotateFlipType.RotateNoneFlipX);
-					cvt.Save(namen + "_FlippedX" + ext);
-					cvt.Dispose();
-					AddToLog("Flipped image " + item.ParsingName);
-				}
-			}
-		}
+        private void btnFlipX_Click(object sender, RoutedEventArgs e)
+        {
+            foreach (ShellObject item in Explorer.SelectedItems)
+            {
+                if (OverwriteOnRotate == true)
+                {
+                    System.Drawing.Bitmap cvt = new Bitmap(item.ParsingName);
+                    cvt.RotateFlip(RotateFlipType.RotateNoneFlipX);
+                    cvt.Save(item.ParsingName);
+                    cvt.Dispose();
+                    AddToLog("Flipped image " + item.ParsingName);
+                }
+                else
+                {
+                    System.Drawing.Bitmap cvt = new Bitmap(item.ParsingName);
+                    string ext = GetExtension(item.ParsingName);
+                    string name = item.ParsingName;
+                    string namen = RemoveExtensionsFromFile(name, new System.IO.FileInfo(name).Extension);
+                    cvt.RotateFlip(RotateFlipType.RotateNoneFlipX);
+                    cvt.Save(namen + "_FlippedX" + ext);
+                    cvt.Dispose();
+                    AddToLog("Flipped image " + item.ParsingName);
+                }
+            }
+        }
 
-		private void btnFlipY_Click(object sender, RoutedEventArgs e)
-		{
-			foreach (ShellObject item in Explorer.SelectedItems)
-			{
-				if (OverwriteOnRotate == true)
-				{
-					System.Drawing.Bitmap cvt = new Bitmap(item.ParsingName);
-					cvt.RotateFlip(RotateFlipType.RotateNoneFlipY);
-					cvt.Save(item.ParsingName);
-					cvt.Dispose();
-					AddToLog("Flipped image " + item.ParsingName);
-				}
-				else
-				{
-					System.Drawing.Bitmap cvt = new Bitmap(item.ParsingName);
-					string ext = GetExtension(item.ParsingName);
-					string name = item.ParsingName;
-					string namen = RemoveExtensionsFromFile(name, new System.IO.FileInfo(name).Extension);
-					cvt.RotateFlip(RotateFlipType.RotateNoneFlipY);
-					cvt.Save(namen + "_FlippedY" + ext);
-					cvt.Dispose();
-					AddToLog("Flipped image " + item.ParsingName);
-				}
-			}
-		}
+        private void btnFlipY_Click(object sender, RoutedEventArgs e)
+        {
+            foreach (ShellObject item in Explorer.SelectedItems)
+            {
+                if (OverwriteOnRotate == true)
+                {
+                    System.Drawing.Bitmap cvt = new Bitmap(item.ParsingName);
+                    cvt.RotateFlip(RotateFlipType.RotateNoneFlipY);
+                    cvt.Save(item.ParsingName);
+                    cvt.Dispose();
+                    AddToLog("Flipped image " + item.ParsingName);
+                }
+                else
+                {
+                    System.Drawing.Bitmap cvt = new Bitmap(item.ParsingName);
+                    string ext = GetExtension(item.ParsingName);
+                    string name = item.ParsingName;
+                    string namen = RemoveExtensionsFromFile(name, new System.IO.FileInfo(name).Extension);
+                    cvt.RotateFlip(RotateFlipType.RotateNoneFlipY);
+                    cvt.Save(namen + "_FlippedY" + ext);
+                    cvt.Dispose();
+                    AddToLog("Flipped image " + item.ParsingName);
+                }
+            }
+        }
 
-		private void btnResize_Click(object sender, RoutedEventArgs e)
-		{
-			ResizeImage ri = new ResizeImage(Explorer.SelectedItems[0]);
-			ri.ShowDialog();
-			if (ri.Confirm == true)
-			{
-				System.Drawing.Bitmap cvt = new Bitmap(Explorer.SelectedItems[0].ParsingName);
-				System.Drawing.Bitmap cst = ChangeImageSize(cvt, ri.newwidth, ri.newheight);
+        private void btnResize_Click(object sender, RoutedEventArgs e)
+        {
+            ResizeImage ri = new ResizeImage(Explorer.SelectedItems[0]);
+            ri.ShowDialog();
+            if (ri.Confirm == true)
+            {
+                System.Drawing.Bitmap cvt = new Bitmap(Explorer.SelectedItems[0].ParsingName);
+                System.Drawing.Bitmap cst = ChangeImageSize(cvt, ri.newwidth, ri.newheight);
 
-				string ext = GetExtension(Explorer.SelectedItems[0].ParsingName);
+                string ext = GetExtension(Explorer.SelectedItems[0].ParsingName);
 
-				cst.Save(Explorer.SelectedItems[0].ParsingName + " (" + ri.newwidth + " X " + ri.newheight + ")" + ext);
-				cvt.Dispose();
-				cst.Dispose();
-			}
-		}
+                cst.Save(Explorer.SelectedItems[0].ParsingName + " (" + ri.newwidth + " X " + ri.newheight + ")" + ext);
+                cvt.Dispose();
+                cst.Dispose();
+            }
+        }
 
-		private Bitmap ChangeImageSize(Bitmap img, int width, int height)
-		{
-			Bitmap bm_dest = new Bitmap(width, height);
-			Graphics gr_dest = Graphics.FromImage(bm_dest);
-			gr_dest.DrawImage(img, 0, 0, bm_dest.Width + 1, bm_dest.Height + 1);
-			return bm_dest;
-		}
+        private Bitmap ChangeImageSize(Bitmap img, int width, int height)
+        {
+            Bitmap bm_dest = new Bitmap(width, height);
+            Graphics gr_dest = Graphics.FromImage(bm_dest);
+            gr_dest.DrawImage(img, 0, 0, bm_dest.Width + 1, bm_dest.Height + 1);
+            return bm_dest;
+        }
 
-		#endregion
+        #endregion
 
-		#region Folder Tools Commands
-		private void btnChangeFoldericon_Click(object sender, RoutedEventArgs e)
-		{
-			IconView iv = new IconView();
+        #region Folder Tools Commands
+        private void btnChangeFoldericon_Click(object sender, RoutedEventArgs e)
+        {
+            IconView iv = new IconView();
 
-			iv.LoadIcons(Explorer, false);
-		}
+            iv.LoadIcons(Explorer, false);
+        }
 
-		private void btnClearFoldericon_Click(object sender, RoutedEventArgs e)
-		{
-			Explorer.ClearFolderIcon(Explorer.SelectedItems[0].ParsingName);
-		}
-		#endregion
+        private void btnClearFoldericon_Click(object sender, RoutedEventArgs e)
+        {
+            Explorer.ClearFolderIcon(Explorer.SelectedItems[0].ParsingName);
+        }
+        #endregion
 
-		#region Registry Setting Changes / BetterExplorerOperations Calls / Action Log
+        #region Registry Setting Changes / BetterExplorerOperations Calls / Action Log
 
-		private void btnSetCurrentasStartup_Click(object sender, RoutedEventArgs e)
-		{
+        private void btnSetCurrentasStartup_Click(object sender, RoutedEventArgs e)
+        {
       backstage.IsOpen = true;
-			string CurrentLocString = Explorer.NavigationLog.CurrentLocation.ParsingName;
-			StartUpLocation = CurrentLocString;
-			btnSetCurrentasStartup.Header = Explorer.NavigationLog.CurrentLocation.GetDisplayName(DisplayNameType.Default);
-			btnSetCurrentasStartup.Icon = Explorer.NavigationLog.CurrentLocation.Thumbnail.BitmapSource;
-			RegistryKey rk = Registry.CurrentUser;
-			RegistryKey rks = rk.OpenSubKey(@"Software\BExplorer", true);
-			rks.SetValue(@"StartUpLoc", CurrentLocString);
-			rks.Close();
-			rk.Close();
+            string CurrentLocString = Explorer.NavigationLog.CurrentLocation.ParsingName;
+            StartUpLocation = CurrentLocString;
+            btnSetCurrentasStartup.Header = Explorer.NavigationLog.CurrentLocation.GetDisplayName(DisplayNameType.Default);
+            btnSetCurrentasStartup.Icon = Explorer.NavigationLog.CurrentLocation.Thumbnail.BitmapSource;
+            RegistryKey rk = Registry.CurrentUser;
+            RegistryKey rks = rk.OpenSubKey(@"Software\BExplorer", true);
+            rks.SetValue(@"StartUpLoc", CurrentLocString);
+            rks.Close();
+            rk.Close();
 
-		}
+        }
 
-		private void chkIsFlyout_Checked(object sender, RoutedEventArgs e)
-		{
-			if (!isOnLoad)
-			{
-				RegistryKey rk = Registry.CurrentUser;
-				RegistryKey rks = rk.OpenSubKey(@"Software\BExplorer", true);
-				rks.SetValue(@"HFlyoutEnabled", 1);
-				IsHFlyoutEnabled = true;
-				rks.Close();
-				rk.Close();
-			}
-		}
+        private void chkIsFlyout_Checked(object sender, RoutedEventArgs e)
+        {
+            if (!isOnLoad)
+            {
+                RegistryKey rk = Registry.CurrentUser;
+                RegistryKey rks = rk.OpenSubKey(@"Software\BExplorer", true);
+                rks.SetValue(@"HFlyoutEnabled", 1);
+                IsHFlyoutEnabled = true;
+                rks.Close();
+                rk.Close();
+            }
+        }
 
-		private void chkIsFlyout_Unchecked(object sender, RoutedEventArgs e)
-		{
-			if (!isOnLoad)
-			{
-				RegistryKey rk = Registry.CurrentUser;
-				RegistryKey rks = rk.OpenSubKey(@"Software\BExplorer", true);
-				rks.SetValue(@"HFlyoutEnabled", 0);
-				IsHFlyoutEnabled = false;
-				rks.Close();
-				rk.Close();
-			}
-		}
+        private void chkIsFlyout_Unchecked(object sender, RoutedEventArgs e)
+        {
+            if (!isOnLoad)
+            {
+                RegistryKey rk = Registry.CurrentUser;
+                RegistryKey rks = rk.OpenSubKey(@"Software\BExplorer", true);
+                rks.SetValue(@"HFlyoutEnabled", 0);
+                IsHFlyoutEnabled = false;
+                rks.Close();
+                rk.Close();
+            }
+        }
 
-		private void chkIsDefault_Checked(object sender, RoutedEventArgs e)
-		{
-			if (!isOnLoad)
-			{
-				String CurrentexePath = System.Reflection.Assembly.GetExecutingAssembly().GetModules()[0].FullyQualifiedName;
-				string dir = Path.GetDirectoryName(CurrentexePath);
-				string ExePath = Path.Combine(dir, @"BetterExplorerOperations.exe");
-				Process proc = new Process();
-				var psi = new ProcessStartInfo
-				{
-					FileName = ExePath,
-					Verb = "runas",
-					UseShellExecute = true,
+        private void chkIsDefault_Checked(object sender, RoutedEventArgs e)
+        {
+            if (!isOnLoad)
+            {
+                String CurrentexePath = System.Reflection.Assembly.GetExecutingAssembly().GetModules()[0].FullyQualifiedName;
+                string dir = Path.GetDirectoryName(CurrentexePath);
+                string ExePath = Path.Combine(dir, @"BetterExplorerOperations.exe");
+                Process proc = new Process();
+                var psi = new ProcessStartInfo
+                {
+                    FileName = ExePath,
+                    Verb = "runas",
+                    UseShellExecute = true,
           Arguments = String.Format("/env /user:Administrator \"{0}\"", ExePath),
-				};
-				proc.StartInfo = psi;
-				proc.Start();
-				Thread.Sleep(1000);
-				int h = (int)WindowsAPI.getWindowId(null, "BetterExplorerOperations");
-				int jj = WindowsAPI.sendWindowsStringMessage((int)WindowsAPI.getWindowId(null, "BetterExplorerOperations"),
-					0, "0x77654");
-				proc.WaitForExit();
-				if (proc.ExitCode == -1) {
-					isOnLoad = true;
-					(sender as Fluent.CheckBox).IsChecked = false;
-					isOnLoad = false;
-					MessageBox.Show("Can't set Better Explorer as default!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-				}
-			}
+                };
+                proc.StartInfo = psi;
+                proc.Start();
+                Thread.Sleep(1000);
+                int h = (int)WindowsAPI.getWindowId(null, "BetterExplorerOperations");
+                int jj = WindowsAPI.sendWindowsStringMessage((int)WindowsAPI.getWindowId(null, "BetterExplorerOperations"),
+                    0, "0x77654");
+                proc.WaitForExit();
+                if (proc.ExitCode == -1) {
+                    isOnLoad = true;
+                    (sender as Fluent.CheckBox).IsChecked = false;
+                    isOnLoad = false;
+                    MessageBox.Show("Can't set Better Explorer as default!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
 
-		}
-		public const int WM_COPYDATA = 0x4A;
-		private void chkIsDefault_Unchecked(object sender, RoutedEventArgs e)
-		{
-			if (!isOnLoad)
-			{
-				String CurrentexePath = System.Reflection.Assembly.GetExecutingAssembly().GetModules()[0].FullyQualifiedName;
-				string dir = Path.GetDirectoryName(CurrentexePath);
-				string ExePath = Path.Combine(dir, @"BetterExplorerOperations.exe");
-				Process proc = new Process();
-				var psi = new ProcessStartInfo
-				{
-					FileName = ExePath,
-					Verb = "runas",
-					UseShellExecute = true,
+        }
+        public const int WM_COPYDATA = 0x4A;
+        private void chkIsDefault_Unchecked(object sender, RoutedEventArgs e)
+        {
+            if (!isOnLoad)
+            {
+                String CurrentexePath = System.Reflection.Assembly.GetExecutingAssembly().GetModules()[0].FullyQualifiedName;
+                string dir = Path.GetDirectoryName(CurrentexePath);
+                string ExePath = Path.Combine(dir, @"BetterExplorerOperations.exe");
+                Process proc = new Process();
+                var psi = new ProcessStartInfo
+                {
+                    FileName = ExePath,
+                    Verb = "runas",
+                    UseShellExecute = true,
           Arguments = String.Format("/env /user:Administrator \"{0}\"", ExePath),
-				};
-				proc.StartInfo = psi;
-				proc.Start();
-				Thread.Sleep(1000);
-				WindowsAPI.sendWindowsStringMessage((int)WindowsAPI.getWindowId(null, "BetterExplorerOperations"),
-					 0, "0x77655");
-				proc.WaitForExit();
-				if (proc.ExitCode == -1) {
-					isOnLoad = true;
-					(sender as Fluent.CheckBox).IsChecked = true;
-					isOnLoad = false;
-					MessageBox.Show("Can't restore default filemanager!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-				}
-			}
-		}
+                };
+                proc.StartInfo = psi;
+                proc.Start();
+                Thread.Sleep(1000);
+                WindowsAPI.sendWindowsStringMessage((int)WindowsAPI.getWindowId(null, "BetterExplorerOperations"),
+                     0, "0x77655");
+                proc.WaitForExit();
+                if (proc.ExitCode == -1) {
+                    isOnLoad = true;
+                    (sender as Fluent.CheckBox).IsChecked = true;
+                    isOnLoad = false;
+                    MessageBox.Show("Can't restore default filemanager!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+        }
 
-		private void chkIsTerraCopyEnabled_Checked(object sender, RoutedEventArgs e)
-		{
-			if (!isOnLoad)
-			{
-				RegistryKey rk = Registry.CurrentUser;
-				RegistryKey rks = rk.OpenSubKey(@"Software\BExplorer", true);
-				rks.SetValue(@"FileOpExEnabled", 1);
-				IsExtendedFileOpEnabled = true;
-				rks.Close();
-				rk.Close();
-			}
-		}
+        private void chkIsTerraCopyEnabled_Checked(object sender, RoutedEventArgs e)
+        {
+            if (!isOnLoad)
+            {
+                RegistryKey rk = Registry.CurrentUser;
+                RegistryKey rks = rk.OpenSubKey(@"Software\BExplorer", true);
+                rks.SetValue(@"FileOpExEnabled", 1);
+                IsExtendedFileOpEnabled = true;
+                rks.Close();
+                rk.Close();
+            }
+        }
 
-		private void chkIsTerraCopyEnabled_Unchecked(object sender, RoutedEventArgs e)
-		{
-			if (!isOnLoad)
-			{
-				RegistryKey rk = Registry.CurrentUser;
-				RegistryKey rks = rk.OpenSubKey(@"Software\BExplorer", true);
-				rks.SetValue(@"FileOpExEnabled", 0);
-				IsExtendedFileOpEnabled = false;
-				rks.Close();
-				rk.Close();
-			}
-		}
+        private void chkIsTerraCopyEnabled_Unchecked(object sender, RoutedEventArgs e)
+        {
+            if (!isOnLoad)
+            {
+                RegistryKey rk = Registry.CurrentUser;
+                RegistryKey rks = rk.OpenSubKey(@"Software\BExplorer", true);
+                rks.SetValue(@"FileOpExEnabled", 0);
+                IsExtendedFileOpEnabled = false;
+                rks.Close();
+                rk.Close();
+            }
+        }
 
-		private void chkIsCompartibleRename_Checked(object sender, RoutedEventArgs e)
-		{
-			IsCompartibleRename = true;
-			RegistryKey rk = Registry.CurrentUser;
-			RegistryKey rks = rk.OpenSubKey(@"Software\BExplorer", true);
-			rks.SetValue(@"CompartibleRename", 1);
-			rks.Close();
-			rk.Close();
-		}
+        private void chkIsCompartibleRename_Checked(object sender, RoutedEventArgs e)
+        {
+            IsCompartibleRename = true;
+            RegistryKey rk = Registry.CurrentUser;
+            RegistryKey rks = rk.OpenSubKey(@"Software\BExplorer", true);
+            rks.SetValue(@"CompartibleRename", 1);
+            rks.Close();
+            rk.Close();
+        }
 
-		private void chkIsCompartibleRename_Unchecked(object sender, RoutedEventArgs e)
-		{
-			IsCompartibleRename = false;
-			RegistryKey rk = Registry.CurrentUser;
-			RegistryKey rks = rk.OpenSubKey(@"Software\BExplorer", true);
-			rks.SetValue(@"CompartibleRename", 0);
-			rks.Close();
-			rk.Close();
-		}
+        private void chkIsCompartibleRename_Unchecked(object sender, RoutedEventArgs e)
+        {
+            IsCompartibleRename = false;
+            RegistryKey rk = Registry.CurrentUser;
+            RegistryKey rks = rk.OpenSubKey(@"Software\BExplorer", true);
+            rks.SetValue(@"CompartibleRename", 0);
+            rks.Close();
+            rk.Close();
+        }
 
-		private void chkIsRestoreTabs_Checked(object sender, RoutedEventArgs e)
-		{
-			IsrestoreTabs = true;
-			RegistryKey rk = Registry.CurrentUser;
-			RegistryKey rks = rk.OpenSubKey(@"Software\BExplorer", true);
-			rks.SetValue(@"IsRestoreTabs", 1);
-			rks.Close();
-			rk.Close();
-		}
+        private void chkIsRestoreTabs_Checked(object sender, RoutedEventArgs e)
+        {
+            IsrestoreTabs = true;
+            RegistryKey rk = Registry.CurrentUser;
+            RegistryKey rks = rk.OpenSubKey(@"Software\BExplorer", true);
+            rks.SetValue(@"IsRestoreTabs", 1);
+            rks.Close();
+            rk.Close();
+        }
 
-		private void chkIsRestoreTabs_Unchecked(object sender, RoutedEventArgs e)
-		{
-			IsrestoreTabs = false;
-			RegistryKey rk = Registry.CurrentUser;
-			RegistryKey rks = rk.OpenSubKey(@"Software\BExplorer", true);
-			rks.SetValue(@"IsRestoreTabs", 0);
-			rks.Close();
-			rk.Close();
-		}
+        private void chkIsRestoreTabs_Unchecked(object sender, RoutedEventArgs e)
+        {
+            IsrestoreTabs = false;
+            RegistryKey rk = Registry.CurrentUser;
+            RegistryKey rks = rk.OpenSubKey(@"Software\BExplorer", true);
+            rks.SetValue(@"IsRestoreTabs", 0);
+            rks.Close();
+            rk.Close();
+        }
 
-		private void chkIsVistaStyleListView_Checked(object sender, RoutedEventArgs e)
-		{
-			if (!isOnLoad)
-			{
-				RegistryKey rk = Registry.CurrentUser;
-				RegistryKey rks = rk.OpenSubKey(@"Software\BExplorer", true);
-				rks.SetValue(@"IsVistaStyleListView", 1);
-				rks.Close();
-				rk.Close();
-			}
-		}
+        private void chkIsVistaStyleListView_Checked(object sender, RoutedEventArgs e)
+        {
+            if (!isOnLoad)
+            {
+                RegistryKey rk = Registry.CurrentUser;
+                RegistryKey rks = rk.OpenSubKey(@"Software\BExplorer", true);
+                rks.SetValue(@"IsVistaStyleListView", 1);
+                rks.Close();
+                rk.Close();
+            }
+        }
 
-		private void chkIsVistaStyleListView_Unchecked(object sender, RoutedEventArgs e)
-		{
-			if (!isOnLoad)
-			{
-				RegistryKey rk = Registry.CurrentUser;
-				RegistryKey rks = rk.OpenSubKey(@"Software\BExplorer", true);
-				rks.SetValue(@"IsVistaStyleListView", 0);
-				rks.Close();
-				rk.Close();
-			}
-		}
+        private void chkIsVistaStyleListView_Unchecked(object sender, RoutedEventArgs e)
+        {
+            if (!isOnLoad)
+            {
+                RegistryKey rk = Registry.CurrentUser;
+                RegistryKey rks = rk.OpenSubKey(@"Software\BExplorer", true);
+                rks.SetValue(@"IsVistaStyleListView", 0);
+                rks.Close();
+                rk.Close();
+            }
+        }
 
-		private void gridSplitter1_DragCompleted(object sender, DragCompletedEventArgs e)
-		{
-			RegistryKey rk = Registry.CurrentUser;
-			RegistryKey rks = rk.OpenSubKey(@"Software\BExplorer", true);
-			rks.SetValue(@"SearchBarWidth", SearchBarColumn.Width.Value);
-			rks.Close();
-			rk.Close();
-		}
+        private void gridSplitter1_DragCompleted(object sender, DragCompletedEventArgs e)
+        {
+            RegistryKey rk = Registry.CurrentUser;
+            RegistryKey rks = rk.OpenSubKey(@"Software\BExplorer", true);
+            rks.SetValue(@"SearchBarWidth", SearchBarColumn.Width.Value);
+            rks.Close();
+            rk.Close();
+        }
 
-		private void SearchBarReset_Click(object sender, RoutedEventArgs e)
-		{
-			SearchBarColumn.Width = new GridLength(220);
-			RegistryKey rk = Registry.CurrentUser;
-			RegistryKey rks = rk.OpenSubKey(@"Software\BExplorer", true);
-			rks.SetValue(@"SearchBarWidth", SearchBarColumn.Width.Value);
-			rks.Close();
-			rk.Close();
-		}
+        private void SearchBarReset_Click(object sender, RoutedEventArgs e)
+        {
+            SearchBarColumn.Width = new GridLength(220);
+            RegistryKey rk = Registry.CurrentUser;
+            RegistryKey rks = rk.OpenSubKey(@"Software\BExplorer", true);
+            rks.SetValue(@"SearchBarWidth", SearchBarColumn.Width.Value);
+            rks.Close();
+            rk.Close();
+        }
 
-		private void chkShowCheckBoxes_Checked(object sender, RoutedEventArgs e)
-		{
-			RegistryKey rk = Registry.CurrentUser;
-			RegistryKey rks = rk.OpenSubKey(@"Software\BExplorer", true);
-			rks.SetValue(@"CheckModeEnabled", 1);
-			isCheckModeEnabled = true;
-			Explorer.ContentOptions.CheckSelect = true;
-			rk.Close();
-			rks.Close();
-		}
+        private void chkShowCheckBoxes_Checked(object sender, RoutedEventArgs e)
+        {
+            RegistryKey rk = Registry.CurrentUser;
+            RegistryKey rks = rk.OpenSubKey(@"Software\BExplorer", true);
+            rks.SetValue(@"CheckModeEnabled", 1);
+            isCheckModeEnabled = true;
+            Explorer.ContentOptions.CheckSelect = true;
+            rk.Close();
+            rks.Close();
+        }
 
-		private void chkShowCheckBoxes_Unchecked(object sender, RoutedEventArgs e)
-		{
-			RegistryKey rk = Registry.CurrentUser;
-			RegistryKey rks = rk.OpenSubKey(@"Software\BExplorer", true);
-			rks.SetValue(@"CheckModeEnabled", 0);
-			isCheckModeEnabled = false;
-			Explorer.ContentOptions.CheckSelect = false;
-			rk.Close();
-			rks.Close();
-		}
+        private void chkShowCheckBoxes_Unchecked(object sender, RoutedEventArgs e)
+        {
+            RegistryKey rk = Registry.CurrentUser;
+            RegistryKey rks = rk.OpenSubKey(@"Software\BExplorer", true);
+            rks.SetValue(@"CheckModeEnabled", 0);
+            isCheckModeEnabled = false;
+            Explorer.ContentOptions.CheckSelect = false;
+            rk.Close();
+            rks.Close();
+        }
 
-		private void chkTreeExpand_Checked(object sender, RoutedEventArgs e)
-		{
-			if (!isOnLoad)
-			{
-				String CurrentexePath = System.Reflection.Assembly.GetExecutingAssembly().GetModules()[0].FullyQualifiedName;
-				string dir = Path.GetDirectoryName(CurrentexePath);
-				string ExePath = Path.Combine(dir, @"BetterExplorerOperations.exe");
-				Process proc = new Process();
-				var psi = new ProcessStartInfo
-				{
-					FileName = ExePath,
-					Verb = "runas",
-					UseShellExecute = true,
-					Arguments = "/env /user:" + "Administrator " + "\"" + ExePath + "\"",
-				};
-				proc.StartInfo = psi;
-				proc.Start();
-				Thread.Sleep(1000);
-				int h = (int)WindowsAPI.getWindowId(null, "BetterExplorerOperations");
-				int jj = WindowsAPI.sendWindowsStringMessage((int)WindowsAPI.getWindowId(null, "BetterExplorerOperations"),
-					0, "0x88775");
-				proc.WaitForExit();
-			}
-		}
+        private void chkTreeExpand_Checked(object sender, RoutedEventArgs e)
+        {
+            if (!isOnLoad)
+            {
+                String CurrentexePath = System.Reflection.Assembly.GetExecutingAssembly().GetModules()[0].FullyQualifiedName;
+                string dir = Path.GetDirectoryName(CurrentexePath);
+                string ExePath = Path.Combine(dir, @"BetterExplorerOperations.exe");
+                Process proc = new Process();
+                var psi = new ProcessStartInfo
+                {
+                    FileName = ExePath,
+                    Verb = "runas",
+                    UseShellExecute = true,
+                    Arguments = "/env /user:" + "Administrator " + "\"" + ExePath + "\"",
+                };
+                proc.StartInfo = psi;
+                proc.Start();
+                Thread.Sleep(1000);
+                int h = (int)WindowsAPI.getWindowId(null, "BetterExplorerOperations");
+                int jj = WindowsAPI.sendWindowsStringMessage((int)WindowsAPI.getWindowId(null, "BetterExplorerOperations"),
+                    0, "0x88775");
+                proc.WaitForExit();
+            }
+        }
 
-		[StructLayout(LayoutKind.Sequential)]
-		public struct SymLinkInfo
-		{
-			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 255)]
-			public string lpDestination;
-			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 255)]
-			public string lpTarget;
-			public int SymType;
-			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 255)]
-			public string lpMsg;
+        [StructLayout(LayoutKind.Sequential)]
+        public struct SymLinkInfo
+        {
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 255)]
+            public string lpDestination;
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 255)]
+            public string lpTarget;
+            public int SymType;
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 255)]
+            public string lpMsg;
 
-		};
+        };
 
-		private void chkTreeExpand_Unchecked(object sender, RoutedEventArgs e)
-		{
-			if (!isOnLoad)
-			{
-				String CurrentexePath = System.Reflection.Assembly.GetExecutingAssembly().GetModules()[0].FullyQualifiedName;
-				string dir = Path.GetDirectoryName(CurrentexePath);
-				string ExePath = Path.Combine(dir, @"BetterExplorerOperations.exe");
-				Process proc = new Process();
-				var psi = new ProcessStartInfo
-				{
-					FileName = ExePath,
-					Verb = "runas",
-					UseShellExecute = true,
-					Arguments = "/env /user:" + "Administrator " + "\"" + ExePath + "\"",
-				};
-				proc.StartInfo = psi;
-				proc.Start();
-				Thread.Sleep(1000);
-				int h = (int)WindowsAPI.getWindowId(null, "BetterExplorerOperations");
-				int jj = WindowsAPI.sendWindowsStringMessage((int)WindowsAPI.getWindowId(null, "BetterExplorerOperations"),
-					0, "0x88776");
-				proc.WaitForExit();
-			}
-		}
+        private void chkTreeExpand_Unchecked(object sender, RoutedEventArgs e)
+        {
+            if (!isOnLoad)
+            {
+                String CurrentexePath = System.Reflection.Assembly.GetExecutingAssembly().GetModules()[0].FullyQualifiedName;
+                string dir = Path.GetDirectoryName(CurrentexePath);
+                string ExePath = Path.Combine(dir, @"BetterExplorerOperations.exe");
+                Process proc = new Process();
+                var psi = new ProcessStartInfo
+                {
+                    FileName = ExePath,
+                    Verb = "runas",
+                    UseShellExecute = true,
+                    Arguments = "/env /user:" + "Administrator " + "\"" + ExePath + "\"",
+                };
+                proc.StartInfo = psi;
+                proc.Start();
+                Thread.Sleep(1000);
+                int h = (int)WindowsAPI.getWindowId(null, "BetterExplorerOperations");
+                int jj = WindowsAPI.sendWindowsStringMessage((int)WindowsAPI.getWindowId(null, "BetterExplorerOperations"),
+                    0, "0x88776");
+                proc.WaitForExit();
+            }
+        }
 
-		private void chkOverwriteImages_Checked(object sender, RoutedEventArgs e)
-		{
-			OverwriteOnRotate = true;
-			RegistryKey rk = Registry.CurrentUser;
-			RegistryKey rks = rk.OpenSubKey(@"Software\BExplorer", true);
-			rks.SetValue(@"OverwriteImageWhileEditing", 1);
-			rks.Close();
-			rk.Close();
-		}
+        private void chkOverwriteImages_Checked(object sender, RoutedEventArgs e)
+        {
+            OverwriteOnRotate = true;
+            RegistryKey rk = Registry.CurrentUser;
+            RegistryKey rks = rk.OpenSubKey(@"Software\BExplorer", true);
+            rks.SetValue(@"OverwriteImageWhileEditing", 1);
+            rks.Close();
+            rk.Close();
+        }
 
-		private void chkOverwriteImages_Unchecked(object sender, RoutedEventArgs e)
-		{
-			OverwriteOnRotate = false;
-			RegistryKey rk = Registry.CurrentUser;
-			RegistryKey rks = rk.OpenSubKey(@"Software\BExplorer", true);
-			rks.SetValue(@"OverwriteImageWhileEditing", 0);
-			rks.Close();
-			rk.Close();
-		}
+        private void chkOverwriteImages_Unchecked(object sender, RoutedEventArgs e)
+        {
+            OverwriteOnRotate = false;
+            RegistryKey rk = Registry.CurrentUser;
+            RegistryKey rks = rk.OpenSubKey(@"Software\BExplorer", true);
+            rks.SetValue(@"OverwriteImageWhileEditing", 0);
+            rks.Close();
+            rk.Close();
+        }
 
         private void chkIsCFO_Click(object sender, RoutedEventArgs e)
         {
@@ -6999,81 +7006,81 @@ namespace BetterExplorer
             }
         }
 
-		private void chkLogHistory_Checked(object sender, RoutedEventArgs e)
-		{
-			canlogactions = true;
-			RegistryKey rk = Registry.CurrentUser;
-			RegistryKey rks = rk.OpenSubKey(@"Software\BExplorer", true);
-			rks.SetValue(@"EnableActionLog", 1);
-			rks.Close();
-			rk.Close();
-		}
+        private void chkLogHistory_Checked(object sender, RoutedEventArgs e)
+        {
+            canlogactions = true;
+            RegistryKey rk = Registry.CurrentUser;
+            RegistryKey rks = rk.OpenSubKey(@"Software\BExplorer", true);
+            rks.SetValue(@"EnableActionLog", 1);
+            rks.Close();
+            rk.Close();
+        }
 
-		private void chkLogHistory_Unchecked(object sender, RoutedEventArgs e)
-		{
-			canlogactions = false;
-			RegistryKey rk = Registry.CurrentUser;
-			RegistryKey rks = rk.OpenSubKey(@"Software\BExplorer", true);
-			rks.SetValue(@"EnableActionLog", 0);
-			rks.Close();
-			rk.Close();
-		}
+        private void chkLogHistory_Unchecked(object sender, RoutedEventArgs e)
+        {
+            canlogactions = false;
+            RegistryKey rk = Registry.CurrentUser;
+            RegistryKey rks = rk.OpenSubKey(@"Software\BExplorer", true);
+            rks.SetValue(@"EnableActionLog", 0);
+            rks.Close();
+            rk.Close();
+        }
 
-		private void AddToLog(string value)
-		{
-			try
-			{
-				if (canlogactions == true)
-				{
-					if (Directory.Exists(logdir) == false)
-					{
-						Directory.CreateDirectory(logdir);
-					}
+        private void AddToLog(string value)
+        {
+            try
+            {
+                if (canlogactions == true)
+                {
+                    if (Directory.Exists(logdir) == false)
+                    {
+                        Directory.CreateDirectory(logdir);
+                    }
 
           using (StreamWriter sw = new StreamWriter(String.Format("{0}{1}.txt", logdir, sessionid), true))
-					{
-						sw.WriteLine(DateTime.Now.ToShortDateString() + " " + DateTime.Now.ToShortTimeString() + " : " + value);
-					}
-				}
-			}
-			catch (Exception exe)
-			{
-				MessageBox.Show("An error occurred while writing to the log file. This error can be avoided if you disable the action logging feature. Please report this issue at http://bugtracker.better-explorer.com/. \r\n\r\n Here is some information about the error: \r\n\r\n" + exe.Message + "\r\n\r\n" + exe.ToString(), "Error While Writing to Log", MessageBoxButton.OK, MessageBoxImage.Error);
-			}
-		}
+                    {
+                        sw.WriteLine(DateTime.Now.ToShortDateString() + " " + DateTime.Now.ToShortTimeString() + " : " + value);
+                    }
+                }
+            }
+            catch (Exception exe)
+            {
+                MessageBox.Show("An error occurred while writing to the log file. This error can be avoided if you disable the action logging feature. Please report this issue at http://bugtracker.better-explorer.com/. \r\n\r\n Here is some information about the error: \r\n\r\n" + exe.Message + "\r\n\r\n" + exe.ToString(), "Error While Writing to Log", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
 
-		private void btnShowLogs_Click(object sender, RoutedEventArgs e)
-		{
-			try
-			{
-				if (Directory.Exists(logdir) == false)
-				{
-					Directory.CreateDirectory(logdir);
-				}
+        private void btnShowLogs_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (Directory.Exists(logdir) == false)
+                {
+                    Directory.CreateDirectory(logdir);
+                }
 
-				NewTab(logdir);
+                NewTab(logdir);
 
-				this.backstage.IsOpen = false;
-			}
-			catch (Exception exe)
-			{
-				MessageBox.Show("An error occurred while trying to open the logs folder. Please report this issue at http://bugtracker.better-explorer.com/. \r\n\r\n Here is some information about the error: \r\n\r\n" + exe.Message + "\r\n\r\n" + exe.ToString(), "Error While Opening Log Folder", MessageBoxButton.OK, MessageBoxImage.Error);
-			}
-		}
+                this.backstage.IsOpen = false;
+            }
+            catch (Exception exe)
+            {
+                MessageBox.Show("An error occurred while trying to open the logs folder. Please report this issue at http://bugtracker.better-explorer.com/. \r\n\r\n Here is some information about the error: \r\n\r\n" + exe.Message + "\r\n\r\n" + exe.ToString(), "Error While Opening Log Folder", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
 
-		#endregion
+        #endregion
 
-		#region Change Pane Visibility
+        #region Change Pane Visibility
 
-		/// <summary>
-		/// Changes the PaneVisibility at Runtime
-		/// </summary>
-		/// <param name="PaneForChange">The pane for change (0x1 - Details, 0x2 - Preview, 0x3 - Navigation)</param>
-		/// <param name="IsShow"></param>
-		private async void ChangePaneVisibility(uint PaneForChange, bool IsShow)
-		{
+        /// <summary>
+        /// Changes the PaneVisibility at Runtime
+        /// </summary>
+        /// <param name="PaneForChange">The pane for change (0x1 - Details, 0x2 - Preview, 0x3 - Navigation)</param>
+        /// <param name="IsShow"></param>
+        private async void ChangePaneVisibility(uint PaneForChange, bool IsShow)
+        {
 
-			ShellObject lastLoc = Explorer.NavigationLog.CurrentLocation;
+            ShellObject lastLoc = Explorer.NavigationLog.CurrentLocation;
       await Task.Run(() =>
           {
             Dispatcher.Invoke(DispatcherPriority.Render, (ThreadStart)(() =>
@@ -7162,54 +7169,54 @@ namespace BetterExplorer
       //InitializeExplorerControl();
 
 
-			isGoingBackOrForward = true;
+            isGoingBackOrForward = true;
 
       //Explorer.Width = (int)ShellVView.Width;
       //Explorer.Height = (int)ShellVView.Height;
 
       Explorer.Navigate(lastLoc);
       //ShellVView.Child = Explorer;
-		}
+        }
 
     void Explorer_ItemMouseMiddleClick(object sender, ExplorerMouseEventArgs e) {
       NewTab(e.Item);
     }
 
-		private void btnNavigationPane_Checked(object sender, RoutedEventArgs e)
-		{
-			if (!isOnLoad)
-				ChangePaneVisibility(0x3, true);
-		}
+        private void btnNavigationPane_Checked(object sender, RoutedEventArgs e)
+        {
+            if (!isOnLoad)
+                ChangePaneVisibility(0x3, true);
+        }
 
-		private void btnNavigationPane_Unchecked(object sender, RoutedEventArgs e)
-		{
-			if (!isOnLoad)
-				ChangePaneVisibility(0x3, false);
-		}
+        private void btnNavigationPane_Unchecked(object sender, RoutedEventArgs e)
+        {
+            if (!isOnLoad)
+                ChangePaneVisibility(0x3, false);
+        }
 
-		private void btnPreviewPane_Checked(object sender, RoutedEventArgs e)
-		{
-			if (!isOnLoad)
-				ChangePaneVisibility(0x2, true);
-		}
+        private void btnPreviewPane_Checked(object sender, RoutedEventArgs e)
+        {
+            if (!isOnLoad)
+                ChangePaneVisibility(0x2, true);
+        }
 
-		private void btnPreviewPane_Unchecked(object sender, RoutedEventArgs e)
-		{
-			if (!isOnLoad)
-				ChangePaneVisibility(0x2, false);
-		}
+        private void btnPreviewPane_Unchecked(object sender, RoutedEventArgs e)
+        {
+            if (!isOnLoad)
+                ChangePaneVisibility(0x2, false);
+        }
 
-		private void btnInfoPane_Unchecked(object sender, RoutedEventArgs e)
-		{
-			if (!isOnLoad)
-				ChangePaneVisibility(0x1, false);
-		}
+        private void btnInfoPane_Unchecked(object sender, RoutedEventArgs e)
+        {
+            if (!isOnLoad)
+                ChangePaneVisibility(0x1, false);
+        }
 
-		private void btnInfoPane_Checked(object sender, RoutedEventArgs e)
-		{
-			if (!isOnLoad)
-				ChangePaneVisibility(0x1, true);
-		}
+        private void btnInfoPane_Checked(object sender, RoutedEventArgs e)
+        {
+            if (!isOnLoad)
+                ChangePaneVisibility(0x1, true);
+        }
 
         // Legacy Pane Code
         private void chkIsInfoPane_Checked(object sender, RoutedEventArgs e)
@@ -7274,136 +7281,136 @@ namespace BetterExplorer
         }
 
 
-		#endregion
+        #endregion
 
-		#region IsBool Code
+        #region IsBool Code
 
-		private void TheStatusBar_ContextMenuClosing(object sender, ContextMenuEventArgs e)
-		{
+        private void TheStatusBar_ContextMenuClosing(object sender, ContextMenuEventArgs e)
+        {
 
-		}
+        }
 
-		private void RibbonWindow_Activated(object sender, EventArgs e)
-		{
+        private void RibbonWindow_Activated(object sender, EventArgs e)
+        {
       if (!backstage.IsOpen)
         Explorer.SetExplorerFocus();
       
-		}
+        }
 
-		void fAbout_Closed(object sender, EventArgs e)
-		{
+        void fAbout_Closed(object sender, EventArgs e)
+        {
 
-		}
+        }
 
 
-		private void btnCopyto_GotFocus(object sender, RoutedEventArgs e)
-		{
+        private void btnCopyto_GotFocus(object sender, RoutedEventArgs e)
+        {
 
-		}
+        }
 
-		private void btnCopyto_LostFocus(object sender, RoutedEventArgs e)
-		{
+        private void btnCopyto_LostFocus(object sender, RoutedEventArgs e)
+        {
 
-		}
+        }
 
-		private void btnMoreColls_DropDownOpened(object sender, EventArgs e)
-		{
+        private void btnMoreColls_DropDownOpened(object sender, EventArgs e)
+        {
 
-		}
+        }
 
-		private void btnMoreColls_DropDownClosed(object sender, EventArgs e)
-		{
+        private void btnMoreColls_DropDownClosed(object sender, EventArgs e)
+        {
 
-		}
+        }
 
-		void cmHistory_Closed(object sender, RoutedEventArgs e)
-		{
+        void cmHistory_Closed(object sender, RoutedEventArgs e)
+        {
 
-		}
+        }
 
-		void cmHistory_Opened(object sender, RoutedEventArgs e)
-		{
+        void cmHistory_Opened(object sender, RoutedEventArgs e)
+        {
 
-		}
+        }
 
-		#endregion
+        #endregion
 
-		#region Breadcrumb Bar
+        #region Breadcrumb Bar
 
-		private void breadcrumbBarControl1_NavigateRequested(object sender, PathEventArgs e)
-		{
+        private void breadcrumbBarControl1_NavigateRequested(object sender, PathEventArgs e)
+        {
      
-			Explorer.Navigate(e.ShellObject != null ? e.ShellObject : ShellObject.FromParsingName(e.Path));
-		}
+            Explorer.Navigate(e.ShellObject != null ? e.ShellObject : ShellObject.FromParsingName(e.Path));
+        }
 
-		private void RibbonWindow_KeyUp(object sender, KeyEventArgs e)
-		{
-			if (e.Key == Key.Escape)
-			{
-				breadcrumbBarControl1.ExitEditMode();
+        private void RibbonWindow_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Escape)
+            {
+                breadcrumbBarControl1.ExitEditMode();
         Explorer.IsCancelNavigation = true;
-			}
-		}
+            }
+        }
 
-		private void TheStatusBar_GotFocus(object sender, RoutedEventArgs e)
-		{
-			//if (IsAfterRename)
-			//{
-			//    breadcrumbBarControl1.ExitEditMode();
-			//}
+        private void TheStatusBar_GotFocus(object sender, RoutedEventArgs e)
+        {
+            //if (IsAfterRename)
+            //{
+            //    breadcrumbBarControl1.ExitEditMode();
+            //}
             if (!backstage.IsOpen)
                 Explorer.SetExplorerFocus();
-		}
+        }
 
-		private void RibbonWindow_GotFocus(object sender, RoutedEventArgs e)
-		{
+        private void RibbonWindow_GotFocus(object sender, RoutedEventArgs e)
+        {
 
-			if (breadcrumbBarControl1.IsInEditMode)
-			{
-				breadcrumbBarControl1.ExitEditMode();
-			}
+            if (breadcrumbBarControl1.IsInEditMode)
+            {
+                breadcrumbBarControl1.ExitEditMode();
+            }
 
       if (!backstage.IsOpen)
           Explorer.SetExplorerFocus();
-		}
+        }
 
-		private void SaveHistoryToFile(string relativepath, List<String> history)
-		{
-			//string path = null;
-			//foreach (ShellObject item in Explorer.SelectedItems)
-			//{
-			//    //This way i think is better of making multiple line in .Net ;)
-			//    if (string.IsNullOrEmpty(path))
-			//    {
-			//        path = item.ParsingName;
-			//    }
-			//    else
-			//    {
-			//        path = path + "\r\n" + item.ParsingName;
-			//    }
+        private void SaveHistoryToFile(string relativepath, List<String> history)
+        {
+            //string path = null;
+            //foreach (ShellObject item in Explorer.SelectedItems)
+            //{
+            //    //This way i think is better of making multiple line in .Net ;)
+            //    if (string.IsNullOrEmpty(path))
+            //    {
+            //        path = item.ParsingName;
+            //    }
+            //    else
+            //    {
+            //        path = path + "\r\n" + item.ParsingName;
+            //    }
 
-			//}
+            //}
 
-			// Write each entry to a file. (the "false" parameter makes sure the file is overwritten.)
-			using (StreamWriter sw = new StreamWriter(relativepath, false, Encoding.UTF8))
-			{
-				foreach (string item in history)
-				{
+            // Write each entry to a file. (the "false" parameter makes sure the file is overwritten.)
+            using (StreamWriter sw = new StreamWriter(relativepath, false, Encoding.UTF8))
+            {
+                foreach (string item in history)
+                {
           if (!String.IsNullOrEmpty(item.Replace("\0",String.Empty)))
-					  sw.WriteLine(item);
-				}
-			}
+                      sw.WriteLine(item);
+                }
+            }
 
-		}
+        }
 
-		private ObservableCollection<BreadcrumbBarFSItem> ReadHistoryFromFile(string relativepath)
-		{
-			string line = "";
+        private ObservableCollection<BreadcrumbBarFSItem> ReadHistoryFromFile(string relativepath)
+        {
+            string line = "";
       ObservableCollection<BreadcrumbBarFSItem> hl = new ObservableCollection<BreadcrumbBarFSItem>();
-			using (StreamReader sr = new StreamReader(relativepath,Encoding.UTF8))
-			{
-				while ((line = sr.ReadLine()) != null)
-				{
+            using (StreamReader sr = new StreamReader(relativepath,Encoding.UTF8))
+            {
+                while ((line = sr.ReadLine()) != null)
+                {
           if (!String.IsNullOrEmpty(line.Replace("\0", String.Empty)))
           {
             BreadcrumbBarFSItem item = null;
@@ -7418,716 +7425,716 @@ namespace BetterExplorer
             }
             hl.Add(item);
           }
-				}
-			}
-
-			return hl;
-		}
-
-		void bbi_Drop(object sender, DragEventArgs e)
-		{
-
-
-			System.Windows.Point pt = e.GetPosition(sender as IInputElement);
-
-
-			if ((sender as BreadcrumbBarItem).ShellObject.IsFileSystemObject)
-			{
-				if ((e.KeyStates & DragDropKeyStates.ControlKey) == DragDropKeyStates.ControlKey)
-				{
-					e.Effects = DragDropEffects.Copy;
-					if (e.Data.GetDataPresent(DataFormats.FileDrop))
-					{
-						FileOperationsData PasteData = new FileOperationsData();
-						String[] collection = (String[])e.Data.GetData(DataFormats.FileDrop);
-						StringCollection scol = new StringCollection();
-						scol.AddRange(collection);
-						PasteData.DropList = scol;
-						PasteData.PathForDrop = (sender as BreadcrumbBarItem).ShellObject.ParsingName;
-						AddToLog("Copied Files to " + PasteData.PathForDrop + " Files copied: " + scol.ToString());
-						Thread t = null;
-						t = new Thread(new ParameterizedThreadStart(Explorer.DoCopy));
-						t.SetApartmentState(ApartmentState.STA);
-						t.Start(PasteData);
-					}
-				}
-				else
-				{
-					//if (Path.GetPathRoot((sender as ClosableTabItem).Path.ParsingName) ==
-					//    Path.GetPathRoot(Explorer.NavigationLog.CurrentLocation.ParsingName))
-					//{
-					e.Effects = DragDropEffects.Move;
-					if (e.Data.GetDataPresent(DataFormats.FileDrop))
-					{
-						FileOperationsData PasteData = new FileOperationsData();
-						String[] collection = (String[])e.Data.GetData(DataFormats.FileDrop);
-						StringCollection scol = new StringCollection();
-						scol.AddRange(collection);
-						PasteData.DropList = scol;
-						PasteData.PathForDrop = (sender as BreadcrumbBarItem).ShellObject.ParsingName;
-						AddToLog("Moved Files to " + PasteData.PathForDrop + " Files moved: " + scol.ToString());
-						Thread t = null;
-						t = new Thread(new ParameterizedThreadStart(Explorer.DoMove));
-						t.SetApartmentState(ApartmentState.STA);
-						t.Start(PasteData);
-					}
-
-					//}
-					//else
-					//{
-					//    e.Effects = DragDropEffects.Copy;
-					//    if (e.Data.GetDataPresent(DataFormats.FileDrop))
-					//    {
-					//        FileOperationsData PasteData = new FileOperationsData();
-					//        String[] collection = (String[])e.Data.GetData(DataFormats.FileDrop);
-					//        StringCollection scol = new StringCollection();
-					//        scol.AddRange(collection);
-					//        PasteData.DropList = scol;
-					//        PasteData.PathForDrop = (sender as ClosableTabItem).Path.ParsingName;
-					//        Thread t = null;
-					//        t = new Thread(new ParameterizedThreadStart(Explorer.DoCopy));
-					//        t.SetApartmentState(ApartmentState.STA);
-					//        t.Start(PasteData);
-					//    }
-
-					//}
-				}
-			}
-			else
-			{
-				e.Effects = DragDropEffects.None;
-			}
-
-
-			DropTargetHelper.Drop(e.Data, pt, e.Effects);
-		}
-
-		void bbi_DragOver(object sender, DragEventArgs e)
-		{
-			e.Handled = true;
-
-			if ((sender as BreadcrumbBarItem).ShellObject.IsFileSystemObject)
-			{
-				if ((e.KeyStates & DragDropKeyStates.ControlKey) == DragDropKeyStates.ControlKey)
-				{
-					e.Effects = DragDropEffects.Copy;
-
-				}
-				else
-				{
-					//if (Path.GetPathRoot((sender as ClosableTabItem).Path.ParsingName) ==
-					//    Path.GetPathRoot(Explorer.NavigationLog.CurrentLocation.ParsingName))
-					//{
-					//    e.Effects = DragDropEffects.Move;
+                }
+            }
+
+            return hl;
+        }
+
+        void bbi_Drop(object sender, DragEventArgs e)
+        {
+
+
+            System.Windows.Point pt = e.GetPosition(sender as IInputElement);
+
+
+            if ((sender as BreadcrumbBarItem).ShellObject.IsFileSystemObject)
+            {
+                if ((e.KeyStates & DragDropKeyStates.ControlKey) == DragDropKeyStates.ControlKey)
+                {
+                    e.Effects = DragDropEffects.Copy;
+                    if (e.Data.GetDataPresent(DataFormats.FileDrop))
+                    {
+                        FileOperationsData PasteData = new FileOperationsData();
+                        String[] collection = (String[])e.Data.GetData(DataFormats.FileDrop);
+                        StringCollection scol = new StringCollection();
+                        scol.AddRange(collection);
+                        PasteData.DropList = scol;
+                        PasteData.PathForDrop = (sender as BreadcrumbBarItem).ShellObject.ParsingName;
+                        AddToLog("Copied Files to " + PasteData.PathForDrop + " Files copied: " + scol.ToString());
+                        Thread t = null;
+                        t = new Thread(new ParameterizedThreadStart(Explorer.DoCopy));
+                        t.SetApartmentState(ApartmentState.STA);
+                        t.Start(PasteData);
+                    }
+                }
+                else
+                {
+                    //if (Path.GetPathRoot((sender as ClosableTabItem).Path.ParsingName) ==
+                    //    Path.GetPathRoot(Explorer.NavigationLog.CurrentLocation.ParsingName))
+                    //{
+                    e.Effects = DragDropEffects.Move;
+                    if (e.Data.GetDataPresent(DataFormats.FileDrop))
+                    {
+                        FileOperationsData PasteData = new FileOperationsData();
+                        String[] collection = (String[])e.Data.GetData(DataFormats.FileDrop);
+                        StringCollection scol = new StringCollection();
+                        scol.AddRange(collection);
+                        PasteData.DropList = scol;
+                        PasteData.PathForDrop = (sender as BreadcrumbBarItem).ShellObject.ParsingName;
+                        AddToLog("Moved Files to " + PasteData.PathForDrop + " Files moved: " + scol.ToString());
+                        Thread t = null;
+                        t = new Thread(new ParameterizedThreadStart(Explorer.DoMove));
+                        t.SetApartmentState(ApartmentState.STA);
+                        t.Start(PasteData);
+                    }
+
+                    //}
+                    //else
+                    //{
+                    //    e.Effects = DragDropEffects.Copy;
+                    //    if (e.Data.GetDataPresent(DataFormats.FileDrop))
+                    //    {
+                    //        FileOperationsData PasteData = new FileOperationsData();
+                    //        String[] collection = (String[])e.Data.GetData(DataFormats.FileDrop);
+                    //        StringCollection scol = new StringCollection();
+                    //        scol.AddRange(collection);
+                    //        PasteData.DropList = scol;
+                    //        PasteData.PathForDrop = (sender as ClosableTabItem).Path.ParsingName;
+                    //        Thread t = null;
+                    //        t = new Thread(new ParameterizedThreadStart(Explorer.DoCopy));
+                    //        t.SetApartmentState(ApartmentState.STA);
+                    //        t.Start(PasteData);
+                    //    }
+
+                    //}
+                }
+            }
+            else
+            {
+                e.Effects = DragDropEffects.None;
+            }
+
+
+            DropTargetHelper.Drop(e.Data, pt, e.Effects);
+        }
+
+        void bbi_DragOver(object sender, DragEventArgs e)
+        {
+            e.Handled = true;
+
+            if ((sender as BreadcrumbBarItem).ShellObject.IsFileSystemObject)
+            {
+                if ((e.KeyStates & DragDropKeyStates.ControlKey) == DragDropKeyStates.ControlKey)
+                {
+                    e.Effects = DragDropEffects.Copy;
+
+                }
+                else
+                {
+                    //if (Path.GetPathRoot((sender as ClosableTabItem).Path.ParsingName) ==
+                    //    Path.GetPathRoot(Explorer.NavigationLog.CurrentLocation.ParsingName))
+                    //{
+                    //    e.Effects = DragDropEffects.Move;
 
 
-					//}
-					//else
-					//{
-					//    e.Effects = DragDropEffects.Copy;
+                    //}
+                    //else
+                    //{
+                    //    e.Effects = DragDropEffects.Copy;
 
-					//}
+                    //}
 
-					// I decided just to have it do a move because it will avoid errors with special shell folders.
-					// Besides, if a person wants to copy something, they should know how to press Ctrl to copy.
-					e.Effects = DragDropEffects.Move;
-				}
-			}
-			else
-			{
-				e.Effects = DragDropEffects.None;
-			}
+                    // I decided just to have it do a move because it will avoid errors with special shell folders.
+                    // Besides, if a person wants to copy something, they should know how to press Ctrl to copy.
+                    e.Effects = DragDropEffects.Move;
+                }
+            }
+            else
+            {
+                e.Effects = DragDropEffects.None;
+            }
 
-			Win32Point ptw = new Win32Point();
-			GetCursorPos(ref ptw);
-			//e.Handled = true;
-			DropTargetHelper.DragOver(new System.Windows.Point(ptw.X, ptw.Y), e.Effects);
-		}
+            Win32Point ptw = new Win32Point();
+            GetCursorPos(ref ptw);
+            //e.Handled = true;
+            DropTargetHelper.DragOver(new System.Windows.Point(ptw.X, ptw.Y), e.Effects);
+        }
 
-		void bbi_DragLeave(object sender, DragEventArgs e)
-		{
-			DropTargetHelper.DragLeave();
-		}
-
-		void bbi_DragEnter(object sender, DragEventArgs e)
-		{
-
-
-			if ((sender as BreadcrumbBarItem).ShellObject.IsFileSystemObject)
-			{
-				if ((e.KeyStates & DragDropKeyStates.ControlKey) == DragDropKeyStates.ControlKey)
-				{
-					e.Effects = DragDropEffects.Copy;
-
-				}
-				else
-				{
-					//if (Path.GetPathRoot((sender as ClosableTabItem).Path.ParsingName) ==
-					//    Path.GetPathRoot(Explorer.NavigationLog.CurrentLocation.ParsingName))
-					//{
-					//    e.Effects = DragDropEffects.Move;
-
-
-					//}
-					//else
-					//{
-					//    e.Effects = DragDropEffects.Copy;
-
-					//}
-
-					// I decided just to have it do a move because it will avoid errors with special shell folders.
-					// Besides, if a person wants to copy something, they should know how to press Ctrl to copy.
-					e.Effects = DragDropEffects.Move;
-				}
-			}
-			else
-			{
-				e.Effects = DragDropEffects.None;
-			}
-
-
-			Win32Point ptw = new Win32Point();
-			GetCursorPos(ref ptw);
-			e.Effects = DragDropEffects.None;
-			DropTargetHelper.DragEnter(this, e.Data, new System.Windows.Point(ptw.X, ptw.Y), e.Effects);
-		}
-
-		#endregion
-
-		#region Search
-
-		private void searchTextBox1_PreviewMouseUp(object sender, MouseButtonEventArgs e)
-		{
-			//e.Handled = true;
-			//searchTextBox1.Focus();
-		}
-
-		private void searchTextBox1_MouseDown(object sender, MouseButtonEventArgs e)
-		{
-
-		}
-
-		private void searchTextBox1_GotFocus(object sender, RoutedEventArgs e)
-		{
-			e.Handled = true;
-
-		}
-
-		private void searchTextBox1_IsKeyboardFocusedChanged(object sender, DependencyPropertyChangedEventArgs e)
-		{
-
-
-		}
-
-		private void searchTextBox1_LostFocus(object sender, RoutedEventArgs e)
-		{
-			e.Handled = true;
-
-		}
-
-		private void searchTextBox1_LostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
-		{
-			e.Handled = true;
-
-		}
-
-		private void searchTextBox1_GotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
-		{
-			ctgSearch.Visibility = System.Windows.Visibility.Visible;
-			if (!TheRibbon.IsMinimized)
-			{ 
-				TheRibbon.SelectedTabItem = tbSearch;
-			}
-			
-		}
-
-		private void MenuItem_Checked(object sender, RoutedEventArgs e)
-		{
-			e.Handled = true;
-			bool isThereChecked = false;
-			foreach (object item in ((sender as MenuItem).Parent as SplitButton).Items)
-			{
-				if (item is MenuItem)
-				{
-					if ((item as MenuItem).IsChecked)
-					{
-						isThereChecked = true;
-						break;
-					}
-				}
-
-			}
-
-			((sender as MenuItem).Parent as SplitButton).IsChecked = isThereChecked;
-		}
-
-		private void MenuItem_Unchecked(object sender, RoutedEventArgs e)
-		{
-			e.Handled = true;
-			bool isThereChecked = false;
-			foreach (object item in ((sender as MenuItem).Parent as SplitButton).Items)
-			{
-				if (item is MenuItem)
-				{
-					if ((item as MenuItem).IsChecked)
-					{
-						isThereChecked = true;
-						break;
-					}
-				}
-
-			}
-			((sender as MenuItem).Parent as SplitButton).IsChecked = isThereChecked;
-		}
-
-		private void MenuItem_Click_2(object sender, RoutedEventArgs e)
-		{
-			e.Handled = true;
-			//(sender as MenuItem).IsChecked = !(sender as MenuItem).IsChecked;
-		}
-
-		private void ctgSearch_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
-		{
-			//if (((System.Windows.Visibility)e.NewValue) == System.Windows.Visibility.Collapsed)
-			//    TheRibbon.SelectedTabItem = HomeTab;
-		}
-
-		private void btnSearch_Click(object sender, RoutedEventArgs e)
-		{
-			//string SearchStr = "";
-			//string CondStr = "";
-			//string KindStr = "";
-			//string OtherStr = "";
-			//SearchStr = edtSearchBox.SearchCriteriatext.Text;
-			////foreach (Fluent.ToggleButton item in tsgModifiers.Items)
-			////{
-			////    if (item.IsChecked == true)
-			////    {
-			////        CondStr = item.Tag.ToString();
-			////    }
-			////}
-			//CondStr.Replace("AND", "");
-			//SearchStr += " " + CondStr + " ";
-			//foreach (Fluent.ToggleButton item in tsgKind.Items)
-			//{
-			//    if (item.IsChecked == true)
-			//    {
-			//        if (item.Tag.ToString() == "kind:everything")
-			//        {
-			//            KindStr = item.Tag.ToString();
-			//            break;
-			//        }
-			//        else
-			//        {
-			//            KindStr += item.Tag.ToString() + " " + CondStr + " ";
-			//        }
-
-			//    }
-			//}
-
-			//foreach (object item in tsgOther.Items)
-			//{
-			//    if (item is SplitButton)
-			//    {
-			//        if ((item as SplitButton).IsChecked)
-			//        {
-			//            foreach (object obj in (item as SplitButton).Items)
-			//            {
-			//                if (obj is MenuItem)
-			//                {
-			//                    if ((obj as MenuItem).IsChecked)
-			//                    {
-			//                        OtherStr += (obj as MenuItem).Tag.ToString() + " " + CondStr + " ";
-			//                    }
-			//                }
-
-			//            }
-			//        }
-			//    }
-			//}
-			//SearchStr += KindStr;
-			//SearchStr += OtherStr;
-
-			//DoSearch(SearchStr);
-
-			DoSearch(edtSearchBox.FullSearchTerms);
-		}
-
-		private void searchTextBox1_MouseMove(object sender, MouseEventArgs e)
-		{
-			e.Handled = true;
-		}
-
-		private void searchTextBox1_MouseUp(object sender, MouseButtonEventArgs e)
-		{
-			e.Handled = true;
-		}
-
-		private void edtSearchBox_KeyUp(object sender, KeyEventArgs e)
-		{
-			e.Handled = true;
-			if (e.Key == Key.Enter)
-			{
-				DoSearch(edtSearchBox.FullSearchTerms);
-			}
-		}
-
-		private void edtSearchBox_BeginSearch_1(object sender, SearchRoutedEventArgs e)
-		{
-			DoSearch(edtSearchBox.FullSearchTerms);
-		}
-
-		private void MenuItem_Click_3(object sender, RoutedEventArgs e)
-		{
-			edtSearchBox.ModifiedCondition = (string)((FrameworkElement)sender).Tag;
-			dmsplit.IsChecked = true;
-		}
-
-		private void MenuItem_Click_4(object sender, RoutedEventArgs e)
-		{
-			edtSearchBox.DateCondition = (string)((FrameworkElement)sender).Tag;
-			dcsplit.IsChecked = true;
-		}
-
-		private void ToggleButton_Click(object sender, RoutedEventArgs e)
-		{
-			((Fluent.ToggleButton)sender).IsChecked = true;
-			edtSearchBox.KindCondition = (string)((FrameworkElement)sender).Tag;
-			edtSearchBox.Focus();
-		}
-
-		private void MenuItem_Click_5(object sender, RoutedEventArgs e)
-		{
-			edtSearchBox.SizeCondition = (string)((FrameworkElement)sender).Tag;
-			scSize.IsChecked = true;
-		}
-
-		private string GetValueOnly(string property, string value)
-		{
-			return value.Substring(property.Length + 1);
-		}
-
-		private void ToggleButton_Click_1(object sender, RoutedEventArgs e)
-		{
-			StringSearchCriteriaDialog dat = new StringSearchCriteriaDialog("ext", edtSearchBox.ExtensionCondition, FindResource("btnExtCP") as string);
-			dat.ShowDialog();
-			if (dat.Confirm == true)
-			{
-				edtSearchBox.ExtensionCondition = "ext:" + dat.textBox1.Text;
-				if (dat.textBox1.Text.Length > 0)
-				{
-					ExtToggle.IsChecked = true;
-				}
-				else
-				{
-					ExtToggle.IsChecked = false;
-				}
-			}
-			else
-			{
-				if (GetValueOnly("ext", edtSearchBox.ExtensionCondition).Length > 0)
-				{
-					ExtToggle.IsChecked = true;
-				}
-				else
-				{
-					ExtToggle.IsChecked = false;
-				}
-			}
-		}
-
-		private void edtSearchBox_FiltersCleared(object sender, EventArgs e)
-		{
-			scSize.IsChecked = false;
-			foreach (object item in scSize.Items)
-			{
-				try
-				{
-					(item as MenuItem).IsChecked = false;
-				}
-				catch
-				{
-
-				}
-			}
-			ExtToggle.IsChecked = false;
-			AuthorToggle.IsChecked = false;
-			SubjectToggle.IsChecked = false;
-			dcsplit.IsChecked = false;
-			foreach (object item in dcsplit.Items)
-			{
-				try
-				{
-					(item as MenuItem).IsChecked = false;
-				}
-				catch
-				{
-
-				}
-			}
-			dmsplit.IsChecked = false;
-			foreach (object item in dmsplit.Items)
-			{
-				try
-				{
-					(item as MenuItem).IsChecked = false;
-				}
-				catch
-				{
-
-				}
-			}
-		}
-
-		private void AuthorToggle_Click(object sender, RoutedEventArgs e)
-		{
-			StringSearchCriteriaDialog dat = new StringSearchCriteriaDialog("author", edtSearchBox.AuthorCondition, FindResource("btnAuthorCP") as string);
-			dat.ShowDialog();
-			if (dat.Confirm == true)
-			{
-				edtSearchBox.AuthorCondition = "author:" + dat.textBox1.Text;
-				if (dat.textBox1.Text.Length > 0)
-				{
-					AuthorToggle.IsChecked = true;
-				}
-				else
-				{
-					AuthorToggle.IsChecked = false;
-				}
-			}
-			else
-			{
-				if (GetValueOnly("author", edtSearchBox.AuthorCondition).Length > 0)
-				{
-					AuthorToggle.IsChecked = true;
-				}
-				else
-				{
-					AuthorToggle.IsChecked = false;
-				}
-			}
-		}
-
-		private void SubjectToggle_Click(object sender, RoutedEventArgs e)
-		{
-			StringSearchCriteriaDialog dat = new StringSearchCriteriaDialog("subject", edtSearchBox.SubjectCondition, FindResource("btnSubjectCP") as string);
-			dat.ShowDialog();
-			if (dat.Confirm == true)
-			{
-				edtSearchBox.SubjectCondition = "subject:" + dat.textBox1.Text;
-				if (dat.textBox1.Text.Length > 0)
-				{
-					SubjectToggle.IsChecked = true;
-				}
-				else
-				{
-					SubjectToggle.IsChecked = false;
-				}
-			}
-			else
-			{
-				if (GetValueOnly("subject", edtSearchBox.SubjectCondition).Length > 0)
-				{
-					SubjectToggle.IsChecked = true;
-				}
-				else
-				{
-					SubjectToggle.IsChecked = false;
-				}
-			}
-		}
-
-		private void miCustomSize_Click(object sender, RoutedEventArgs e)
-		{
-			SizeSearchCriteriaDialog dat = new SizeSearchCriteriaDialog();
-			string sd = GetValueOnly("size", edtSearchBox.SizeCondition);
-			dat.curval.Text = sd;
-
-			dat.ShowDialog();
-
-			if (dat.Confirm == true)
-			{
-				edtSearchBox.SizeCondition = "size:" + dat.GetSizeQuery();
-
-				if (dat.GetSizeQuery().Length > 0)
-				{
-					scSize.IsChecked = true;
-				}
-				else
-				{
-					scSize.IsChecked = false;
-				}
-			}
-			else
-			{
-				if (edtSearchBox.SizeCondition.Length > 5)
-				{
-					scSize.IsChecked = true;
-				}
-				else
-				{
-					scSize.IsChecked = false;
-				}
-			}
-		}
-
-		private void edtSearchBox_RequestCriteriaChange(object sender, SearchRoutedEventArgs e)
-		{
-			if (e.SearchTerms.StartsWith("author:"))
-			{
-				AuthorToggle_Click(sender, new RoutedEventArgs(e.RoutedEvent));
-			}
-			else
-			{
-				if (e.SearchTerms.StartsWith("ext:"))
-				{
-					ToggleButton_Click_1(sender, new RoutedEventArgs(e.RoutedEvent));
-				}
-				else
-				{
-					if (e.SearchTerms.StartsWith("subject:"))
-					{
-						SubjectToggle_Click(sender, new RoutedEventArgs(e.RoutedEvent));
-					}
-					else
-					{
-						if (e.SearchTerms.StartsWith("size:"))
-						{
-							miCustomSize_Click(sender, new RoutedEventArgs(e.RoutedEvent));
-						}
-						else
-						{
-							if (e.SearchTerms.StartsWith("date:"))
-							{
-								dcCustomTime_Click(sender, new RoutedEventArgs(e.RoutedEvent));
-							}
-							else
-							{
-								if (e.SearchTerms.StartsWith("modified:"))
-								{
-									dmCustomTime_Click(sender, new RoutedEventArgs(e.RoutedEvent));
-								}
-								else
-								{
-									MessageBox.Show("You have discovered an error in this program. Please tell us which filter you were trying to edit and any other details we should know. \r\n\r\nYour filter: " + e.SearchTerms, "Oops! Found a Bug!", MessageBoxButton.OK, MessageBoxImage.Error);
-								}
-							}
-							//MessageBox.Show("Editor not available or invalid parameter \n\r \r\n" + e.SearchTerms, "Search Criteria Editor", MessageBoxButton.OK, MessageBoxImage.Error);
-						}
-					}
-				}
-			}
-		}
-
-		private void dcCustomTime_Click(object sender, RoutedEventArgs e)
-		{
+        void bbi_DragLeave(object sender, DragEventArgs e)
+        {
+            DropTargetHelper.DragLeave();
+        }
+
+        void bbi_DragEnter(object sender, DragEventArgs e)
+        {
+
+
+            if ((sender as BreadcrumbBarItem).ShellObject.IsFileSystemObject)
+            {
+                if ((e.KeyStates & DragDropKeyStates.ControlKey) == DragDropKeyStates.ControlKey)
+                {
+                    e.Effects = DragDropEffects.Copy;
+
+                }
+                else
+                {
+                    //if (Path.GetPathRoot((sender as ClosableTabItem).Path.ParsingName) ==
+                    //    Path.GetPathRoot(Explorer.NavigationLog.CurrentLocation.ParsingName))
+                    //{
+                    //    e.Effects = DragDropEffects.Move;
+
+
+                    //}
+                    //else
+                    //{
+                    //    e.Effects = DragDropEffects.Copy;
+
+                    //}
+
+                    // I decided just to have it do a move because it will avoid errors with special shell folders.
+                    // Besides, if a person wants to copy something, they should know how to press Ctrl to copy.
+                    e.Effects = DragDropEffects.Move;
+                }
+            }
+            else
+            {
+                e.Effects = DragDropEffects.None;
+            }
+
+
+            Win32Point ptw = new Win32Point();
+            GetCursorPos(ref ptw);
+            e.Effects = DragDropEffects.None;
+            DropTargetHelper.DragEnter(this, e.Data, new System.Windows.Point(ptw.X, ptw.Y), e.Effects);
+        }
+
+        #endregion
+
+        #region Search
+
+        private void searchTextBox1_PreviewMouseUp(object sender, MouseButtonEventArgs e)
+        {
+            //e.Handled = true;
+            //searchTextBox1.Focus();
+        }
+
+        private void searchTextBox1_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+
+        }
+
+        private void searchTextBox1_GotFocus(object sender, RoutedEventArgs e)
+        {
+            e.Handled = true;
+
+        }
+
+        private void searchTextBox1_IsKeyboardFocusedChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+
+
+        }
+
+        private void searchTextBox1_LostFocus(object sender, RoutedEventArgs e)
+        {
+            e.Handled = true;
+
+        }
+
+        private void searchTextBox1_LostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+        {
+            e.Handled = true;
+
+        }
+
+        private void searchTextBox1_GotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+        {
+            ctgSearch.Visibility = System.Windows.Visibility.Visible;
+            if (!TheRibbon.IsMinimized)
+            { 
+                TheRibbon.SelectedTabItem = tbSearch;
+            }
+            
+        }
+
+        private void MenuItem_Checked(object sender, RoutedEventArgs e)
+        {
+            e.Handled = true;
+            bool isThereChecked = false;
+            foreach (object item in ((sender as MenuItem).Parent as SplitButton).Items)
+            {
+                if (item is MenuItem)
+                {
+                    if ((item as MenuItem).IsChecked)
+                    {
+                        isThereChecked = true;
+                        break;
+                    }
+                }
+
+            }
+
+            ((sender as MenuItem).Parent as SplitButton).IsChecked = isThereChecked;
+        }
+
+        private void MenuItem_Unchecked(object sender, RoutedEventArgs e)
+        {
+            e.Handled = true;
+            bool isThereChecked = false;
+            foreach (object item in ((sender as MenuItem).Parent as SplitButton).Items)
+            {
+                if (item is MenuItem)
+                {
+                    if ((item as MenuItem).IsChecked)
+                    {
+                        isThereChecked = true;
+                        break;
+                    }
+                }
+
+            }
+            ((sender as MenuItem).Parent as SplitButton).IsChecked = isThereChecked;
+        }
+
+        private void MenuItem_Click_2(object sender, RoutedEventArgs e)
+        {
+            e.Handled = true;
+            //(sender as MenuItem).IsChecked = !(sender as MenuItem).IsChecked;
+        }
+
+        private void ctgSearch_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            //if (((System.Windows.Visibility)e.NewValue) == System.Windows.Visibility.Collapsed)
+            //    TheRibbon.SelectedTabItem = HomeTab;
+        }
+
+        private void btnSearch_Click(object sender, RoutedEventArgs e)
+        {
+            //string SearchStr = "";
+            //string CondStr = "";
+            //string KindStr = "";
+            //string OtherStr = "";
+            //SearchStr = edtSearchBox.SearchCriteriatext.Text;
+            ////foreach (Fluent.ToggleButton item in tsgModifiers.Items)
+            ////{
+            ////    if (item.IsChecked == true)
+            ////    {
+            ////        CondStr = item.Tag.ToString();
+            ////    }
+            ////}
+            //CondStr.Replace("AND", "");
+            //SearchStr += " " + CondStr + " ";
+            //foreach (Fluent.ToggleButton item in tsgKind.Items)
+            //{
+            //    if (item.IsChecked == true)
+            //    {
+            //        if (item.Tag.ToString() == "kind:everything")
+            //        {
+            //            KindStr = item.Tag.ToString();
+            //            break;
+            //        }
+            //        else
+            //        {
+            //            KindStr += item.Tag.ToString() + " " + CondStr + " ";
+            //        }
+
+            //    }
+            //}
+
+            //foreach (object item in tsgOther.Items)
+            //{
+            //    if (item is SplitButton)
+            //    {
+            //        if ((item as SplitButton).IsChecked)
+            //        {
+            //            foreach (object obj in (item as SplitButton).Items)
+            //            {
+            //                if (obj is MenuItem)
+            //                {
+            //                    if ((obj as MenuItem).IsChecked)
+            //                    {
+            //                        OtherStr += (obj as MenuItem).Tag.ToString() + " " + CondStr + " ";
+            //                    }
+            //                }
+
+            //            }
+            //        }
+            //    }
+            //}
+            //SearchStr += KindStr;
+            //SearchStr += OtherStr;
+
+            //DoSearch(SearchStr);
+
+            DoSearch(edtSearchBox.FullSearchTerms);
+        }
+
+        private void searchTextBox1_MouseMove(object sender, MouseEventArgs e)
+        {
+            e.Handled = true;
+        }
+
+        private void searchTextBox1_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            e.Handled = true;
+        }
+
+        private void edtSearchBox_KeyUp(object sender, KeyEventArgs e)
+        {
+            e.Handled = true;
+            if (e.Key == Key.Enter)
+            {
+                DoSearch(edtSearchBox.FullSearchTerms);
+            }
+        }
+
+        private void edtSearchBox_BeginSearch_1(object sender, SearchRoutedEventArgs e)
+        {
+            DoSearch(edtSearchBox.FullSearchTerms);
+        }
+
+        private void MenuItem_Click_3(object sender, RoutedEventArgs e)
+        {
+            edtSearchBox.ModifiedCondition = (string)((FrameworkElement)sender).Tag;
+            dmsplit.IsChecked = true;
+        }
+
+        private void MenuItem_Click_4(object sender, RoutedEventArgs e)
+        {
+            edtSearchBox.DateCondition = (string)((FrameworkElement)sender).Tag;
+            dcsplit.IsChecked = true;
+        }
+
+        private void ToggleButton_Click(object sender, RoutedEventArgs e)
+        {
+            ((Fluent.ToggleButton)sender).IsChecked = true;
+            edtSearchBox.KindCondition = (string)((FrameworkElement)sender).Tag;
+            edtSearchBox.Focus();
+        }
+
+        private void MenuItem_Click_5(object sender, RoutedEventArgs e)
+        {
+            edtSearchBox.SizeCondition = (string)((FrameworkElement)sender).Tag;
+            scSize.IsChecked = true;
+        }
+
+        private string GetValueOnly(string property, string value)
+        {
+            return value.Substring(property.Length + 1);
+        }
+
+        private void ToggleButton_Click_1(object sender, RoutedEventArgs e)
+        {
+            StringSearchCriteriaDialog dat = new StringSearchCriteriaDialog("ext", edtSearchBox.ExtensionCondition, FindResource("btnExtCP") as string);
+            dat.ShowDialog();
+            if (dat.Confirm == true)
+            {
+                edtSearchBox.ExtensionCondition = "ext:" + dat.textBox1.Text;
+                if (dat.textBox1.Text.Length > 0)
+                {
+                    ExtToggle.IsChecked = true;
+                }
+                else
+                {
+                    ExtToggle.IsChecked = false;
+                }
+            }
+            else
+            {
+                if (GetValueOnly("ext", edtSearchBox.ExtensionCondition).Length > 0)
+                {
+                    ExtToggle.IsChecked = true;
+                }
+                else
+                {
+                    ExtToggle.IsChecked = false;
+                }
+            }
+        }
+
+        private void edtSearchBox_FiltersCleared(object sender, EventArgs e)
+        {
+            scSize.IsChecked = false;
+            foreach (object item in scSize.Items)
+            {
+                try
+                {
+                    (item as MenuItem).IsChecked = false;
+                }
+                catch
+                {
+
+                }
+            }
+            ExtToggle.IsChecked = false;
+            AuthorToggle.IsChecked = false;
+            SubjectToggle.IsChecked = false;
+            dcsplit.IsChecked = false;
+            foreach (object item in dcsplit.Items)
+            {
+                try
+                {
+                    (item as MenuItem).IsChecked = false;
+                }
+                catch
+                {
+
+                }
+            }
+            dmsplit.IsChecked = false;
+            foreach (object item in dmsplit.Items)
+            {
+                try
+                {
+                    (item as MenuItem).IsChecked = false;
+                }
+                catch
+                {
+
+                }
+            }
+        }
+
+        private void AuthorToggle_Click(object sender, RoutedEventArgs e)
+        {
+            StringSearchCriteriaDialog dat = new StringSearchCriteriaDialog("author", edtSearchBox.AuthorCondition, FindResource("btnAuthorCP") as string);
+            dat.ShowDialog();
+            if (dat.Confirm == true)
+            {
+                edtSearchBox.AuthorCondition = "author:" + dat.textBox1.Text;
+                if (dat.textBox1.Text.Length > 0)
+                {
+                    AuthorToggle.IsChecked = true;
+                }
+                else
+                {
+                    AuthorToggle.IsChecked = false;
+                }
+            }
+            else
+            {
+                if (GetValueOnly("author", edtSearchBox.AuthorCondition).Length > 0)
+                {
+                    AuthorToggle.IsChecked = true;
+                }
+                else
+                {
+                    AuthorToggle.IsChecked = false;
+                }
+            }
+        }
+
+        private void SubjectToggle_Click(object sender, RoutedEventArgs e)
+        {
+            StringSearchCriteriaDialog dat = new StringSearchCriteriaDialog("subject", edtSearchBox.SubjectCondition, FindResource("btnSubjectCP") as string);
+            dat.ShowDialog();
+            if (dat.Confirm == true)
+            {
+                edtSearchBox.SubjectCondition = "subject:" + dat.textBox1.Text;
+                if (dat.textBox1.Text.Length > 0)
+                {
+                    SubjectToggle.IsChecked = true;
+                }
+                else
+                {
+                    SubjectToggle.IsChecked = false;
+                }
+            }
+            else
+            {
+                if (GetValueOnly("subject", edtSearchBox.SubjectCondition).Length > 0)
+                {
+                    SubjectToggle.IsChecked = true;
+                }
+                else
+                {
+                    SubjectToggle.IsChecked = false;
+                }
+            }
+        }
+
+        private void miCustomSize_Click(object sender, RoutedEventArgs e)
+        {
+            SizeSearchCriteriaDialog dat = new SizeSearchCriteriaDialog();
+            string sd = GetValueOnly("size", edtSearchBox.SizeCondition);
+            dat.curval.Text = sd;
+
+            dat.ShowDialog();
+
+            if (dat.Confirm == true)
+            {
+                edtSearchBox.SizeCondition = "size:" + dat.GetSizeQuery();
+
+                if (dat.GetSizeQuery().Length > 0)
+                {
+                    scSize.IsChecked = true;
+                }
+                else
+                {
+                    scSize.IsChecked = false;
+                }
+            }
+            else
+            {
+                if (edtSearchBox.SizeCondition.Length > 5)
+                {
+                    scSize.IsChecked = true;
+                }
+                else
+                {
+                    scSize.IsChecked = false;
+                }
+            }
+        }
+
+        private void edtSearchBox_RequestCriteriaChange(object sender, SearchRoutedEventArgs e)
+        {
+            if (e.SearchTerms.StartsWith("author:"))
+            {
+                AuthorToggle_Click(sender, new RoutedEventArgs(e.RoutedEvent));
+            }
+            else
+            {
+                if (e.SearchTerms.StartsWith("ext:"))
+                {
+                    ToggleButton_Click_1(sender, new RoutedEventArgs(e.RoutedEvent));
+                }
+                else
+                {
+                    if (e.SearchTerms.StartsWith("subject:"))
+                    {
+                        SubjectToggle_Click(sender, new RoutedEventArgs(e.RoutedEvent));
+                    }
+                    else
+                    {
+                        if (e.SearchTerms.StartsWith("size:"))
+                        {
+                            miCustomSize_Click(sender, new RoutedEventArgs(e.RoutedEvent));
+                        }
+                        else
+                        {
+                            if (e.SearchTerms.StartsWith("date:"))
+                            {
+                                dcCustomTime_Click(sender, new RoutedEventArgs(e.RoutedEvent));
+                            }
+                            else
+                            {
+                                if (e.SearchTerms.StartsWith("modified:"))
+                                {
+                                    dmCustomTime_Click(sender, new RoutedEventArgs(e.RoutedEvent));
+                                }
+                                else
+                                {
+                                    MessageBox.Show("You have discovered an error in this program. Please tell us which filter you were trying to edit and any other details we should know. \r\n\r\nYour filter: " + e.SearchTerms, "Oops! Found a Bug!", MessageBoxButton.OK, MessageBoxImage.Error);
+                                }
+                            }
+                            //MessageBox.Show("Editor not available or invalid parameter \n\r \r\n" + e.SearchTerms, "Search Criteria Editor", MessageBoxButton.OK, MessageBoxImage.Error);
+                        }
+                    }
+                }
+            }
+        }
+
+        private void dcCustomTime_Click(object sender, RoutedEventArgs e)
+        {
       SDateSearchCriteriaDialog star = new SDateSearchCriteriaDialog(FindResource("btnODateCCP") as string);
 
-			star.DateCriteria = GetValueOnly("date", edtSearchBox.DateCondition);
-			//star.textBlock1.Text = "Set Date Created Filter";
-			star.ShowDialog();
+            star.DateCriteria = GetValueOnly("date", edtSearchBox.DateCondition);
+            //star.textBlock1.Text = "Set Date Created Filter";
+            star.ShowDialog();
 
-			if (star.Confirm == true)
-			{
-				edtSearchBox.DateCondition = "date:" + star.DateCriteria;
-			}
+            if (star.Confirm == true)
+            {
+                edtSearchBox.DateCondition = "date:" + star.DateCriteria;
+            }
 
-			if (edtSearchBox.UseDateCondition == true)
-			{
-				dcsplit.IsChecked = true;
-			}
-			else
-			{
-				dcsplit.IsChecked = false;
-			}
-		}
+            if (edtSearchBox.UseDateCondition == true)
+            {
+                dcsplit.IsChecked = true;
+            }
+            else
+            {
+                dcsplit.IsChecked = false;
+            }
+        }
 
-		private void dmCustomTime_Click(object sender, RoutedEventArgs e)
-		{
-			SDateSearchCriteriaDialog star = new SDateSearchCriteriaDialog(FindResource("btnODateModCP") as string);
+        private void dmCustomTime_Click(object sender, RoutedEventArgs e)
+        {
+            SDateSearchCriteriaDialog star = new SDateSearchCriteriaDialog(FindResource("btnODateModCP") as string);
 
-			star.DateCriteria = GetValueOnly("modified", edtSearchBox.ModifiedCondition);
-			//star.textBlock1.Text = "Set Date Modified Filter";
-			star.ShowDialog();
+            star.DateCriteria = GetValueOnly("modified", edtSearchBox.ModifiedCondition);
+            //star.textBlock1.Text = "Set Date Modified Filter";
+            star.ShowDialog();
 
-			if (star.Confirm == true)
-			{
-				edtSearchBox.ModifiedCondition = "modified:" + star.DateCriteria;
-			}
+            if (star.Confirm == true)
+            {
+                edtSearchBox.ModifiedCondition = "modified:" + star.DateCriteria;
+            }
 
-			if (edtSearchBox.UseModifiedCondition == true)
-			{
-				dmsplit.IsChecked = true;
-			}
-			else
-			{
-				dmsplit.IsChecked = false;
-			}
-		}
+            if (edtSearchBox.UseModifiedCondition == true)
+            {
+                dmsplit.IsChecked = true;
+            }
+            else
+            {
+                dmsplit.IsChecked = false;
+            }
+        }
 
-		#endregion
+        #endregion
 
-		#region AutoSwitch
+        #region AutoSwitch
 
-		private void chkFolder_Checked(object sender, RoutedEventArgs e)
-		{
-			asFolder = true;
-		}
+        private void chkFolder_Checked(object sender, RoutedEventArgs e)
+        {
+            asFolder = true;
+        }
 
-		private void chkFolder_Unchecked(object sender, RoutedEventArgs e)
-		{
-			asFolder = false;
-		}
+        private void chkFolder_Unchecked(object sender, RoutedEventArgs e)
+        {
+            asFolder = false;
+        }
 
-		private void chkDrive_Checked(object sender, RoutedEventArgs e)
-		{
-			asDrive = true;
-		}
+        private void chkDrive_Checked(object sender, RoutedEventArgs e)
+        {
+            asDrive = true;
+        }
 
-		private void chkDrive_Unchecked(object sender, RoutedEventArgs e)
-		{
-			asDrive = false;
-		}
+        private void chkDrive_Unchecked(object sender, RoutedEventArgs e)
+        {
+            asDrive = false;
+        }
 
-		private void chkArchive_Checked(object sender, RoutedEventArgs e)
-		{
-			asArchive = true;
-		}
+        private void chkArchive_Checked(object sender, RoutedEventArgs e)
+        {
+            asArchive = true;
+        }
 
-		private void chkArchive_Unchecked(object sender, RoutedEventArgs e)
-		{
-			asArchive = false;
-		}
+        private void chkArchive_Unchecked(object sender, RoutedEventArgs e)
+        {
+            asArchive = false;
+        }
 
-		private void chkApp_Checked(object sender, RoutedEventArgs e)
-		{
-			asApplication = true;
-		}
+        private void chkApp_Checked(object sender, RoutedEventArgs e)
+        {
+            asApplication = true;
+        }
 
-		private void chkApp_Unchecked(object sender, RoutedEventArgs e)
-		{
-			asApplication = false;
-		}
+        private void chkApp_Unchecked(object sender, RoutedEventArgs e)
+        {
+            asApplication = false;
+        }
 
-		private void chkImage_Checked(object sender, RoutedEventArgs e)
-		{
-			asImage = true;
-		}
+        private void chkImage_Checked(object sender, RoutedEventArgs e)
+        {
+            asImage = true;
+        }
 
-		private void chkImage_Unchecked(object sender, RoutedEventArgs e)
-		{
-			asImage = false;
-		}
+        private void chkImage_Unchecked(object sender, RoutedEventArgs e)
+        {
+            asImage = false;
+        }
 
-		private void chkLibrary_Checked(object sender, RoutedEventArgs e)
-		{
-			asLibrary = true;
-		}
+        private void chkLibrary_Checked(object sender, RoutedEventArgs e)
+        {
+            asLibrary = true;
+        }
 
-		private void chkLibrary_Unchecked(object sender, RoutedEventArgs e)
-		{
-			asLibrary = false;
-		}
+        private void chkLibrary_Unchecked(object sender, RoutedEventArgs e)
+        {
+            asLibrary = false;
+        }
 
 
         private void chkVirtualTools_Checked(object sender, RoutedEventArgs e)
@@ -8140,37 +8147,37 @@ namespace BetterExplorer
             asVirtualDrive = false;
         }
 
-		#endregion
+        #endregion
 
-		#region Tabs
+        #region Tabs
 
-		private void ConstructMoveToCopyToMenu()
-		{
-			btnMoveto.Items.Clear();
-			btnCopyto.Items.Clear();
-			MenuItem OtherLocationMove = new MenuItem();
-			OtherLocationMove.Focusable = false;
-			OtherLocationMove.Header = FindResource("miOtherDestCP");
-			OtherLocationMove.Click += new RoutedEventHandler(btnmtOther_Click);
-			MenuItem OtherLocationCopy = new MenuItem();
-			OtherLocationCopy.Focusable = false;
-			OtherLocationCopy.Header = FindResource("miOtherDestCP");
-			OtherLocationCopy.Click += new RoutedEventHandler(btnctOther_Click);
+        private void ConstructMoveToCopyToMenu()
+        {
+            btnMoveto.Items.Clear();
+            btnCopyto.Items.Clear();
+            MenuItem OtherLocationMove = new MenuItem();
+            OtherLocationMove.Focusable = false;
+            OtherLocationMove.Header = FindResource("miOtherDestCP");
+            OtherLocationMove.Click += new RoutedEventHandler(btnmtOther_Click);
+            MenuItem OtherLocationCopy = new MenuItem();
+            OtherLocationCopy.Focusable = false;
+            OtherLocationCopy.Header = FindResource("miOtherDestCP");
+            OtherLocationCopy.Click += new RoutedEventHandler(btnctOther_Click);
 
-			MenuItem mimDesktop = new MenuItem();
-			ShellObject sod = (ShellObject)KnownFolders.Desktop;
-			sod.Thumbnail.FormatOption = ShellThumbnailFormatOption.IconOnly;
-			sod.Thumbnail.CurrentSize = new System.Windows.Size(16, 16);
-			mimDesktop.Focusable = false;
-			mimDesktop.Icon = sod.Thumbnail.BitmapSource;
-			mimDesktop.Header = FindResource("btnctDesktopCP");
-			mimDesktop.Click += new RoutedEventHandler(btnmtDesktop_Click);
-			MenuItem micDesktop = new MenuItem();
-			micDesktop.Focusable = false;
-			micDesktop.Icon = sod.Thumbnail.BitmapSource;
-			micDesktop.Header = FindResource("btnctDesktopCP");
-			micDesktop.Click += new RoutedEventHandler(btnctDesktop_Click);
-			sod.Dispose();
+            MenuItem mimDesktop = new MenuItem();
+            ShellObject sod = (ShellObject)KnownFolders.Desktop;
+            sod.Thumbnail.FormatOption = ShellThumbnailFormatOption.IconOnly;
+            sod.Thumbnail.CurrentSize = new System.Windows.Size(16, 16);
+            mimDesktop.Focusable = false;
+            mimDesktop.Icon = sod.Thumbnail.BitmapSource;
+            mimDesktop.Header = FindResource("btnctDesktopCP");
+            mimDesktop.Click += new RoutedEventHandler(btnmtDesktop_Click);
+            MenuItem micDesktop = new MenuItem();
+            micDesktop.Focusable = false;
+            micDesktop.Icon = sod.Thumbnail.BitmapSource;
+            micDesktop.Header = FindResource("btnctDesktopCP");
+            micDesktop.Click += new RoutedEventHandler(btnctDesktop_Click);
+            sod.Dispose();
 
       MenuItem mimDocuments = new MenuItem();
       MenuItem micDocuments = new MenuItem();
@@ -8224,245 +8231,245 @@ namespace BetterExplorer
       }
 
       if (mimDocuments != null)
-			  btnMoveto.Items.Add(mimDocuments);
+              btnMoveto.Items.Add(mimDocuments);
 
       if (mimDownloads != null)
-			  btnMoveto.Items.Add(mimDownloads);
+              btnMoveto.Items.Add(mimDownloads);
 
-			btnMoveto.Items.Add(mimDesktop);
-			btnMoveto.Items.Add(new Separator());
+            btnMoveto.Items.Add(mimDesktop);
+            btnMoveto.Items.Add(new Separator());
 
       if (micDocuments != null)
-			  btnCopyto.Items.Add(micDocuments);
+              btnCopyto.Items.Add(micDocuments);
 
       if (micDownloads != null)
-			  btnCopyto.Items.Add(micDownloads);
+              btnCopyto.Items.Add(micDownloads);
 
-			btnCopyto.Items.Add(micDesktop);
-			btnCopyto.Items.Add(new Separator());
+            btnCopyto.Items.Add(micDesktop);
+            btnCopyto.Items.Add(new Separator());
 
-			foreach (var item in tabControl1.Items.OfType<ClosableTabItem>().ToList())
-			{
-				bool IsAdditem = true;
-				foreach (object mii in btnCopyto.Items)
-				{
-					if (mii is MenuItem)
-					{
-						if ((mii as MenuItem).Tag != null)
-						{
-							if (((mii as MenuItem).Tag as ShellObject) == item.Path)
-							{
-								IsAdditem = false;
-								break;
-							}
-						}
-					}
-				}
-				if (IsAdditem && item.Path.IsFileSystemObject)
-				{
-					try
-					{
-						MenuItem mim = new MenuItem();
-						mim.Header = item.Path.GetDisplayName(DisplayNameType.Default);
-						mim.Focusable = false;
-						mim.Tag = item.Path;
-						ShellObject so = ShellObject.FromParsingName(item.Path.ParsingName);
-						so.Thumbnail.FormatOption = ShellThumbnailFormatOption.IconOnly;
-						so.Thumbnail.CurrentSize = new System.Windows.Size(16, 16);
-						mim.Icon = so.Thumbnail.BitmapSource;
-						mim.Click += new RoutedEventHandler(mim_Click);
-						btnMoveto.Items.Add(mim);
-						MenuItem mic = new MenuItem();
-						mic.Focusable = false;
-						mic.Header = item.Path.GetDisplayName(DisplayNameType.Default);
-						mic.Tag = item.Path;
-						mic.Icon = so.Thumbnail.BitmapSource;
-						mic.Click += new RoutedEventHandler(mimc_Click);
-						btnCopyto.Items.Add(mic);
-						so.Dispose();
-					}
-					catch
-					{
-						//Do nothing if ShellObject is not available anymore and close the problematic item
-						CloseTab(item);
-					}
-				}
-			}
-			btnMoveto.Items.Add(new Separator());
-			btnMoveto.Items.Add(OtherLocationMove);
-			btnCopyto.Items.Add(new Separator());
-			btnCopyto.Items.Add(OtherLocationCopy);
+            foreach (var item in tabControl1.Items.OfType<ClosableTabItem>().ToList())
+            {
+                bool IsAdditem = true;
+                foreach (object mii in btnCopyto.Items)
+                {
+                    if (mii is MenuItem)
+                    {
+                        if ((mii as MenuItem).Tag != null)
+                        {
+                            if (((mii as MenuItem).Tag as ShellObject) == item.Path)
+                            {
+                                IsAdditem = false;
+                                break;
+                            }
+                        }
+                    }
+                }
+                if (IsAdditem && item.Path.IsFileSystemObject)
+                {
+                    try
+                    {
+                        MenuItem mim = new MenuItem();
+                        mim.Header = item.Path.GetDisplayName(DisplayNameType.Default);
+                        mim.Focusable = false;
+                        mim.Tag = item.Path;
+                        ShellObject so = ShellObject.FromParsingName(item.Path.ParsingName);
+                        so.Thumbnail.FormatOption = ShellThumbnailFormatOption.IconOnly;
+                        so.Thumbnail.CurrentSize = new System.Windows.Size(16, 16);
+                        mim.Icon = so.Thumbnail.BitmapSource;
+                        mim.Click += new RoutedEventHandler(mim_Click);
+                        btnMoveto.Items.Add(mim);
+                        MenuItem mic = new MenuItem();
+                        mic.Focusable = false;
+                        mic.Header = item.Path.GetDisplayName(DisplayNameType.Default);
+                        mic.Tag = item.Path;
+                        mic.Icon = so.Thumbnail.BitmapSource;
+                        mic.Click += new RoutedEventHandler(mimc_Click);
+                        btnCopyto.Items.Add(mic);
+                        so.Dispose();
+                    }
+                    catch
+                    {
+                        //Do nothing if ShellObject is not available anymore and close the problematic item
+                        CloseTab(item);
+                    }
+                }
+            }
+            btnMoveto.Items.Add(new Separator());
+            btnMoveto.Items.Add(OtherLocationMove);
+            btnCopyto.Items.Add(new Separator());
+            btnCopyto.Items.Add(OtherLocationCopy);
 
-		}
+        }
 
-		void mimc_Click(object sender, RoutedEventArgs e)
-		{
+        void mimc_Click(object sender, RoutedEventArgs e)
+        {
             MenuItem mi = sender as MenuItem;
             SetFOperation((mi.Tag as ShellObject), OperationType.Copy);
-		}
+        }
 
-		void mim_Click(object sender, RoutedEventArgs e)
-		{
-			MenuItem mi = sender as MenuItem;
+        void mim_Click(object sender, RoutedEventArgs e)
+        {
+            MenuItem mi = sender as MenuItem;
             SetFOperation((mi.Tag as ShellObject), OperationType.Move);
-		}
+        }
 
-		public void NavigateAfterTabChange()
-		{
-			ClosableTabItem itb = tabControl1.SelectedItem as ClosableTabItem;
+        public void NavigateAfterTabChange()
+        {
+            ClosableTabItem itb = tabControl1.SelectedItem as ClosableTabItem;
 
-			isGoingBackOrForward = itb.log.HistoryItemsList.Count != 0;
-			if (itb != null)
-			{
-				try
-				{
-					BeforeLastTabIndex = LastTabIndex;
+            isGoingBackOrForward = itb.log.HistoryItemsList.Count != 0;
+            if (itb != null)
+            {
+                try
+                {
+                    BeforeLastTabIndex = LastTabIndex;
 
-					//tabControl1.SelectedIndex = itb.Index;
-					//LastTabIndex = itb.Index;
-					//CurrentTabIndex = LastTabIndex;
-					if (Explorer.NavigationLog.CurrentLocation == null || itb.Path.ParsingName != Explorer.NavigationLog.CurrentLocation.ParsingName)
-					{
+                    //tabControl1.SelectedIndex = itb.Index;
+                    //LastTabIndex = itb.Index;
+                    //CurrentTabIndex = LastTabIndex;
+                    if (Explorer.NavigationLog.CurrentLocation == null || itb.Path.ParsingName != Explorer.NavigationLog.CurrentLocation.ParsingName)
+                    {
 
 
-						if (!Keyboard.IsKeyDown(Key.Tab))
-						{
-							Explorer.Navigate(itb.Path);
-						}
-						else
-						{
-							t.Interval = 500;
-							t.Tag = itb.Path;
-							t.Tick += new EventHandler(t_Tick);
-							t.Start();
-						}
+                        if (!Keyboard.IsKeyDown(Key.Tab))
+                        {
+                            Explorer.Navigate(itb.Path);
+                        }
+                        else
+                        {
+                            t.Interval = 500;
+                            t.Tag = itb.Path;
+                            t.Tick += new EventHandler(t_Tick);
+                            t.Start();
+                        }
 
-					}
+                    }
 
           itb.BringIntoView();
                     
-				}
-				catch (StackOverflowException)
-				{
+                }
+                catch (StackOverflowException)
+                {
 
-				}
-				//'btnTabCloseC.IsEnabled = tabControl1.Items.Count > 1;
-				//'there's a bug that has this enabled when there's only one tab open, but why disable it
-				//'if it never crashes the program? Closing the last tab simply closes the program, so I
-				//'thought, what the heck... let's just keep it enabled. :) -JaykeBird
-			}
-		}
-		private void btnNewTab_Click(object sender, RoutedEventArgs e)
-		{
-			NewTab();
-		}
+                }
+                //'btnTabCloseC.IsEnabled = tabControl1.Items.Count > 1;
+                //'there's a bug that has this enabled when there's only one tab open, but why disable it
+                //'if it never crashes the program? Closing the last tab simply closes the program, so I
+                //'thought, what the heck... let's just keep it enabled. :) -JaykeBird
+            }
+        }
+        private void btnNewTab_Click(object sender, RoutedEventArgs e)
+        {
+            NewTab();
+        }
 
-		private void btnTabClone_Click(object sender, RoutedEventArgs e)
-		{
+        private void btnTabClone_Click(object sender, RoutedEventArgs e)
+        {
       CloneTab(tabControl1.Items[tabControl1.SelectedIndex] as ClosableTabItem);
             
-		}
+        }
 
-		private void btnTabCloseC_Click(object sender, RoutedEventArgs e)
-		{
+        private void btnTabCloseC_Click(object sender, RoutedEventArgs e)
+        {
       CloseTab(tabControl1.SelectedItem as ClosableTabItem);
-		}
+        }
 
-		//'close tab
-		void cti_CloseTab(object sender, RoutedEventArgs e)
-		{
+        //'close tab
+        void cti_CloseTab(object sender, RoutedEventArgs e)
+        {
       ClosableTabItem curItem = e.Source as ClosableTabItem;
 
-			CloseTab(curItem);
-		}
+            CloseTab(curItem);
+        }
 
     public void CloneTab(ClosableTabItem CurTab)
-		{
+        {
       ClosableTabItem newt = new ClosableTabItem();
-			CreateTabbarRKMenu(newt);
-			newt.Header = CurTab.Header;
-			newt.TabIcon = CurTab.TabIcon;
-			newt.Path = CurTab.Path;
+            CreateTabbarRKMenu(newt);
+            newt.Header = CurTab.Header;
+            newt.TabIcon = CurTab.TabIcon;
+            newt.Path = CurTab.Path;
       newt.ToolTip = CurTab.Path.ParsingName;
-			newt.Index = tabControl1.Items.Count;
-			newt.CloseTab += new RoutedEventHandler(newt_CloseTab);
-			newt.DragEnter += new DragEventHandler(newt_DragEnter);
-			newt.DragLeave += new DragEventHandler(newt_DragLeave);
-			newt.DragOver += new DragEventHandler(newt_DragOver);
-			newt.PreviewMouseMove += new MouseEventHandler(newt_PreviewMouseMove);
-			newt.Drop += new DragEventHandler(newt_Drop);
-			newt.TabSelected += newt_TabSelected;
-			newt.AllowDrop = true;
-			newt.log.CurrentLocation = CurTab.Path;
+            newt.Index = tabControl1.Items.Count;
+            newt.CloseTab += new RoutedEventHandler(newt_CloseTab);
+            newt.DragEnter += new DragEventHandler(newt_DragEnter);
+            newt.DragLeave += new DragEventHandler(newt_DragLeave);
+            newt.DragOver += new DragEventHandler(newt_DragOver);
+            newt.PreviewMouseMove += new MouseEventHandler(newt_PreviewMouseMove);
+            newt.Drop += new DragEventHandler(newt_Drop);
+            newt.TabSelected += newt_TabSelected;
+            newt.AllowDrop = true;
+            newt.log.CurrentLocation = CurTab.Path;
       newt.SelectedItems = CurTab.SelectedItems;
       newt.log.ImportData(CurTab.log);
-			tabControl1.Items.Add(newt);
-			tabControl1.SelectedItem = newt;
-			LastTabIndex = tabControl1.SelectedIndex;
-			ConstructMoveToCopyToMenu();
+            tabControl1.Items.Add(newt);
+            tabControl1.SelectedItem = newt;
+            LastTabIndex = tabControl1.SelectedIndex;
+            ConstructMoveToCopyToMenu();
             NavigateAfterTabChange();
-		}
+        }
 
-		private void ERNewTab(object sender, ExecutedRoutedEventArgs e)
-		{
-			NewTab();
-		}
+        private void ERNewTab(object sender, ExecutedRoutedEventArgs e)
+        {
+            NewTab();
+        }
 
-		void SelectTab(int Index)
-		{
-			int selIndex = 0;
-			if (tabControl1.SelectedIndex == tabControl1.Items.Count - 1)
-			{
-				selIndex = 0;
-			}
-			else
-			{
-				selIndex = Index;
-			}
-			tabControl1.SelectedItem = tabControl1.Items[selIndex];
+        void SelectTab(int Index)
+        {
+            int selIndex = 0;
+            if (tabControl1.SelectedIndex == tabControl1.Items.Count - 1)
+            {
+                selIndex = 0;
+            }
+            else
+            {
+                selIndex = Index;
+            }
+            tabControl1.SelectedItem = tabControl1.Items[selIndex];
             NavigateAfterTabChange();
-		}
+        }
 
     void CloseTab(ClosableTabItem thetab, bool allowreopening = true)
-		{
-			if (tabControl1.SelectedIndex == 0 && tabControl1.Items.Count == 1)
-			{
+        {
+            if (tabControl1.SelectedIndex == 0 && tabControl1.Items.Count == 1)
+            {
                 if (this.IsCloseLastTabCloseApp)
                   Close();
                 else {
                   Explorer.Navigate(this.GetShellObjectFromLocation(this.StartUpLocation));
                 }
-				return;
-			}
+                return;
+            }
 
 
-			if (thetab.Index == 0 && tabControl1.Items.Count > 1)
-			{
-				tabControl1.SelectedIndex = thetab.Index + 1;
-				tabControl1.Items.Remove(thetab);
-			}
-			else if (thetab.Index == tabControl1.Items.Count - 1)
-			{
-				tabControl1.SelectedIndex = thetab.Index - 1;
-				tabControl1.Items.Remove(thetab);
-			}
-			else
-			{
+            if (thetab.Index == 0 && tabControl1.Items.Count > 1)
+            {
+                tabControl1.SelectedIndex = thetab.Index + 1;
+                tabControl1.Items.Remove(thetab);
+            }
+            else if (thetab.Index == tabControl1.Items.Count - 1)
+            {
+                tabControl1.SelectedIndex = thetab.Index - 1;
+                tabControl1.Items.Remove(thetab);
+            }
+            else
+            {
 
-				for (int i = thetab.Index + 1; i < tabControl1.Items.Count; i++)
-				{
+                for (int i = thetab.Index + 1; i < tabControl1.Items.Count; i++)
+                {
           ClosableTabItem tab = tabControl1.Items[i] as ClosableTabItem;
-					tab.Index = tab.Index - 1;
-				}
-				tabControl1.Items.Remove(thetab);
-			}
-			
-			ConstructMoveToCopyToMenu();
+                    tab.Index = tab.Index - 1;
+                }
+                tabControl1.Items.Remove(thetab);
+            }
+            
+            ConstructMoveToCopyToMenu();
 
-			if (allowreopening == true)
-			{
-				reopenabletabs.Add(thetab.log);
-				btnUndoClose.IsEnabled = true;
+            if (allowreopening == true)
+            {
+                reopenabletabs.Add(thetab.log);
+                btnUndoClose.IsEnabled = true;
         foreach (ClosableTabItem item in this.tabControl1.Items)
         {
             foreach (FrameworkElement m in item.mnu.Items)
@@ -8476,12 +8483,12 @@ namespace BetterExplorer
                 }
             }
         }
-			}
+            }
 
 
       ClosableTabItem itb = tabControl1.Items[tabControl1.SelectedIndex] as ClosableTabItem;
 
-			  isGoingBackOrForward = itb.log.HistoryItemsList.Count != 0;
+              isGoingBackOrForward = itb.log.HistoryItemsList.Count != 0;
             if (itb != null) {
               try {
                 BeforeLastTabIndex = LastTabIndex;
@@ -8506,57 +8513,57 @@ namespace BetterExplorer
 
               }
         
-				//'btnTabCloseC.IsEnabled = tabControl1.Items.Count > 1;
-				//'there's a bug that has this enabled when there's only one tab open, but why disable it
-				//'if it never crashes the program? Closing the last tab simply closes the program, so I
-				//'thought, what the heck... let's just keep it enabled. :) -JaykeBird
-			}
+                //'btnTabCloseC.IsEnabled = tabControl1.Items.Count > 1;
+                //'there's a bug that has this enabled when there's only one tab open, but why disable it
+                //'if it never crashes the program? Closing the last tab simply closes the program, so I
+                //'thought, what the heck... let's just keep it enabled. :) -JaykeBird
+            }
 
-			NavigateAfterTabChange();
-			
-		}
-		void newt_CloseTab(object sender, RoutedEventArgs e)
-		{
+            NavigateAfterTabChange();
+            
+        }
+        void newt_CloseTab(object sender, RoutedEventArgs e)
+        {
       ClosableTabItem curItem = e.Source as ClosableTabItem;
-			CloseTab(curItem);
-		}
+            CloseTab(curItem);
+        }
 
-		/// <summary>
-		/// Re-opens a previously closed tab using that tab's navigation log data.
-		/// </summary>
-		/// <param name="log">The navigation log data from the previously closed tab.</param>
-		public void ReOpenTab(NavigationLog log)
-		{
+        /// <summary>
+        /// Re-opens a previously closed tab using that tab's navigation log data.
+        /// </summary>
+        /// <param name="log">The navigation log data from the previously closed tab.</param>
+        public void ReOpenTab(NavigationLog log)
+        {
       ClosableTabItem newt = new ClosableTabItem();
-			CreateTabbarRKMenu(newt);
+            CreateTabbarRKMenu(newt);
 
-			ShellObject DefPath = log.CurrentLocation;
-			DefPath.Thumbnail.CurrentSize = new System.Windows.Size(16, 16);
-			DefPath.Thumbnail.FormatOption = ShellThumbnailFormatOption.IconOnly;
-			newt.Header = DefPath.GetDisplayName(DisplayNameType.Default);
-			newt.TabIcon = DefPath.Thumbnail.BitmapSource;
-			newt.Path = DefPath;
+            ShellObject DefPath = log.CurrentLocation;
+            DefPath.Thumbnail.CurrentSize = new System.Windows.Size(16, 16);
+            DefPath.Thumbnail.FormatOption = ShellThumbnailFormatOption.IconOnly;
+            newt.Header = DefPath.GetDisplayName(DisplayNameType.Default);
+            newt.TabIcon = DefPath.Thumbnail.BitmapSource;
+            newt.Path = DefPath;
       newt.ToolTip = DefPath.ParsingName;
-			newt.IsNavigate = false;
-			newt.Index = tabControl1.Items.Count;
-			newt.AllowDrop = true;
+            newt.IsNavigate = false;
+            newt.Index = tabControl1.Items.Count;
+            newt.AllowDrop = true;
       newt.CloseTab += newt_CloseTab;
       newt.DragEnter += newt_DragEnter;
       newt.DragOver += newt_DragOver;
       newt.PreviewMouseMove += newt_PreviewMouseMove;
       newt.Drop += newt_Drop;
-			newt.TabSelected += newt_TabSelected;
-			tabControl1.Items.Add(newt);
-			LastTabIndex = tabControl1.SelectedIndex;
-			newt.log.ImportData(log);
+            newt.TabSelected += newt_TabSelected;
+            tabControl1.Items.Add(newt);
+            LastTabIndex = tabControl1.SelectedIndex;
+            newt.log.ImportData(log);
 
-			ConstructMoveToCopyToMenu();
-			NavigateAfterTabChange();
-		}
+            ConstructMoveToCopyToMenu();
+            NavigateAfterTabChange();
+        }
 
-		System.Windows.Forms.Timer t = new System.Windows.Forms.Timer();
-		private void tabControl1_SelectionChanged(object sender, SelectionChangedEventArgs e)
-		{
+        System.Windows.Forms.Timer t = new System.Windows.Forms.Timer();
+        private void tabControl1_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
       try
       {
         if (e.RemovedItems.Count > 0)
@@ -8577,83 +8584,83 @@ namespace BetterExplorer
         NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
         logger.Warn(lastException);
       }
-		}
+        }
 
-		void t_Tick(object sender, EventArgs e)
-		{
-			if (!Keyboard.IsKeyDown(Key.Tab))
-			{
+        void t_Tick(object sender, EventArgs e)
+        {
+            if (!Keyboard.IsKeyDown(Key.Tab))
+            {
 
-				Explorer.Navigate((sender as System.Windows.Forms.Timer).Tag as ShellObject);
-				WindowsAPI.SetFocus(Explorer.SysListViewHandle);
-				(sender as System.Windows.Forms.Timer).Stop();
-			}
-		}
+                Explorer.Navigate((sender as System.Windows.Forms.Timer).Tag as ShellObject);
+                WindowsAPI.SetFocus(Explorer.SysListViewHandle);
+                (sender as System.Windows.Forms.Timer).Stop();
+            }
+        }
 
-		private void tabControl1_MouseUp(object sender, MouseButtonEventArgs e)
-		{
-			if (e.ChangedButton == MouseButton.Middle)
-			{
+        private void tabControl1_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton == MouseButton.Middle)
+            {
         CloneTab(tabControl1.SelectedItem as ClosableTabItem);
-			}
-		}
+            }
+        }
 
-		private void RCloseTab(object sender, ExecutedRoutedEventArgs e)
-		{
-			if (tabControl1.SelectedIndex == 0 && tabControl1.Items.Count == 1)
-			{
-				Close();
-				return;
-			}
-			int CurSelIndex = tabControl1.SelectedIndex;
-			if (tabControl1.SelectedIndex == 0)
-			{
-				tabControl1.SelectedItem = tabControl1.Items[1];
+        private void RCloseTab(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (tabControl1.SelectedIndex == 0 && tabControl1.Items.Count == 1)
+            {
+                Close();
+                return;
+            }
+            int CurSelIndex = tabControl1.SelectedIndex;
+            if (tabControl1.SelectedIndex == 0)
+            {
+                tabControl1.SelectedItem = tabControl1.Items[1];
 
-			}
-			else
-			{
-				tabControl1.SelectedItem = tabControl1.Items[CurSelIndex - 1];
-			}
+            }
+            else
+            {
+                tabControl1.SelectedItem = tabControl1.Items[CurSelIndex - 1];
+            }
 
 
-			tabControl1.Items.RemoveAt(CurSelIndex);
-		}
+            tabControl1.Items.RemoveAt(CurSelIndex);
+        }
 
-		private void ChangeTab(object sender, ExecutedRoutedEventArgs e)
-		{
-			t.Stop();
-			SelectTab(tabControl1.SelectedIndex + 1);
-		}
+        private void ChangeTab(object sender, ExecutedRoutedEventArgs e)
+        {
+            t.Stop();
+            SelectTab(tabControl1.SelectedIndex + 1);
+        }
 
-		private void ERGoToBCCombo(object sender, ExecutedRoutedEventArgs e)
-		{
-			breadcrumbBarControl1.EnterEditMode();
-		}
+        private void ERGoToBCCombo(object sender, ExecutedRoutedEventArgs e)
+        {
+            breadcrumbBarControl1.EnterEditMode();
+        }
 
 
     void CreateTabbarRKMenu(ClosableTabItem tabitem)
-		{
+        {
 
-			tabitem.mnu = new ContextMenu();
-			MenuItem miclosecurrentr = new MenuItem();
-			miclosecurrentr.Header = "Close current tab";
-			miclosecurrentr.Tag = tabitem;
-			miclosecurrentr.Click += new RoutedEventHandler(miclosecurrentr_Click);
-			tabitem.mnu.Items.Add(miclosecurrentr);
+            tabitem.mnu = new ContextMenu();
+            MenuItem miclosecurrentr = new MenuItem();
+            miclosecurrentr.Header = "Close current tab";
+            miclosecurrentr.Tag = tabitem;
+            miclosecurrentr.Click += new RoutedEventHandler(miclosecurrentr_Click);
+            tabitem.mnu.Items.Add(miclosecurrentr);
 
-			MenuItem miclosealltab = new MenuItem();
-			miclosealltab.Header = "Close all tabs";
-			miclosealltab.Click += new RoutedEventHandler(miclosealltab_Click);
-			tabitem.mnu.Items.Add(miclosealltab);
+            MenuItem miclosealltab = new MenuItem();
+            miclosealltab.Header = "Close all tabs";
+            miclosealltab.Click += new RoutedEventHandler(miclosealltab_Click);
+            tabitem.mnu.Items.Add(miclosealltab);
 
-			MenuItem miclosealltabbd = new MenuItem();
-			miclosealltabbd.Header = "Close all other tabs";
-			miclosealltabbd.Tag = tabitem;
-			miclosealltabbd.Click += new RoutedEventHandler(miclosealltabbd_Click);
-			tabitem.mnu.Items.Add(miclosealltabbd);
+            MenuItem miclosealltabbd = new MenuItem();
+            miclosealltabbd.Header = "Close all other tabs";
+            miclosealltabbd.Tag = tabitem;
+            miclosealltabbd.Click += new RoutedEventHandler(miclosealltabbd_Click);
+            tabitem.mnu.Items.Add(miclosealltabbd);
 
-			tabitem.mnu.Items.Add(new Separator());
+            tabitem.mnu.Items.Add(new Separator());
 
             
             MenuItem minewtabr = new MenuItem();
@@ -8688,41 +8695,41 @@ namespace BetterExplorer
 
             tabitem.mnu.Items.Add(new Separator());
 
-			MenuItem miopeninnew = new MenuItem();
-			miopeninnew.Header = "Open in new window";
-			miopeninnew.Tag = tabitem;
-			miopeninnew.Click += new RoutedEventHandler(miopeninnew_Click);
-		  tabitem.mnu.Items.Add(miopeninnew);
+            MenuItem miopeninnew = new MenuItem();
+            miopeninnew.Header = "Open in new window";
+            miopeninnew.Tag = tabitem;
+            miopeninnew.Click += new RoutedEventHandler(miopeninnew_Click);
+          tabitem.mnu.Items.Add(miopeninnew);
 
-		}
+        }
 
-		void miopeninnew_Click(object sender, RoutedEventArgs e)
-		{
-			MenuItem mi = (sender as MenuItem);
+        void miopeninnew_Click(object sender, RoutedEventArgs e)
+        {
+            MenuItem mi = (sender as MenuItem);
       ClosableTabItem ti = mi.Tag as ClosableTabItem;
-			Process.Start(Assembly.GetExecutingAssembly().GetName().Name, ti.Path.ParsingName + " /nw");
-			CloseTab(ti);
-			//throw new NotImplementedException();
-		}
+            Process.Start(Assembly.GetExecutingAssembly().GetName().Name, ti.Path.ParsingName + " /nw");
+            CloseTab(ti);
+            //throw new NotImplementedException();
+        }
 
-		void miclosealltabbd_Click(object sender, RoutedEventArgs e)
-		{
-			MenuItem mi = (sender as MenuItem);
+        void miclosealltabbd_Click(object sender, RoutedEventArgs e)
+        {
+            MenuItem mi = (sender as MenuItem);
       ClosableTabItem ti = mi.Tag as ClosableTabItem;
-			CloseAllTabsButThis(ti);
-		}
+            CloseAllTabsButThis(ti);
+        }
 
-		void miclosealltab_Click(object sender, RoutedEventArgs e)
-		{
-			CloseAllTabs(true);
-		}
+        void miclosealltab_Click(object sender, RoutedEventArgs e)
+        {
+            CloseAllTabs(true);
+        }
 
-		void miclosecurrentr_Click(object sender, RoutedEventArgs e)
-		{
-			MenuItem mi = (sender as MenuItem);
+        void miclosecurrentr_Click(object sender, RoutedEventArgs e)
+        {
+            MenuItem mi = (sender as MenuItem);
       ClosableTabItem ti = mi.Tag as ClosableTabItem;
-			CloseTab(ti);
-		}
+            CloseTab(ti);
+        }
 
         void minewtabr_Click(object sender, RoutedEventArgs e)
         {
@@ -8748,113 +8755,113 @@ namespace BetterExplorer
             }
         }
 
-		void CloseAllTabs(bool CloseFirstTab)
-		{
+        void CloseAllTabs(bool CloseFirstTab)
+        {
       List<ClosableTabItem> tabs = new List<ClosableTabItem>();
-			foreach (object item in tabControl1.Items)
-			{
+            foreach (object item in tabControl1.Items)
+            {
         ClosableTabItem it = item as ClosableTabItem;
-				tabs.Add(it);
-			}
+                tabs.Add(it);
+            }
 
-			if (CloseFirstTab)
-			{
+            if (CloseFirstTab)
+            {
         foreach (ClosableTabItem item in tabs)
-				{
+                {
 
-					CloseTab(item);
-				}
-			}
-			else
-			{
+                    CloseTab(item);
+                }
+            }
+            else
+            {
         foreach (ClosableTabItem item in tabs)
-				{
+                {
 
-					if (item.Index != 0)
-					{
-						CloseTab(item);
-					}
+                    if (item.Index != 0)
+                    {
+                        CloseTab(item);
+                    }
 
-				}
-			}
+                }
+            }
 
-			tabs = null;
+            tabs = null;
 
-		}
+        }
 
 
     void CloseAllTabsButThis(ClosableTabItem tabitem)
-		{
+        {
       List<ClosableTabItem> tabs = new List<ClosableTabItem>();
-			foreach (object item in tabControl1.Items)
-			{
+            foreach (object item in tabControl1.Items)
+            {
         ClosableTabItem it = item as ClosableTabItem;
-				tabs.Add(it);
-			}
+                tabs.Add(it);
+            }
 
 
       foreach (ClosableTabItem item in tabs)
-			{
+            {
 
-				if (true)
-				{
-					if (item != tabitem)
-					{
-						CloseTab(item);
-					}
+                if (true)
+                {
+                    if (item != tabitem)
+                    {
+                        CloseTab(item);
+                    }
 
-				}
+                }
 
-			}
+            }
 
-			tabs = null;
-			ConstructMoveToCopyToMenu();
+            tabs = null;
+            ConstructMoveToCopyToMenu();
 
-		}
+        }
 
-		public void NewTab(bool IsNavigate = true)
-		{
-			ClosableTabItem newt = new ClosableTabItem();
-			CreateTabbarRKMenu(newt);
+        public void NewTab(bool IsNavigate = true)
+        {
+            ClosableTabItem newt = new ClosableTabItem();
+            CreateTabbarRKMenu(newt);
 
-			ShellObject DefPath;
-			if (StartUpLocation.IndexOf("::") == 0 && StartUpLocation.IndexOf(@"\") == -1)
-				DefPath = ShellObject.FromParsingName("shell:" + StartUpLocation);
-			else
-				try
-				{
-					DefPath = ShellObject.FromParsingName(StartUpLocation);
-				}
-				catch
-				{
-					DefPath = (ShellObject)KnownFolders.Libraries;
-				}
-			DefPath.Thumbnail.CurrentSize = new System.Windows.Size(16, 16);
-			DefPath.Thumbnail.FormatOption = ShellThumbnailFormatOption.IconOnly;
-			newt.PreviewMouseMove += newt_PreviewMouseMove;
-			newt.Header = DefPath.GetDisplayName(DisplayNameType.Default);
-			newt.TabIcon = DefPath.Thumbnail.BitmapSource;
-			newt.Path = DefPath;
+            ShellObject DefPath;
+            if (StartUpLocation.IndexOf("::") == 0 && StartUpLocation.IndexOf(@"\") == -1)
+                DefPath = ShellObject.FromParsingName("shell:" + StartUpLocation);
+            else
+                try
+                {
+                    DefPath = ShellObject.FromParsingName(StartUpLocation);
+                }
+                catch
+                {
+                    DefPath = (ShellObject)KnownFolders.Libraries;
+                }
+            DefPath.Thumbnail.CurrentSize = new System.Windows.Size(16, 16);
+            DefPath.Thumbnail.FormatOption = ShellThumbnailFormatOption.IconOnly;
+            newt.PreviewMouseMove += newt_PreviewMouseMove;
+            newt.Header = DefPath.GetDisplayName(DisplayNameType.Default);
+            newt.TabIcon = DefPath.Thumbnail.BitmapSource;
+            newt.Path = DefPath;
       newt.ToolTip = DefPath.ParsingName;
-			newt.IsNavigate = IsNavigate;
-			newt.Index = tabControl1.Items.Count;
-			newt.AllowDrop = true;
-			newt.log.CurrentLocation = DefPath;
+            newt.IsNavigate = IsNavigate;
+            newt.Index = tabControl1.Items.Count;
+            newt.AllowDrop = true;
+            newt.log.CurrentLocation = DefPath;
 
-			newt.CloseTab += new RoutedEventHandler(newt_CloseTab);
-			newt.DragEnter += new DragEventHandler(newt_DragEnter);
-			newt.DragOver += new DragEventHandler(newt_DragOver);
-			newt.PreviewMouseMove += new MouseEventHandler(newt_PreviewMouseMove);
-			newt.Drop += new DragEventHandler(newt_Drop);
-			newt.TabSelected += newt_TabSelected;
-			tabControl1.Items.Add(newt);
-			LastTabIndex = tabControl1.SelectedIndex;
-			tabControl1.SelectedIndex = tabControl1.Items.Count - 1;
-			tabControl1.SelectedItem = tabControl1.Items[tabControl1.Items.Count - 1];
+            newt.CloseTab += new RoutedEventHandler(newt_CloseTab);
+            newt.DragEnter += new DragEventHandler(newt_DragEnter);
+            newt.DragOver += new DragEventHandler(newt_DragOver);
+            newt.PreviewMouseMove += new MouseEventHandler(newt_PreviewMouseMove);
+            newt.Drop += new DragEventHandler(newt_Drop);
+            newt.TabSelected += newt_TabSelected;
+            tabControl1.Items.Add(newt);
+            LastTabIndex = tabControl1.SelectedIndex;
+            tabControl1.SelectedIndex = tabControl1.Items.Count - 1;
+            tabControl1.SelectedItem = tabControl1.Items[tabControl1.Items.Count - 1];
 
-			ConstructMoveToCopyToMenu();
+            ConstructMoveToCopyToMenu();
             NavigateAfterTabChange();
-		}
+        }
 
     public void NewTab(ShellObject location, bool IsNavigate = false) {
       ClosableTabItem newt = new ClosableTabItem();
@@ -8893,494 +8900,494 @@ namespace BetterExplorer
 
 
     public ClosableTabItem NewTab(string Location, bool IsNavigate = false)
-		{
+        {
       ClosableTabItem newt = new ClosableTabItem();
-			CreateTabbarRKMenu(newt);
+            CreateTabbarRKMenu(newt);
 
       ShellObject DefPath = GetShellObjectFromLocation(Location);
-			DefPath.Thumbnail.CurrentSize = new System.Windows.Size(16, 16);
-			DefPath.Thumbnail.FormatOption = ShellThumbnailFormatOption.IconOnly;
-			newt.Header = DefPath.GetDisplayName(DisplayNameType.Default);
-			newt.TabIcon = DefPath.Thumbnail.BitmapSource;
-			newt.Path = DefPath;
+            DefPath.Thumbnail.CurrentSize = new System.Windows.Size(16, 16);
+            DefPath.Thumbnail.FormatOption = ShellThumbnailFormatOption.IconOnly;
+            newt.Header = DefPath.GetDisplayName(DisplayNameType.Default);
+            newt.TabIcon = DefPath.Thumbnail.BitmapSource;
+            newt.Path = DefPath;
       newt.ToolTip = DefPath.ParsingName;
-			newt.IsNavigate = IsNavigate;
-			newt.Index = tabControl1.Items.Count;
-			newt.AllowDrop = true;
-			newt.CloseTab += new RoutedEventHandler(newt_CloseTab);
-			newt.DragEnter += new DragEventHandler(newt_DragEnter);
-			newt.DragOver += new DragEventHandler(newt_DragOver);
-			newt.PreviewMouseMove += new MouseEventHandler(newt_PreviewMouseMove);
-			newt.TabSelected += newt_TabSelected;
-			newt.Drop += new DragEventHandler(newt_Drop);
+            newt.IsNavigate = IsNavigate;
+            newt.Index = tabControl1.Items.Count;
+            newt.AllowDrop = true;
+            newt.CloseTab += new RoutedEventHandler(newt_CloseTab);
+            newt.DragEnter += new DragEventHandler(newt_DragEnter);
+            newt.DragOver += new DragEventHandler(newt_DragOver);
+            newt.PreviewMouseMove += new MouseEventHandler(newt_PreviewMouseMove);
+            newt.TabSelected += newt_TabSelected;
+            newt.Drop += new DragEventHandler(newt_Drop);
 
-			tabControl1.Items.Add(newt);
-			LastTabIndex = tabControl1.SelectedIndex;
-			if (IsNavigate)
-			{
-				//IsCancel = true;
+            tabControl1.Items.Add(newt);
+            LastTabIndex = tabControl1.SelectedIndex;
+            if (IsNavigate)
+            {
+                //IsCancel = true;
 
-				tabControl1.SelectedIndex = tabControl1.Items.Count - 1;
-				tabControl1.SelectedItem = tabControl1.Items[tabControl1.Items.Count - 1];
-				//IsCancel = false;
-			}
-			else
-			{
-				newt.log.CurrentLocation = DefPath;
-			}
+                tabControl1.SelectedIndex = tabControl1.Items.Count - 1;
+                tabControl1.SelectedItem = tabControl1.Items[tabControl1.Items.Count - 1];
+                //IsCancel = false;
+            }
+            else
+            {
+                newt.log.CurrentLocation = DefPath;
+            }
 
-			ConstructMoveToCopyToMenu();
-			return newt;
-		}
+            ConstructMoveToCopyToMenu();
+            return newt;
+        }
 
-		public void newt_TabSelected(object sender, RoutedEventArgs e)
-		{
+        public void newt_TabSelected(object sender, RoutedEventArgs e)
+        {
       ClosableTabItem itb = sender as ClosableTabItem;
 
-				isGoingBackOrForward = itb.log.HistoryItemsList.Count != 0;
-				if (itb != null)
-				{
-					try
-					{
-						BeforeLastTabIndex = LastTabIndex;
+                isGoingBackOrForward = itb.log.HistoryItemsList.Count != 0;
+                if (itb != null)
+                {
+                    try
+                    {
+                        BeforeLastTabIndex = LastTabIndex;
 
-						//tabControl1.SelectedIndex = itb.Index;
-						//LastTabIndex = itb.Index;
-						//CurrentTabIndex = LastTabIndex;
-						if (itb.Path != Explorer.NavigationLog.CurrentLocation)
-						{
+                        //tabControl1.SelectedIndex = itb.Index;
+                        //LastTabIndex = itb.Index;
+                        //CurrentTabIndex = LastTabIndex;
+                        if (itb.Path != Explorer.NavigationLog.CurrentLocation)
+                        {
 
 
-							if (!Keyboard.IsKeyDown(Key.Tab))
-							{
+                            if (!Keyboard.IsKeyDown(Key.Tab))
+                            {
 
-								Explorer.Navigate(itb.Path);
-							}
-							else
-							{
-								t.Interval = 500;
-								t.Tag = itb.Path;
-								t.Tick += new EventHandler(t_Tick);
-								t.Start();
-							}
+                                Explorer.Navigate(itb.Path);
+                            }
+                            else
+                            {
+                                t.Interval = 500;
+                                t.Tag = itb.Path;
+                                t.Tick += new EventHandler(t_Tick);
+                                t.Start();
+                            }
 
-						}
+                        }
 
             
 
             itb.BringIntoView();
-					}
-					catch (StackOverflowException)
-					{
+                    }
+                    catch (StackOverflowException)
+                    {
 
-					}
-					//'btnTabCloseC.IsEnabled = tabControl1.Items.Count > 1;
-					//'there's a bug that has this enabled when there's only one tab open, but why disable it
-					//'if it never crashes the program? Closing the last tab simply closes the program, so I
-					//'thought, what the heck... let's just keep it enabled. :) -JaykeBird
-				}
+                    }
+                    //'btnTabCloseC.IsEnabled = tabControl1.Items.Count > 1;
+                    //'there's a bug that has this enabled when there's only one tab open, but why disable it
+                    //'if it never crashes the program? Closing the last tab simply closes the program, so I
+                    //'thought, what the heck... let's just keep it enabled. :) -JaykeBird
+                }
 
         Explorer.SetExplorerFocus();
-		}
+        }
 
-		void newt_PreviewMouseMove(object sender, MouseEventArgs e)
-		{
+        void newt_PreviewMouseMove(object sender, MouseEventArgs e)
+        {
       var tabItem = e.Source as ClosableTabItem;
 
-			if (tabItem == null)
-				return;
+            if (tabItem == null)
+                return;
 
-			if (Mouse.PrimaryDevice.LeftButton == MouseButtonState.Pressed)
-			{
-				DragDrop.DoDragDrop(tabItem, tabItem, DragDropEffects.All);
-			}
-		}
+            if (Mouse.PrimaryDevice.LeftButton == MouseButtonState.Pressed)
+            {
+                DragDrop.DoDragDrop(tabItem, tabItem, DragDropEffects.All);
+            }
+        }
 
-		void newt_Drop(object sender, DragEventArgs e)
-		{
+        void newt_Drop(object sender, DragEventArgs e)
+        {
 
-			e.Handled = true;
+            e.Handled = true;
       var tabItemTarget = e.Source as ClosableTabItem;
 
       var tabItemSource = e.Data.GetData(typeof(ClosableTabItem)) as ClosableTabItem;
-			if (tabItemSource != null)
-			{
-				if (!tabItemTarget.Equals(tabItemSource))
-				{
-					var tabControl = tabItemTarget.Parent as TabControl;
-					int tabState = -1;
-					int sourceIndex = tabControl.Items.IndexOf(tabItemSource);
-					int targetIndex = tabControl.Items.IndexOf(tabItemTarget);
-					if (!tabItemSource.IsSelected && tabItemTarget.IsSelected)
-						tabState = 1;
-					else if (!tabItemSource.IsSelected && !tabItemTarget.IsSelected)
-						tabState = 2;
-					else
-						tabState = 0;
-					
-					tabControl.Items.Remove(tabItemSource);
-					tabControl.Items.Insert(targetIndex, tabItemSource);
+            if (tabItemSource != null)
+            {
+                if (!tabItemTarget.Equals(tabItemSource))
+                {
+                    var tabControl = tabItemTarget.Parent as TabControl;
+                    int tabState = -1;
+                    int sourceIndex = tabControl.Items.IndexOf(tabItemSource);
+                    int targetIndex = tabControl.Items.IndexOf(tabItemTarget);
+                    if (!tabItemSource.IsSelected && tabItemTarget.IsSelected)
+                        tabState = 1;
+                    else if (!tabItemSource.IsSelected && !tabItemTarget.IsSelected)
+                        tabState = 2;
+                    else
+                        tabState = 0;
+                    
+                    tabControl.Items.Remove(tabItemSource);
+                    tabControl.Items.Insert(targetIndex, tabItemSource);
 
-					
-					
-					tabControl.Items.Remove(tabItemTarget);
-					tabControl.Items.Insert(sourceIndex, tabItemTarget);
-					if (tabState == 1)
-						tabControl.SelectedIndex = sourceIndex;
-					else if (tabState == 0)
-						tabControl.SelectedIndex = targetIndex;
+                    
+                    
+                    tabControl.Items.Remove(tabItemTarget);
+                    tabControl.Items.Insert(sourceIndex, tabItemTarget);
+                    if (tabState == 1)
+                        tabControl.SelectedIndex = sourceIndex;
+                    else if (tabState == 0)
+                        tabControl.SelectedIndex = targetIndex;
 
-				}
-			}
-			else
-			{
+                }
+            }
+            else
+            {
 
-				System.Windows.Point pt = e.GetPosition(sender as IInputElement);
+                System.Windows.Point pt = e.GetPosition(sender as IInputElement);
 
-				//if (e.Data.GetDataPresent(DataFormats.FileDrop))
-				//{
+                //if (e.Data.GetDataPresent(DataFormats.FileDrop))
+                //{
         if ((sender as ClosableTabItem).Path.IsFileSystemObject)
-				{
-					if ((e.KeyStates & DragDropKeyStates.ControlKey) == DragDropKeyStates.ControlKey)
-					{
-						e.Effects = DragDropEffects.Copy;
-						if (e.Data.GetDataPresent(DataFormats.FileDrop))
-						{
-							FileOperationsData PasteData = new FileOperationsData();
-							String[] collection = (String[])e.Data.GetData(DataFormats.FileDrop);
-							StringCollection scol = new StringCollection();
-							scol.AddRange(collection);
-							PasteData.DropList = scol;
+                {
+                    if ((e.KeyStates & DragDropKeyStates.ControlKey) == DragDropKeyStates.ControlKey)
+                    {
+                        e.Effects = DragDropEffects.Copy;
+                        if (e.Data.GetDataPresent(DataFormats.FileDrop))
+                        {
+                            FileOperationsData PasteData = new FileOperationsData();
+                            String[] collection = (String[])e.Data.GetData(DataFormats.FileDrop);
+                            StringCollection scol = new StringCollection();
+                            scol.AddRange(collection);
+                            PasteData.DropList = scol;
               PasteData.PathForDrop = (sender as ClosableTabItem).Path.ParsingName;
-							Thread t = null;
-							t = new Thread(new ParameterizedThreadStart(Explorer.DoCopy));
-							t.SetApartmentState(ApartmentState.STA);
-							t.Start(PasteData);
-						}
-					}
-					else
-					{
-						//if (Path.GetPathRoot((sender as ClosableTabItem).Path.ParsingName) ==
-						//    Path.GetPathRoot(Explorer.NavigationLog.CurrentLocation.ParsingName))
-						//{
-						e.Effects = DragDropEffects.Move;
-						if (e.Data.GetDataPresent(DataFormats.FileDrop))
-						{
-							FileOperationsData PasteData = new FileOperationsData();
-							String[] collection = (String[])e.Data.GetData(DataFormats.FileDrop);
-							StringCollection scol = new StringCollection();
-							scol.AddRange(collection);
-							PasteData.DropList = scol;
+                            Thread t = null;
+                            t = new Thread(new ParameterizedThreadStart(Explorer.DoCopy));
+                            t.SetApartmentState(ApartmentState.STA);
+                            t.Start(PasteData);
+                        }
+                    }
+                    else
+                    {
+                        //if (Path.GetPathRoot((sender as ClosableTabItem).Path.ParsingName) ==
+                        //    Path.GetPathRoot(Explorer.NavigationLog.CurrentLocation.ParsingName))
+                        //{
+                        e.Effects = DragDropEffects.Move;
+                        if (e.Data.GetDataPresent(DataFormats.FileDrop))
+                        {
+                            FileOperationsData PasteData = new FileOperationsData();
+                            String[] collection = (String[])e.Data.GetData(DataFormats.FileDrop);
+                            StringCollection scol = new StringCollection();
+                            scol.AddRange(collection);
+                            PasteData.DropList = scol;
               PasteData.PathForDrop = (sender as ClosableTabItem).Path.ParsingName;
-							Thread t = null;
-							t = new Thread(new ParameterizedThreadStart(Explorer.DoMove));
-							t.SetApartmentState(ApartmentState.STA);
-							t.Start(PasteData);
-						}
+                            Thread t = null;
+                            t = new Thread(new ParameterizedThreadStart(Explorer.DoMove));
+                            t.SetApartmentState(ApartmentState.STA);
+                            t.Start(PasteData);
+                        }
 
-						//}
-						//else
-						//{
-						//    e.Effects = DragDropEffects.Copy;
-						//    if (e.Data.GetDataPresent(DataFormats.FileDrop))
-						//    {
-						//        FileOperationsData PasteData = new FileOperationsData();
-						//        String[] collection = (String[])e.Data.GetData(DataFormats.FileDrop);
-						//        StringCollection scol = new StringCollection();
-						//        scol.AddRange(collection);
-						//        PasteData.DropList = scol;
-						//        PasteData.PathForDrop = (sender as ClosableTabItem).Path.ParsingName;
-						//        Thread t = null;
-						//        t = new Thread(new ParameterizedThreadStart(Explorer.DoCopy));
-						//        t.SetApartmentState(ApartmentState.STA);
-						//        t.Start(PasteData);
-						//    }
+                        //}
+                        //else
+                        //{
+                        //    e.Effects = DragDropEffects.Copy;
+                        //    if (e.Data.GetDataPresent(DataFormats.FileDrop))
+                        //    {
+                        //        FileOperationsData PasteData = new FileOperationsData();
+                        //        String[] collection = (String[])e.Data.GetData(DataFormats.FileDrop);
+                        //        StringCollection scol = new StringCollection();
+                        //        scol.AddRange(collection);
+                        //        PasteData.DropList = scol;
+                        //        PasteData.PathForDrop = (sender as ClosableTabItem).Path.ParsingName;
+                        //        Thread t = null;
+                        //        t = new Thread(new ParameterizedThreadStart(Explorer.DoCopy));
+                        //        t.SetApartmentState(ApartmentState.STA);
+                        //        t.Start(PasteData);
+                        //    }
 
-						//}
-					}
-				}
-				else
-				{
-					e.Effects = DragDropEffects.None;
-				}
-				DropTargetHelper.Drop(e.Data, pt, e.Effects);
-				// attempt at making drag-and-drop tabs a possibility
-				//}
-				//else
-				//{
-				//    if (e.Data.GetDataPresent(typeof(ClosableTabItem)))
-				//    {
-				//        var tabItemTarget = e.Source as ClosableTabItem;
+                        //}
+                    }
+                }
+                else
+                {
+                    e.Effects = DragDropEffects.None;
+                }
+                DropTargetHelper.Drop(e.Data, pt, e.Effects);
+                // attempt at making drag-and-drop tabs a possibility
+                //}
+                //else
+                //{
+                //    if (e.Data.GetDataPresent(typeof(ClosableTabItem)))
+                //    {
+                //        var tabItemTarget = e.Source as ClosableTabItem;
 
-				//        var tabItemSource = e.Data.GetData(typeof(ClosableTabItem)) as ClosableTabItem;
-				//        if (!tabItemTarget.Equals(tabItemSource))
-				//        {
-				//            var tabControl = tabItemTarget.Parent as TabControl;
-				//            int sourceIndex = tabControl.Items.IndexOf(tabItemSource);
-				//            int targetIndex = tabControl.Items.IndexOf(tabItemTarget);
+                //        var tabItemSource = e.Data.GetData(typeof(ClosableTabItem)) as ClosableTabItem;
+                //        if (!tabItemTarget.Equals(tabItemSource))
+                //        {
+                //            var tabControl = tabItemTarget.Parent as TabControl;
+                //            int sourceIndex = tabControl.Items.IndexOf(tabItemSource);
+                //            int targetIndex = tabControl.Items.IndexOf(tabItemTarget);
 
-				//            tabControl.Items.Remove(tabItemSource);
-				//            tabControl.Items.Insert(targetIndex, tabItemSource);
+                //            tabControl.Items.Remove(tabItemSource);
+                //            tabControl.Items.Insert(targetIndex, tabItemSource);
 
-				//            tabControl.Items.Remove(tabItemTarget);
-				//            tabControl.Items.Insert(targetIndex, tabItemTarget);
-				//        }
-				//    }
-				//    else
-				//    {
+                //            tabControl.Items.Remove(tabItemTarget);
+                //            tabControl.Items.Insert(targetIndex, tabItemTarget);
+                //        }
+                //    }
+                //    else
+                //    {
 
-				//    }
-				//}
-			}
-				
-		}
+                //    }
+                //}
+            }
+                
+        }
 
-		void newt_DragOver(object sender, DragEventArgs e)
-		{
-			e.Handled = true;
+        void newt_DragOver(object sender, DragEventArgs e)
+        {
+            e.Handled = true;
 
       if ((sender as ClosableTabItem).Path.IsFileSystemObject)
-			{
-				if ((e.KeyStates & DragDropKeyStates.ControlKey) == DragDropKeyStates.ControlKey)
-				{
-					e.Effects = DragDropEffects.Copy;
+            {
+                if ((e.KeyStates & DragDropKeyStates.ControlKey) == DragDropKeyStates.ControlKey)
+                {
+                    e.Effects = DragDropEffects.Copy;
 
-				}
-				else
-				{
-					//if (Path.GetPathRoot((sender as ClosableTabItem).Path.ParsingName) ==
-					//    Path.GetPathRoot(Explorer.NavigationLog.CurrentLocation.ParsingName))
-					//{
-					//    e.Effects = DragDropEffects.Move;
+                }
+                else
+                {
+                    //if (Path.GetPathRoot((sender as ClosableTabItem).Path.ParsingName) ==
+                    //    Path.GetPathRoot(Explorer.NavigationLog.CurrentLocation.ParsingName))
+                    //{
+                    //    e.Effects = DragDropEffects.Move;
 
 
-					//}
-					//else
-					//{
-					//    e.Effects = DragDropEffects.Copy;
+                    //}
+                    //else
+                    //{
+                    //    e.Effects = DragDropEffects.Copy;
 
-					//}
+                    //}
 
-					// I decided just to have it do a move because it will avoid errors with special shell folders.
-					// Besides, if a person wants to copy something, they should know how to press Ctrl to copy.
-					e.Effects = DragDropEffects.Move;
-				}
-			}
-			else
-			{
-				e.Effects = DragDropEffects.None;
-			}
+                    // I decided just to have it do a move because it will avoid errors with special shell folders.
+                    // Besides, if a person wants to copy something, they should know how to press Ctrl to copy.
+                    e.Effects = DragDropEffects.Move;
+                }
+            }
+            else
+            {
+                e.Effects = DragDropEffects.None;
+            }
 
-			Win32Point ptw = new Win32Point();
-			GetCursorPos(ref ptw);
-			//e.Handled = true;
+            Win32Point ptw = new Win32Point();
+            GetCursorPos(ref ptw);
+            //e.Handled = true;
       if (e.Data.GetType() != typeof(ClosableTabItem))
-				DropTargetHelper.DragOver(new System.Windows.Point(ptw.X, ptw.Y), e.Effects);
-		}
+                DropTargetHelper.DragOver(new System.Windows.Point(ptw.X, ptw.Y), e.Effects);
+        }
 
-		void newt_DragLeave(object sender, DragEventArgs e)
-		{
-			DropTargetHelper.DragLeave();
-		}
+        void newt_DragLeave(object sender, DragEventArgs e)
+        {
+            DropTargetHelper.DragLeave();
+        }
 
-		void newt_DragEnter(object sender, DragEventArgs e)
-		{
-			e.Handled = true;
+        void newt_DragEnter(object sender, DragEventArgs e)
+        {
+            e.Handled = true;
       var tabItem = e.Source as ClosableTabItem;
 
-			if (tabItem == null)
-				return;
+            if (tabItem == null)
+                return;
 
-			//if (Mouse.PrimaryDevice.LeftButton == MouseButtonState.Pressed)
-			//{
-			//    DragDrop.DoDragDrop(tabItem, tabItem, DragDropEffects.All);
-			//}
-			//if (e.Data.GetDataPresent(DataFormats.FileDrop))
-			//{
+            //if (Mouse.PrimaryDevice.LeftButton == MouseButtonState.Pressed)
+            //{
+            //    DragDrop.DoDragDrop(tabItem, tabItem, DragDropEffects.All);
+            //}
+            //if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            //{
       if ((sender as ClosableTabItem).Path.IsFileSystemObject)
-				{
-					if ((e.KeyStates & DragDropKeyStates.ControlKey) == DragDropKeyStates.ControlKey)
-					{
-						e.Effects = DragDropEffects.Copy;
+                {
+                    if ((e.KeyStates & DragDropKeyStates.ControlKey) == DragDropKeyStates.ControlKey)
+                    {
+                        e.Effects = DragDropEffects.Copy;
 
-					}
-					else
-					{
-						//if (Path.GetPathRoot((sender as ClosableTabItem).Path.ParsingName) ==
-						//    Path.GetPathRoot(Explorer.NavigationLog.CurrentLocation.ParsingName))
-						//{
-						//    e.Effects = DragDropEffects.Move;
-
-
-						//}
-						//else
-						//{
-						//    e.Effects = DragDropEffects.Copy;
-
-						//}
-
-						// I decided just to have it do a move because it will avoid errors with special shell folders.
-						// Besides, if a person wants to copy something, they should know how to press Ctrl to copy.
-						e.Effects = DragDropEffects.Move;
-					}
-				}
-				else
-				{
-					e.Effects = DragDropEffects.None;
-				}
+                    }
+                    else
+                    {
+                        //if (Path.GetPathRoot((sender as ClosableTabItem).Path.ParsingName) ==
+                        //    Path.GetPathRoot(Explorer.NavigationLog.CurrentLocation.ParsingName))
+                        //{
+                        //    e.Effects = DragDropEffects.Move;
 
 
-				Win32Point ptw = new Win32Point();
-				GetCursorPos(ref ptw);
-				e.Effects = DragDropEffects.None;
+                        //}
+                        //else
+                        //{
+                        //    e.Effects = DragDropEffects.Copy;
+
+                        //}
+
+                        // I decided just to have it do a move because it will avoid errors with special shell folders.
+                        // Besides, if a person wants to copy something, they should know how to press Ctrl to copy.
+                        e.Effects = DragDropEffects.Move;
+                    }
+                }
+                else
+                {
+                    e.Effects = DragDropEffects.None;
+                }
+
+
+                Win32Point ptw = new Win32Point();
+                GetCursorPos(ref ptw);
+                e.Effects = DragDropEffects.None;
         var tabItemSource = e.Data.GetData(typeof(ClosableTabItem)) as ClosableTabItem;
-				if (tabItemSource == null)
-					DropTargetHelper.DragEnter(this, e.Data, new System.Windows.Point(ptw.X, ptw.Y), e.Effects);
-			//}
-			//else
-			//{
-			//    if (e.Data.GetDataPresent(typeof(ClosableTabItem)))
-			//    {
-			//        e.Effects = DragDropEffects.Move;
-			//    }
-			//}
+                if (tabItemSource == null)
+                    DropTargetHelper.DragEnter(this, e.Data, new System.Windows.Point(ptw.X, ptw.Y), e.Effects);
+            //}
+            //else
+            //{
+            //    if (e.Data.GetDataPresent(typeof(ClosableTabItem)))
+            //    {
+            //        e.Effects = DragDropEffects.Move;
+            //    }
+            //}
 
-		}
+        }
 
-		private void tabControl1_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-		{
+        private void tabControl1_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
 
-			string h = sender.GetType().Name.ToString();
+            string h = sender.GetType().Name.ToString();
 
-			hitTestList = new List<DependencyObject>();
+            hitTestList = new List<DependencyObject>();
 
-			System.Windows.Point pt = e.GetPosition(sender as IInputElement);
+            System.Windows.Point pt = e.GetPosition(sender as IInputElement);
 
-			VisualTreeHelper.HitTest(
-				sender as Visual, null,
-				CollectAllVisuals_Callback,
-				new PointHitTestParameters(pt));
+            VisualTreeHelper.HitTest(
+                sender as Visual, null,
+                CollectAllVisuals_Callback,
+                new PointHitTestParameters(pt));
 
-			hitTestList.Reverse();
+            hitTestList.Reverse();
 
-			//DependencyObject elementToFind = null;
-			if (hitTestList.Count() > 0)
-			{
-				if (hitTestList[0].GetType().Name.Equals("ScrollViewer") && hitTestList.Count == 2)
-				{
-					NewTab();
-					if (StartUpLocation.IndexOf("::") == 0)
-					{
+            //DependencyObject elementToFind = null;
+            if (hitTestList.Count() > 0)
+            {
+                if (hitTestList[0].GetType().Name.Equals("ScrollViewer") && hitTestList.Count == 2)
+                {
+                    NewTab();
+                    if (StartUpLocation.IndexOf("::") == 0)
+                    {
 
-						Explorer.Navigate(ShellObject.FromParsingName("shell:" + StartUpLocation));
-					}
-					else
-						Explorer.Navigate(ShellObject.FromParsingName(StartUpLocation.Replace("\"", "")));
+                        Explorer.Navigate(ShellObject.FromParsingName("shell:" + StartUpLocation));
+                    }
+                    else
+                        Explorer.Navigate(ShellObject.FromParsingName(StartUpLocation.Replace("\"", "")));
           (tabControl1.SelectedItem as ClosableTabItem).Path = Explorer.NavigationLog.CurrentLocation;
-				}
-				else if (hitTestList.Count == 3)
-				{
-					if (hitTestList[2].GetType().Name == "Grid")
-					{
-						NewTab();
-						if (StartUpLocation.IndexOf("::") == 0)
-						{
+                }
+                else if (hitTestList.Count == 3)
+                {
+                    if (hitTestList[2].GetType().Name == "Grid")
+                    {
+                        NewTab();
+                        if (StartUpLocation.IndexOf("::") == 0)
+                        {
 
-							Explorer.Navigate(ShellObject.FromParsingName("shell:" + StartUpLocation));
-						}
-						else
-							Explorer.Navigate(ShellObject.FromParsingName(StartUpLocation.Replace("\"", "")));
+                            Explorer.Navigate(ShellObject.FromParsingName("shell:" + StartUpLocation));
+                        }
+                        else
+                            Explorer.Navigate(ShellObject.FromParsingName(StartUpLocation.Replace("\"", "")));
             (tabControl1.SelectedItem as ClosableTabItem).Path = Explorer.NavigationLog.CurrentLocation;
-					}
-				}
-			}
+                    }
+                }
+            }
 
-		}
+        }
 
-		#endregion
+        #endregion
 
-		#region Tab Controls
+        #region Tab Controls
 
-		private void MoveTabBarToBottom()
-		{
-			Grid.SetRow(this.tabControl1, 7);
-			divNav.Visibility = Visibility.Visible;
-			this.rTabbarTop.Height = new GridLength(0);
-			this.rTabbarBot.Height = new GridLength(25);
-			this.tabControl1.TabStripPlacement = Dock.Bottom;
-		}
+        private void MoveTabBarToBottom()
+        {
+            Grid.SetRow(this.tabControl1, 7);
+            divNav.Visibility = Visibility.Visible;
+            this.rTabbarTop.Height = new GridLength(0);
+            this.rTabbarBot.Height = new GridLength(25);
+            this.tabControl1.TabStripPlacement = Dock.Bottom;
+        }
 
-		private void MoveTabBarToTop()
-		{
-			Grid.SetRow(this.tabControl1, 3);
-			divNav.Visibility = Visibility.Hidden;
-			this.rTabbarTop.Height = new GridLength(25);
-			this.rTabbarBot.Height = new GridLength(0);
-			this.tabControl1.TabStripPlacement = Dock.Top;
-		}
+        private void MoveTabBarToTop()
+        {
+            Grid.SetRow(this.tabControl1, 3);
+            divNav.Visibility = Visibility.Hidden;
+            this.rTabbarTop.Height = new GridLength(25);
+            this.rTabbarBot.Height = new GridLength(0);
+            this.tabControl1.TabStripPlacement = Dock.Top;
+        }
 
-		private void RadioButton_Checked(object sender, RoutedEventArgs e)
-		{
-			MoveTabBarToTop();
-		}
+        private void RadioButton_Checked(object sender, RoutedEventArgs e)
+        {
+            MoveTabBarToTop();
+        }
 
-		private void RadioButton_Checked_1(object sender, RoutedEventArgs e)
-		{
-			MoveTabBarToBottom();
-		}
+        private void RadioButton_Checked_1(object sender, RoutedEventArgs e)
+        {
+            MoveTabBarToBottom();
+        }
 
-		public List<string> LoadListOfTabListFiles()
-		{
-			List<string> o = new List<string>();
+        public List<string> LoadListOfTabListFiles()
+        {
+            List<string> o = new List<string>();
 
-			if (Directory.Exists(sstdir)) {
-				foreach (string item in Directory.GetFiles(sstdir)) {
-				ShellObject obj = ShellObject.FromParsingName(item);
-				o.Add(RemoveExtensionsFromFile(obj.GetDisplayName(DisplayNameType.Default), GetExtension(item)));
-				} 
-			}
-			return o;
-		}
+            if (Directory.Exists(sstdir)) {
+                foreach (string item in Directory.GetFiles(sstdir)) {
+                ShellObject obj = ShellObject.FromParsingName(item);
+                o.Add(RemoveExtensionsFromFile(obj.GetDisplayName(DisplayNameType.Default), GetExtension(item)));
+                } 
+            }
+            return o;
+        }
 
-		private void btn_ToolTipOpening(object sender, ToolTipEventArgs e) {
-			if (sender is SplitButton) {
-			if ((sender as SplitButton).IsDropDownOpen) {
-				e.Handled = true;
-			}
-			}
-		}
+        private void btn_ToolTipOpening(object sender, ToolTipEventArgs e) {
+            if (sender is SplitButton) {
+            if ((sender as SplitButton).IsDropDownOpen) {
+                e.Handled = true;
+            }
+            }
+        }
 
-		private void miSaveCurTabs_Click(object sender, RoutedEventArgs e)
-		{
-			List<ShellObject> objs = new List<ShellObject>();
-			foreach (ClosableTabItem item in tabControl1.Items)
-			{
-				objs.Add(item.log.CurrentLocation);
-			}
-			String str = PathStringCombiner.CombinePaths(objs, "|");
-			SavedTabsList list = SavedTabsList.CreateFromString(str);
+        private void miSaveCurTabs_Click(object sender, RoutedEventArgs e)
+        {
+            List<ShellObject> objs = new List<ShellObject>();
+            foreach (ClosableTabItem item in tabControl1.Items)
+            {
+                objs.Add(item.log.CurrentLocation);
+            }
+            String str = PathStringCombiner.CombinePaths(objs, "|");
+            SavedTabsList list = SavedTabsList.CreateFromString(str);
 
-			BetterExplorer.Tabs.NameTabList ntl = new BetterExplorer.Tabs.NameTabList();
-			ntl.ShowDialog();
-			if (ntl.dialogresult == true)
-			{
-				if (System.IO.Directory.Exists(sstdir) == false)
-				{
-					System.IO.Directory.CreateDirectory(sstdir);
-				}
-				SavedTabsList.SaveTabList(list, String.Format("{0}{1}.txt", sstdir, ntl.textBox1.Text));
-			    if (!miTabManager.IsEnabled)
-			        miTabManager.IsEnabled = true;
-			}
-		}
+            BetterExplorer.Tabs.NameTabList ntl = new BetterExplorer.Tabs.NameTabList();
+            ntl.ShowDialog();
+            if (ntl.dialogresult == true)
+            {
+                if (System.IO.Directory.Exists(sstdir) == false)
+                {
+                    System.IO.Directory.CreateDirectory(sstdir);
+                }
+                SavedTabsList.SaveTabList(list, String.Format("{0}{1}.txt", sstdir, ntl.textBox1.Text));
+                if (!miTabManager.IsEnabled)
+                    miTabManager.IsEnabled = true;
+            }
+        }
 
-		private void btnUndoClose_Click(object sender, RoutedEventArgs e)
-		{
-			ReOpenTab(reopenabletabs[reopenabletabs.Count - 1]);
-			reopenabletabs.RemoveAt(reopenabletabs.Count - 1);
-			if (reopenabletabs.Count == 0)
-			{
-				btnUndoClose.IsEnabled = false;
+        private void btnUndoClose_Click(object sender, RoutedEventArgs e)
+        {
+            ReOpenTab(reopenabletabs[reopenabletabs.Count - 1]);
+            reopenabletabs.RemoveAt(reopenabletabs.Count - 1);
+            if (reopenabletabs.Count == 0)
+            {
+                btnUndoClose.IsEnabled = false;
         foreach (ClosableTabItem item in this.tabControl1.Items)
         {
             foreach (FrameworkElement m in item.mnu.Items)
@@ -9394,14 +9401,14 @@ namespace BetterExplorer
                 }
             }
         }
-			}
-		}
+            }
+        }
 
-		private void miClearUndoList_Click(object sender, RoutedEventArgs e)
-		{
-			reopenabletabs.Clear();
-			btnUndoClose.IsDropDownOpen = false;
-			btnUndoClose.IsEnabled = false;
+        private void miClearUndoList_Click(object sender, RoutedEventArgs e)
+        {
+            reopenabletabs.Clear();
+            btnUndoClose.IsDropDownOpen = false;
+            btnUndoClose.IsEnabled = false;
       foreach (ClosableTabItem item in this.tabControl1.Items)
       {
         foreach (FrameworkElement m in item.mnu.Items)
@@ -9415,19 +9422,19 @@ namespace BetterExplorer
           }
         }
       }
-		}
+        }
 
-		private void btnUndoClose_DropDownOpened(object sender, EventArgs e)
-		{
-			rotGallery.Items.Clear();
-			foreach (NavigationLog item in reopenabletabs)
-			{
-				UndoCloseGalleryItem gli = new UndoCloseGalleryItem();
-				gli.LoadData(item);
+        private void btnUndoClose_DropDownOpened(object sender, EventArgs e)
+        {
+            rotGallery.Items.Clear();
+            foreach (NavigationLog item in reopenabletabs)
+            {
+                UndoCloseGalleryItem gli = new UndoCloseGalleryItem();
+                gli.LoadData(item);
         gli.Click += gli_Click;
-				rotGallery.Items.Add(gli);
-			}
-		}
+                rotGallery.Items.Add(gli);
+            }
+        }
 
     void gli_Click(object sender, NavigationLogEventArgs e)
     {
@@ -9435,22 +9442,22 @@ namespace BetterExplorer
       reopenabletabs.Remove((sender as UndoCloseGalleryItem).nav);
       if (reopenabletabs.Count == 0)
       {
-      	btnUndoClose.IsEnabled = false;
+        btnUndoClose.IsEnabled = false;
       }
     }
 
 
-		private void rotGallery_SelectionChanged(object sender, SelectionChangedEventArgs e)
-		{
-			try
-			{
-				(e.AddedItems[0] as UndoCloseGalleryItem).PerformClickEvent();
-			}
-			catch
-			{
+        private void rotGallery_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            try
+            {
+                (e.AddedItems[0] as UndoCloseGalleryItem).PerformClickEvent();
+            }
+            catch
+            {
 
-			}
-		}
+            }
+        }
 
         private void btnChangeTabsFolder_Click(object sender, RoutedEventArgs e)
         {
@@ -9468,18 +9475,18 @@ namespace BetterExplorer
             }
         }
 
-		private void tabControl1_Drop(object sender, DragEventArgs e)
-		{
-			if (e.Data.GetDataPresent(DataFormats.FileDrop))
-			{
-				//MessageBox.Show("Dropped here!");
-				String[] collection = (String[])e.Data.GetData(DataFormats.FileDrop);
-				foreach (string item in collection)
-				{
-					ShellObject obj = ShellObject.FromParsingName(item);
-					if ((obj.IsFolder || obj.IsLink) && obj.IsFileSystemObject)
-					{
-						bool isarchive = false;
+        private void tabControl1_Drop(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                //MessageBox.Show("Dropped here!");
+                String[] collection = (String[])e.Data.GetData(DataFormats.FileDrop);
+                foreach (string item in collection)
+                {
+                    ShellObject obj = ShellObject.FromParsingName(item);
+                    if ((obj.IsFolder || obj.IsLink) && obj.IsFileSystemObject)
+                    {
+                        bool isarchive = false;
             string itemPath = String.Empty;
             if (obj.IsLink)
             {
@@ -9496,80 +9503,80 @@ namespace BetterExplorer
             {
               itemPath = item;
             }
-						foreach (string item2 in Archives)
-						{
-							if (itemPath.Contains(item2))
-							{
-								isarchive = true;
-							}
-						}
+                        foreach (string item2 in Archives)
+                        {
+                            if (itemPath.Contains(item2))
+                            {
+                                isarchive = true;
+                            }
+                        }
 
-						if (isarchive == false)
-						{
-							NewTab(itemPath);
-						}
-						else
-						{
-							MessageBox.Show("We see this is an archive. However, we're not able to open archives here. Try clicking on it and extracting it.", "Attempt Failed", MessageBoxButton.OK, MessageBoxImage.Information);
-						}
-					}
-					else
-					{
-						MessageBox.Show("Hey... this isn't a folder! We can't make a new tab out of this file.", "Attempt Failed", MessageBoxButton.OK, MessageBoxImage.Information);
-					}
-				}
-			}
-			else
-			{
-				if (e.Data.GetDataPresent(typeof(ClosableTabItem)))
-				{
+                        if (isarchive == false)
+                        {
+                            NewTab(itemPath);
+                        }
+                        else
+                        {
+                            MessageBox.Show("We see this is an archive. However, we're not able to open archives here. Try clicking on it and extracting it.", "Attempt Failed", MessageBoxButton.OK, MessageBoxImage.Information);
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("Hey... this isn't a folder! We can't make a new tab out of this file.", "Attempt Failed", MessageBoxButton.OK, MessageBoxImage.Information);
+                    }
+                }
+            }
+            else
+            {
+                if (e.Data.GetDataPresent(typeof(ClosableTabItem)))
+                {
 
-				}
-				else
-				{
-					MessageBox.Show("It appears that you tried to drag something to the blank area of the tab bar, and that something was not a folder. Drag a folder here to open it in a new tab.", "Attempt Failed", MessageBoxButton.OK, MessageBoxImage.Exclamation);
-				}
-			}
-		}
+                }
+                else
+                {
+                    MessageBox.Show("It appears that you tried to drag something to the blank area of the tab bar, and that something was not a folder. Drag a folder here to open it in a new tab.", "Attempt Failed", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                }
+            }
+        }
 
-		private void stGallery_SelectionChanged(object sender, SelectionChangedEventArgs e)
-		{
-			try
-			{
-				(e.AddedItems[0] as SavedTabsListGalleryItem).PerformClickEvent();
-			}
-			catch
-			{
+        private void stGallery_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            try
+            {
+                (e.AddedItems[0] as SavedTabsListGalleryItem).PerformClickEvent();
+            }
+            catch
+            {
 
-			}
-		}
+            }
+        }
 
-		private void btnSavedTabs_DropDownOpened(object sender, EventArgs e)
-		{
-			stGallery.Items.Clear();
-			foreach (string item in LoadListOfTabListFiles())
-			{
-				SavedTabsListGalleryItem gli = new SavedTabsListGalleryItem(item);
+        private void btnSavedTabs_DropDownOpened(object sender, EventArgs e)
+        {
+            stGallery.Items.Clear();
+            foreach (string item in LoadListOfTabListFiles())
+            {
+                SavedTabsListGalleryItem gli = new SavedTabsListGalleryItem(item);
         gli.Directory = sstdir;
         gli.Click += gli_Click;
         gli.SetUpTooltip((FindResource("tabTabsCP") as string));
-				stGallery.Items.Add(gli);
-			}
-		}
+                stGallery.Items.Add(gli);
+            }
+        }
 
-		void gli_Click(object sender, PathStringEventArgs e)
-		{
-			SavedTabsList list = SavedTabsList.LoadTabList(String.Format("{0}{1}.txt", sstdir, e.PathString));
-			for (int i = 0; i < list.Count; i++) {
-				var tabitem = NewTab(list[i]);
-				if (i == list.Count - 1)
-					tabControl1.SelectedItem = tabitem;
-			}
-			NavigateAfterTabChange();
-		}
+        void gli_Click(object sender, PathStringEventArgs e)
+        {
+            SavedTabsList list = SavedTabsList.LoadTabList(String.Format("{0}{1}.txt", sstdir, e.PathString));
+            for (int i = 0; i < list.Count; i++) {
+                var tabitem = NewTab(list[i]);
+                if (i == list.Count - 1)
+                    tabControl1.SelectedItem = tabitem;
+            }
+            NavigateAfterTabChange();
+        }
 
-		private void miTabManager_Click(object sender, RoutedEventArgs e)
-		{
+        private void miTabManager_Click(object sender, RoutedEventArgs e)
+        {
       string sstdir = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\BExplorer_SavedTabs\\";
       if (Directory.Exists(sstdir))
       {
@@ -9577,7 +9584,7 @@ namespace BetterExplorer
           man.MainForm = this;
           man.Show();
       }
-		}
+        }
 
         private void RibbonWindow_SizeChanged(object sender, SizeChangedEventArgs e)
         {
@@ -9586,7 +9593,7 @@ namespace BetterExplorer
                 (tabControl1.SelectedItem as ClosableTabItem).BringIntoView();
             }
         }
-		#endregion
+        #endregion
 
         #region Customize Quick Access Toolbar
 

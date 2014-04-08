@@ -853,9 +853,6 @@
     <Content Include="AutomaticUpdaterWPF.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="BetterExplorerShell.exe">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Resource Include="Images\savetabs16.png" />
     <Resource Include="Images\savetabs32.png" />
     <Resource Include="Images\undotab16.png" />
@@ -878,9 +875,6 @@
     <Resource Include="Images\pics16.png" />
     <Resource Include="Images\browsefldr16.png" />
     <Resource Include="Images\browsefldr32.png" />
-    <Content Include="FileOperation.exe">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Resource Include="Translation\Flags\BG.gif" />
     <Resource Include="Translation\Flags\BR.gif" />
     <Resource Include="Translation\Flags\CN.gif" />
@@ -942,9 +936,6 @@
     <Resource Include="Images\Share16.png" />
     <Resource Include="Images\share32.png" />
     <Resource Include="Images\new_window.png" />
-    <Content Include="BetterExplorerOperations.exe">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Resource Include="Images\newlib16.png" />
     <Resource Include="Images\newlib32.png" />
     <Resource Include="Images\uac16.png" />
@@ -1157,7 +1148,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_UseGlobalSettings="True" BuildVersion_UpdateFileVersion="True" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_BuildVersioningStyle="None.None.None.Increment" />
+      <UserProperties BuildVersion_BuildVersioningStyle="None.None.None.Increment" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_UpdateFileVersion="True" BuildVersion_UseGlobalSettings="True" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
